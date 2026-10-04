@@ -63,7 +63,8 @@ After that, edits in the Sheet appear on the site within a few minutes with no u
 - **Sample problem answers** were computed by me, not copied from your key. Check them. In S12 problem 2 part b, "10% away" is read as 10 percentage points.
 - **Practice problems** exist so far for S8, S10, S11, and S12 (from the Unit 2 challenge problems). The other outcomes show a "coming" placeholder.
 - **Retrieval practice apps** are placeholders in `apps.csv` (one per group of outcomes). Edit or delete rows freely.
-- **Logo:** the header and footer show an "[Official SAC logo]" placeholder. Replace it with the official file from SAC's Public Information Office.
+- **Logo:** the header uses the color logo. The footer has no logo until you add the reverse version. See "The SAC logo" below.
+- **Captions:** SAC's brand guide expects human-edited closed captions on video. Your lecture videos are on YouTube, so check their captions.
 
 ## Design decisions to keep
 
@@ -72,7 +73,17 @@ After that, edits in the Sheet appear on the site within a few minutes with no u
 - The hub is school-wide, so term-specific items like a syllabus stay out. The course page opens with a grounding in the discipline (statistical thinking).
 - Practice follows "try it first, check your answer, then open the solutions."
 - AI study partner prompts ask students to attempt the problem first. Quizzes and exams are AI-free.
-- Colors and fonts follow Santa Ana College's 2025 brand guide: red #9D1414, black, gold #FFB600, Montserrat headings, Mulish body text, and a minimum text size of 14 points (about 19 pixels) for accessibility.
+- Colors and fonts follow Santa Ana College's 2025 brand guide: red #9D1414 (also used for links), black, gold #FFB600, the STEM pathway navy #1D3969 for Math, and unit colors taken from the guide's chart-color order. Text is Mulish (Google's current version of the guide's Muli family). The minimum text size is 14 points (about 19 pixels) for accessibility. Note that sac.edu itself uses Montserrat for headings. If you prefer to match the live site, change the font name in `index.html` and `styles.css`.
+
+## The SAC logo
+
+The header uses `SAC_Logo.png`, the horizontal color logo (the guide's "Alternate Preferred Logo"). It has a white background, so it only works on white. That is why it appears in the white header and not in the black footer or the red hero.
+
+SAC's brand guide says not to recreate, crop, stretch, or recolor the logo, and to use transparent, high-resolution files. Keep the logo at least 2 inches wide (about 192 pixels). The site shows it at 220 pixels.
+
+To change the logo, upload the new file to the main folder of the repo (next to `index.html`) and set its exact file name in `config.js`. File names are case-sensitive.
+
+If you want the logo on a dark background, get the reverse logo (white text, transparent) from the SAC Assets folder (page 37 of the brand guide, SAC login required) or email publicinformation@sac.edu. Ask at the same time for the Mathematics department descriptive signature. Then set `LOGO_REVERSE` in `config.js` and the footer will show it.
 
 ## Keep working on it
 

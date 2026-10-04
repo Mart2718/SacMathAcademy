@@ -78,10 +78,11 @@
   function header(courses) {
     var live = (courses || []).filter(function (c) { return c.status === "live"; });
     var nav = '<a href="#/">Courses</a>' + live.map(function (c) { return '<a href="#/' + esc(c.slug) + '">' + esc(c.code) + "</a>"; }).join("");
-    return '<header class="top"><div class="wrap"><a class="brand" href="#/"><span class="logo">[Official SAC logo]</span><b>Math Academy</b></a><nav class="main" aria-label="Main">' + nav + "</nav></div></header>";
+    var logo = CFG.LOGO_COLOR ? '<img class="logo-img" src="' + esc(CFG.LOGO_COLOR) + '" alt="Santa Ana College">' : '<span class="logo">[Official SAC logo]</span>';
+    return '<header class="top"><div class="wrap"><a class="brand" href="#/">' + logo + '<b>Math Academy</b></a><nav class="main" aria-label="Main">' + nav + "</nav></div></header>";
   }
   function footer(f) {
-    return '<footer class="foot"><div class="wrap"><div class="stack" style="align-items:flex-start"><span class="logo">[Official SAC logo]</span><b style="font-family:Montserrat,sans-serif;font-size:20px">' + esc(f.name) + "</b><div>" + esc(f.left) + "</div></div><div>" + esc(f.right) + "<br>" + esc(f.contact) + "</div></div></footer>";
+    return '<footer class="foot"><div class="wrap"><div class="stack" style="align-items:flex-start">' + (CFG.LOGO_REVERSE ? '<img class="logo-img" src="' + esc(CFG.LOGO_REVERSE) + '" alt="Santa Ana College">' : (CFG.LOGO_COLOR ? "" : '<span class="logo">[Official SAC logo]</span>')) + '<b style="font-family:Mulish,sans-serif;font-size:20px">' + esc(f.name) + "</b><div>" + esc(f.left) + "</div></div><div>" + esc(f.right) + "<br>" + esc(f.contact) + "</div></div></footer>";
   }
   function pill(text, cls) { return '<span class="pill ' + cls + '">' + esc(text) + "</span>"; }
   function unitPill(n, text) { return '<span class="pill u' + n + '">' + esc(text) + "</span>"; }
@@ -136,16 +137,16 @@
   // ---------- pages
   function pageHome(h) {
     var c = h.copy, live = h.courses;
-    var steps = c.steps.map(function (s, i) { return '<div class="step"><span class="num">' + (i + 1) + '</span><div><div style="font-family:Montserrat,sans-serif;font-weight:700;font-size:21px;color:#000">' + esc(s.title) + '</div><div class="small">' + esc(s.text) + "</div></div></div>"; }).join("");
+    var steps = c.steps.map(function (s, i) { return '<div class="step"><span class="num">' + (i + 1) + '</span><div><div style="font-family:Mulish,sans-serif;font-weight:700;font-size:21px;color:#000">' + esc(s.title) + '</div><div class="small">' + esc(s.text) + "</div></div></div>"; }).join("");
     var cards = live.map(function (co) {
       var isLive = co.status === "live";
-      var inner = '<div style="display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px"><b style="font-family:Montserrat,sans-serif;color:var(--muted)">' + esc(co.code) + "</b>" + pill(isLive ? "Live pilot" : "In progress", isLive ? "live" : "progress") + '</div><h3 style="font-size:23px;line-height:1.25;margin-bottom:10px">' + esc(co.title) + "</h3><p>" + esc(co.blurb) + "</p>" + (isLive ? '<p style="margin-top:16px"><b style="color:var(--link)">Open the course →</b></p>' : "");
+      var inner = '<div style="display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px"><b style="font-family:Mulish,sans-serif;color:var(--muted)">' + esc(co.code) + "</b>" + pill(isLive ? "Live pilot" : "In progress", isLive ? "live" : "progress") + '</div><h3 style="font-size:23px;line-height:1.25;margin-bottom:10px">' + esc(co.title) + "</h3><p>" + esc(co.blurb) + "</p>" + (isLive ? '<p style="margin-top:16px"><b style="color:var(--link)">Open the course →</b></p>' : "");
       return isLive ? '<a class="card" style="border:2px solid var(--red);text-decoration:none;color:inherit;display:block" href="#/' + esc(co.slug) + '">' + inner + "</a>" : '<div class="card">' + inner + "</div>";
     }).join("");
     var more = '<div class="dashed" style="display:flex;flex-direction:column;justify-content:center"><h3 style="font-size:21px;margin-bottom:8px">' + esc(c.moreCourses.title) + "</h3><p class=\"small\" style=\"margin:0\">" + esc(c.moreCourses.text) + "</p></div>";
     var prin = c.principles.map(function (p) { return '<div class="card"><h3>' + esc(p.title) + "</h3><p>" + esc(p.text) + "</p></div>"; }).join("");
     return header(h.courses) +
-      '<main id="main"><section class="hero-red"><div class="wrap"><div><p style="margin:0 0 14px;font-family:Montserrat,sans-serif;font-weight:700">' + esc(c.eyebrow) + "</p><h1>" + esc(c.headline) + '</h1><p class="lead">' + esc(c.lead) + '</p><div class="search"><label for="q">' + esc(c.searchLabel) + '</label><input id="q" type="search" autocomplete="off" placeholder="' + esc(c.searchPlaceholder) + '"><div id="results"></div></div></div><div class="steps">' + steps + "</div></div></section>" +
+      '<main id="main"><section class="hero-red"><div class="wrap"><div><p style="margin:0 0 14px;font-family:Mulish,sans-serif;font-weight:700">' + esc(c.eyebrow) + "</p><h1>" + esc(c.headline) + '</h1><p class="lead">' + esc(c.lead) + '</p><div class="search"><label for="q">' + esc(c.searchLabel) + '</label><input id="q" type="search" autocomplete="off" placeholder="' + esc(c.searchPlaceholder) + '"><div id="results"></div></div></div><div class="steps">' + steps + "</div></div></section>" +
       '<section class="sec">' + sectionHead(c.coursesTitle, c.coursesSub) + '<div class="grid four">' + cards + more + "</div></section>" +
       '<section class="sec">' + sectionHead(c.principlesTitle) + '<div class="grid three" style="margin-top:24px">' + prin + "</div></section>" +
       '<section class="sec"><div class="band"><div><div style="margin-bottom:12px">' + pill(c.band.badge, "gold") + "</div><h2>" + esc(c.band.title) + "</h2><p style=\"margin:12px 0 0\">" + esc(c.band.text) + '</p></div><div class="box">' + c.band.placeholder.map(esc).join("<br>") + "</div></div></section></main>" + footer(c.footer);
@@ -270,7 +271,7 @@
       return '<div class="faq"><button class="q" type="button" data-toggle="#' + id + '" aria-expanded="false"><span>' + esc(f.question) + '</span><span class="plus" aria-hidden="true">+</span></button><div class="a" id="' + id + '" hidden>' + body + "</div></div>";
     }).join("") : '<div class="empty">No FAQ questions are tagged to this outcome yet.</div>';
     var promptHtml = prompts.length ? prompts.map(function (p, i) {
-      return '<div style="border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px"><div style="margin-bottom:8px">' + unitPill(o.unit, p.kind + " · " + o.code) + '</div><div style="font-family:Montserrat,sans-serif;font-weight:700;color:#000;margin-bottom:' + (p.note ? "6px" : "10px") + '">' + esc(p.title) + "</div>" + (p.note ? '<p class="small" style="margin:0 0 10px">' + esc(p.note) + "</p>" : "") + '<div class="mid" id="p' + i + '" style="margin:0 0 12px">' + esc(p.text) + '</div><button class="btn ghost" type="button" data-copy="#p' + i + '">Copy prompt</button></div>';
+      return '<div style="border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px"><div style="margin-bottom:8px">' + unitPill(o.unit, p.kind + " · " + o.code) + '</div><div style="font-family:Mulish,sans-serif;font-weight:700;color:#000;margin-bottom:' + (p.note ? "6px" : "10px") + '">' + esc(p.title) + "</div>" + (p.note ? '<p class="small" style="margin:0 0 10px">' + esc(p.note) + "</p>" : "") + '<div class="mid" id="p' + i + '" style="margin:0 0 12px">' + esc(p.text) + '</div><button class="btn ghost" type="button" data-copy="#p' + i + '">Copy prompt</button></div>';
     }).join("") : '<div class="empty" style="margin-bottom:14px">No prompts are written for this outcome yet. The study partner modes on the course page work for any outcome.</div><a class="btn ghost" href="#/' + slug + '" data-scroll="ai">Open the study partner modes</a>';
     var idx = d.list.indexOf(o), prev = d.list[idx - 1], next = d.list[idx + 1];
     var pn = '<section class="sec tight"><div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap">' + (prev ? '<a class="btn ghost" href="#/' + slug + "/" + prev.code.toLowerCase() + '">← ' + prev.code + " " + esc(prev.title) + "</a>" : "<span></span>") + (next ? '<a class="btn ghost" href="#/' + slug + "/" + next.code.toLowerCase() + '">' + next.code + " " + esc(next.title) + " →</a>" : "") + "</div></section>";
