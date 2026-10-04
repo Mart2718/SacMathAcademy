@@ -1,0 +1,42 @@
+id,name,url,description,outcomes,status
+sacstatsc1000statisticparameter,Stats Explorer: Population vs Sample,https://sacstatsc1000statisticparameter.netlify.app,Simulator with videos.,S1,live
+variablecoach,Variable Coach,https://variablecoach.netlify.app,Classify variables in research scenarios.,S2,live
+statsquestions,Is This a Statistical Question?,https://statsquestions.netlify.app,Variables and research questions.,S2,live
+frequencydistributionexplorer,Cumulative Explorer,https://frequencydistributionexplorer.netlify.app,Frequency and cumulative distributions.,S4 S5,live
+percentileexplorer,Percentile Explorer,https://percentileexplorer.netlify.app,"Explore, estimate, compare, and practice percentiles.",S5,live
+exploratorystatisticsactivity,Exploratory Statistics,https://exploratorystatisticsactivity.netlify.app,A live mean and median playground with a distribution quiz.,S5 S6,live
+zscoreexplorer,Z-Score Explorer,https://zscoreexplorer.netlify.app,"Empirical rule, unusual values, and practice.",S7 S11,live
+sacstatprobability,Probability Toolkit,https://sacstatprobability.netlify.app,"Reference, a two-way table explorer, and mixed practice.",S8,live
+expectedvalueexplorer,Expected Value Explorer,https://expectedvalueexplorer.netlify.app,"Learn, simulate, and calculate.",S9,live
+binomialexplorer,Binomial Explorer,https://binomialexplorer.netlify.app,"Theory, identifying scenarios, a calculator, and practice.",S10,live
+normaldistributions,One Value vs the Average,https://normaldistributions.netlify.app,Why the average varies less than a single value: σ or σ/√n.,S12,live
+binomialnormal,"Two Views, One Distribution",https://binomialnormal.netlify.app,A binomial count and a sample proportion as one distribution.,S12,live
+exploringconfidenceintervals,Confidence Interval Explorer,https://exploringconfidenceintervals.netlify.app,How sample size and confidence level change an interval.,S13,live
+cipracticetools,Confidence Interval Practice,https://cipracticetools.netlify.app,"Learn, practice, work backwards, and find sample sizes.",S13 S14,live
+statisticalprocedurehelper,Statistical Procedure Helper,https://statisticalprocedurehelper.netlify.app,Match a procedure to a research question.,S15 S19 S21,live
+onetwopstatsproceduretrainer,Inference Procedure Trainer,https://onetwopstatsproceduretrainer.netlify.app,Multiple choice and matching game for choosing procedures.,S15 S19 S21,live
+onepropsampleprocedurepractice,Which Procedure Fits?,https://onepropsampleprocedurepractice.netlify.app,A 20-question quiz on choosing the procedure.,S15 S19 S21,live
+onehypothesistestpractice,Hypothesis Testing Practice,https://onehypothesistestpractice.netlify.app,"Learn, practice, conclusions, and a reference.",S15 S16,live
+statisticalintuitionevidence,From Intuition to Evidence,https://statisticalintuitionevidence.netlify.app,"Judge sample data first, then compare with a hypothesis test.",S16 S18,live
+errorlab,The Error Lab,https://errorlab.netlify.app,"Type I and Type II errors, consequences, and power.",S17,live
+ttestdecoder,T-Test Decider,https://ttestdecoder.netlify.app,Paired or independent? Practice and walkthroughs.,S19 S20,live
+chisquareselector,Chi-Square Navigator,https://chisquareselector.netlify.app,"Goodness of fit or independence, with a quiz and flowchart.",S21 S22,live
+linregexplorer,Linear Regression and Inference Workspace,https://linregexplorer.netlify.app,Slope t-test and assumptions.,S22 S23,live
+c1000module1213practicequiz,Mixed Inference Practice Quiz,https://c1000module1213practicequiz.netlify.app,Choose the procedure and set up the hypotheses. No calculations.,S15,live
+sacstatc1000finalskillsreview,Final Skills Review,https://sacstatc1000finalskillsreview.netlify.app,71 practice problems across the course.,,live
+sacstatc1000finalconceptreview,Final Concept Review,https://sacstatc1000finalconceptreview.netlify.app,Concept practice with a topic filter.,,live
+sacstatthink,StatThink Question Sets,https://sacstatthink.netlify.app,Thinking questions filtered by unit.,,live
+proportionplayground,Proportion Playground,https://proportionplayground.netlify.app,Ratio and proportion puzzles. A prerequisite skill.,,live
+retrieval-1,Quick retrieval practice: S1 to S3,,"A short web app with questions you answer from memory, with feedback after each one.",S1 S2 S3,planned
+retrieval-2,Quick retrieval practice: S4 and S5,,"A short web app with questions you answer from memory, with feedback after each one.",S4 S5,planned
+retrieval-3,Quick retrieval practice: S6 and S7,,"A short web app with questions you answer from memory, with feedback after each one.",S6 S7,planned
+retrieval-4,Quick retrieval practice: S8,,"A short web app with questions you answer from memory, with feedback after each one.",S8,planned
+retrieval-5,Quick retrieval practice: S9,,"A short web app with questions you answer from memory, with feedback after each one.",S9,planned
+retrieval-6,Quick retrieval practice: S10,,"A short web app with questions you answer from memory, with feedback after each one.",S10,planned
+retrieval-7,Quick retrieval practice: S11,,"A short web app with questions you answer from memory, with feedback after each one.",S11,planned
+retrieval-8,Quick retrieval practice: S12,,"A short web app with questions you answer from memory, with feedback after each one.",S12,planned
+retrieval-9,Quick retrieval practice: S13 and S14,,"A short web app with questions you answer from memory, with feedback after each one.",S13 S14,planned
+retrieval-10,Quick retrieval practice: S15 to S17,,"A short web app with questions you answer from memory, with feedback after each one.",S15 S16 S17,planned
+retrieval-11,Quick retrieval practice: S18 to S20,,"A short web app with questions you answer from memory, with feedback after each one.",S18 S19 S20,planned
+retrieval-12,Quick retrieval practice: S21 and S22,,"A short web app with questions you answer from memory, with feedback after each one.",S21 S22,planned
+retrieval-13,Quick retrieval practice: S23,,"A short web app with questions you answer from memory, with feedback after each one.",S23,planned

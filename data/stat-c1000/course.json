@@ -1,0 +1,222 @@
+{
+  "slug": "stat-c1000",
+  "code": "STAT C1000",
+  "title": "Statistics, one outcome at a time",
+  "lead": "{outcomes} learning outcomes, {modules} modules, {videos} micro-lectures, and {apps} interactive apps. Pick the way in that fits where you are today.",
+  "searchLabel": "Search this course",
+  "searchPlaceholder": "Try: p-value, standard error, S12",
+  "ways": [
+    {
+      "title": "Start here",
+      "text": "Starting a unit? Follow the path: guided notes, micro-lectures, an app, then practice.",
+      "scroll": "units",
+      "label": "Pick a unit"
+    },
+    {
+      "title": "I am stuck",
+      "text": "Name the kind of stuck you are in, and go to the help that fits it.",
+      "scroll": "help",
+      "label": "Get unstuck"
+    },
+    {
+      "title": "Study for an exam",
+      "text": "Ungraded skill checks, the 71-problem final skills review, and a concept review.",
+      "scroll": "review",
+      "label": "Start reviewing"
+    }
+  ],
+  "unitsTitle": "Browse by unit and outcome",
+  "unitsSub": "Hover over an outcome to see its full statement. Select one to open its page.",
+  "unitTitles": {
+    "1": "Understanding data and descriptive statistics",
+    "2": "Probability and probability distributions",
+    "3": "Statistical inference: univariate data",
+    "4": "Statistical inference: bivariate data and other procedures"
+  },
+  "faqUrls": {
+    "1": "https://statc1000unit1faq.netlify.app/",
+    "2": "https://statc1000unit2faq.netlify.app/",
+    "3": "https://statc1000unit3faq.netlify.app/",
+    "4": "https://statc1000unit4faq.netlify.app/"
+  },
+  "toolsTitle": "Tools and references",
+  "toolsSub": "The things you will reach for in every unit.",
+  "thinking": {
+    "title": "Statistical thinking: the big ideas",
+    "lead": "Statistics is a way of thinking about the world wherever data, variation, and chance appear. It is more than a math requirement. It helps you question claims, not only calculate answers.",
+    "habits": [
+      {
+        "title": "Question the claim",
+        "text": "Who collected the data, how, and who is missing? Spotting bias is the first statistical skill."
+      },
+      {
+        "title": "Expect variation",
+        "text": "No two samples are alike. Statistics asks what chance alone would produce before it asks what is surprising."
+      },
+      {
+        "title": "Decide with evidence",
+        "text": "Probability and evidence let us make informed decisions without pretending to be certain."
+      }
+    ],
+    "doTitle": "Two things you will be able to do well",
+    "do": [
+      "Read a graph of data and say what it shows, and what it does not.",
+      "Take a statistical claim, run the right procedure, and write a conclusion that answers the claim."
+    ],
+    "closing": "Data also shapes equity, culture, identity, and opportunity. Behind every dataset are people, and good statistical thinking keeps them in view."
+  },
+  "help": {
+    "title": "When you are stuck",
+    "sub": "Name the kind of stuck you are in. Each one starts somewhere different.",
+    "paths": [
+      {
+        "title": "I do not understand the idea",
+        "text": "Watch a micro-lecture for the outcome, then read the FAQ for your unit.",
+        "links": [
+          {
+            "label": "Browse outcomes ↓",
+            "scroll": "units"
+          },
+          {
+            "label": "Unit 1 FAQ ↗",
+            "url": "https://statc1000unit1faq.netlify.app/"
+          },
+          {
+            "label": "Unit 2 FAQ ↗",
+            "url": "https://statc1000unit2faq.netlify.app/"
+          },
+          {
+            "label": "Unit 3 FAQ ↗",
+            "url": "https://statc1000unit3faq.netlify.app/"
+          },
+          {
+            "label": "Unit 4 FAQ ↗",
+            "url": "https://statc1000unit4faq.netlify.app/"
+          }
+        ]
+      },
+      {
+        "title": "I do not know how to start",
+        "text": "Use a procedure helper to choose the method. Then follow the steps in the Art of Stat guide.",
+        "links": [
+          {
+            "label": "Statistical Procedure Helper ↗",
+            "url": "https://statisticalprocedurehelper.netlify.app"
+          },
+          {
+            "label": "Inference Procedure Trainer ↗",
+            "url": "https://onetwopstatsproceduretrainer.netlify.app"
+          },
+          {
+            "label": "Art of Stat guide ↗",
+            "url": "https://docs.google.com/document/d/1GIj3xBRs4VYCK3FMfa2Y7JeqqXgsqIquA2IOi4FgaZU/edit"
+          }
+        ]
+      },
+      {
+        "title": "My technology is not working",
+        "text": "The Art of Stat guide has menu paths and a video for each task. A scientific calculator covers the rest.",
+        "links": [
+          {
+            "label": "Art of Stat guide ↗",
+            "url": "https://docs.google.com/document/d/1GIj3xBRs4VYCK3FMfa2Y7JeqqXgsqIquA2IOi4FgaZU/edit"
+          },
+          {
+            "label": "Desmos scientific calculator ↗",
+            "url": "https://www.desmos.com/scientific"
+          }
+        ]
+      },
+      {
+        "title": "I got it wrong and do not know why",
+        "text": "Use an AI study partner to find the first place your thinking went off track. Or ask your class and say exactly where you got stuck.",
+        "links": [
+          {
+            "label": "Open the AI study partner ↓",
+            "scroll": "ai"
+          }
+        ]
+      },
+      {
+        "title": "I am behind or overwhelmed",
+        "text": "You do not have to sort it out alone. Talk to a person, or ask for help with basic needs.",
+        "links": [
+          {
+            "label": "Math Center ↗",
+            "url": "https://www.sac.edu/AcademicProgs/ScienceMathHealth/MathCenter/Pages/default.aspx"
+          },
+          {
+            "label": "Learning Center tutoring ↗",
+            "url": "https://www.sac.edu/AcademicProgs/HSS/LearningCenter/Pages/default.aspx"
+          },
+          {
+            "label": "Counseling Center ↗",
+            "url": "https://sac.edu/StudentServices/Counseling/Pages/default.aspx"
+          },
+          {
+            "label": "Thrive Center: basic needs ↗",
+            "url": "https://sac.edu/studentservices/thrivecenter/thrive_center_food_pantry"
+          }
+        ]
+      }
+    ]
+  },
+  "ai": {
+    "title": "AI study partner",
+    "sub": "Use AI after you have tried the problem. Pick a mode, copy the prompt, fill in the brackets, and paste it into Gemini, Claude, or ChatGPT.",
+    "modes": [
+      {
+        "title": "Explain it",
+        "text": "After you have tried the problem, get a plain-language explanation and one check question.",
+        "prompt": "I am learning [topic] in my introductory statistics class. I already tried the problem on my own. Explain the idea in plain language with one everyday analogy, then ask me one question to check that I understood."
+      },
+      {
+        "title": "Coach me",
+        "text": "Get questions and small hints, one step at a time, never the final answer.",
+        "prompt": "Act as a Socratic statistics tutor. Here is my problem: [paste problem]. Do not give me the answer or do the calculations. Ask me one question at a time, and give a small hint only when I am stuck."
+      },
+      {
+        "title": "Check my thinking",
+        "text": "Paste your work and find the first step where your reasoning goes off track.",
+        "prompt": "Here is a problem and my work: [paste problem and your steps]. Do not solve it for me. Find the first step where my reasoning goes wrong, explain why, and let me fix it myself."
+      }
+    ],
+    "note": "Quizzes and exams are AI-free. On assignments, add one line saying how you used AI. Each outcome page adds prompts written for that outcome."
+  },
+  "review": {
+    "title": "Review and check yourself",
+    "sub": "Ungraded, so you can find out what you know before it counts.",
+    "cards": [
+      {
+        "big": "23",
+        "title": "Skill knowledge checks",
+        "text": "One per outcome, ungraded. Open them from Canvas."
+      },
+      {
+        "big": "71",
+        "title": "Final skills review",
+        "text": "Practice problems across descriptive statistics, probability, and inference.",
+        "url": "https://sacstatc1000finalskillsreview.netlify.app"
+      },
+      {
+        "big": "Short",
+        "title": "Final concept review",
+        "text": "Concept practice with a topic filter.",
+        "url": "https://sacstatc1000finalconceptreview.netlify.app"
+      },
+      {
+        "big": "Mixed",
+        "title": "Inference practice quiz",
+        "text": "Choose the procedure and set up the hypotheses. No calculations.",
+        "url": "https://c1000module1213practicequiz.netlify.app"
+      }
+    ]
+  },
+  "callouts": {
+    "S12": {
+      "title": "The mistake to watch for",
+      "text": "When the question is about a sample mean, divide σ by √n. \"What is the probability of a result higher than 55?\" is about one value. \"A sample of 5 scores is collected. What is the probability the mean is higher than 55?\" is about a sample mean, so it needs σ/√n."
+    }
+  },
+  "stuckHelp": "Still stuck? Try the Math Center, Learning Center tutors, NetTutor, or ask your class in Pronto."
+}

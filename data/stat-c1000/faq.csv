@@ -1,0 +1,92 @@
+unit,outcome,question,answer,url
+1,S1,I keep mixing up parameter and statistic. What is the simplest way to tell them apart?,,https://statc1000unit1faq.netlify.app/
+1,S1,"What key terms should I look for to identify the population, sample, and sampling frame in a word problem?",,https://statc1000unit1faq.netlify.app/
+1,S1,What is the difference between stratified and cluster sampling — is there a mnemonic to keep them straight?,,https://statc1000unit1faq.netlify.app/
+1,S2,How do I quickly tell whether a variable is categorical or quantitative from a word problem?,,https://statc1000unit1faq.netlify.app/
+1,S2,How do I identify the explanatory and response variables from a word problem?,,https://statc1000unit1faq.netlify.app/
+1,S2,How do I recognize a lurking variable in a study? It always feels hidden by design.,,https://statc1000unit1faq.netlify.app/
+1,S3,Why can't I claim cause and effect even when two variables are strongly correlated in an observational study?,,https://statc1000unit1faq.netlify.app/
+1,S4,What is the difference between relative frequency and cumulative relative frequency — and how do I keep them straight?,,https://statc1000unit1faq.netlify.app/
+1,S4,When should I use relative frequencies instead of raw counts to compare groups?,,https://statc1000unit1faq.netlify.app/
+1,S5,"What are the major differences between histograms, dotplots, and boxplots — and when is each one best?",,https://statc1000unit1faq.netlify.app/
+1,S5,"When describing the shape of a distribution, what should I look for beyond just ""skewed"" or ""symmetric""?",,https://statc1000unit1faq.netlify.app/
+1,S5,"How do I read a percentile directly from a histogram, and why does the maximum value always fall at the 100th percentile?",,https://statc1000unit1faq.netlify.app/
+1,S6,How do I decide whether to use the mean or median to describe the center — and how do I tell which is better just from a graph?,,https://statc1000unit1faq.netlify.app/
+1,S6,"What is the difference between standard deviation and IQR — aren't they both just measuring ""spread""?",,https://statc1000unit1faq.netlify.app/
+1,S6,"In a skewed distribution, does the mean always get pulled further in the direction of the tail than the median?",,https://statc1000unit1faq.netlify.app/
+1,S6,How do I calculate the upper and lower fences — and what do they actually mean?,,https://statc1000unit1faq.netlify.app/
+1,S6,"When finding Q1 and Q3, do I include or exclude the median when splitting the data?",,https://statc1000unit1faq.netlify.app/
+1,S6,"What does a percentile actually mean? If the 70th percentile is 6 cars, does that mean 70% sold 6 or fewer?",,https://statc1000unit1faq.netlify.app/
+1,S6,"When describing center, spread, and shape, should I just state numbers — or always interpret them in context?",,https://statc1000unit1faq.netlify.app/
+1,S7,What does each part of the z-score formula mean — and how do I read what it's telling me?,,https://statc1000unit1faq.netlify.app/
+1,S7,"Does a negative z-score mean something is ""bad"" or ""wrong""?",,https://statc1000unit1faq.netlify.app/
+1,S7,"How do I decide whether a z-score is ""unusual"" — and how should I justify it in writing?",,https://statc1000unit1faq.netlify.app/
+1,S7,"How do I find the original data value when I'm given a z-score, mean, and standard deviation?",,https://statc1000unit1faq.netlify.app/
+1,S7,How do I use z-scores to compare values from two completely different populations — and how do I explain it in words?,,https://statc1000unit1faq.netlify.app/
+2,S8,When do I add probabilities and when do I multiply them?,,https://statc1000unit2faq.netlify.app/
+2,S8,How do I tell whether two events are independent or mutually exclusive — aren't they the same thing?,,https://statc1000unit2faq.netlify.app/
+2,S8,How do I set up conditional probability P(A|B) — and which value goes in the numerator vs. denominator?,,https://statc1000unit2faq.netlify.app/
+2,S8,Why can we treat sampling without replacement as independent if the sample is less than 5% of the population?,,https://statc1000unit2faq.netlify.app/
+2,S9,What does expected value actually mean — and can it be a value that never actually occurs?,,https://statc1000unit2faq.netlify.app/
+2,S9,There's a missing probability in my distribution table — how do I find it?,,https://statc1000unit2faq.netlify.app/
+2,S9,Can you walk me through the expected value calculation step by step?,,https://statc1000unit2faq.netlify.app/
+2,S9,How do I interpret the standard deviation of a probability distribution — what is it actually telling me?,,https://statc1000unit2faq.netlify.app/
+2,S10,How do I verify that a scenario satisfies the BINS conditions for a binomial distribution?,,https://statc1000unit2faq.netlify.app/
+2,S10,How do I decide whether a problem calls for binomial or normal distribution?,,https://statc1000unit2faq.netlify.app/
+2,S10,"""At most,"" ""at least,"" ""no more than,"" ""fewer than"" — how do I translate these phrases into inequalities?",,https://statc1000unit2faq.netlify.app/
+2,S10,"For binomial unusual values, how do I round when the fence is a decimal — and which direction?",,https://statc1000unit2faq.netlify.app/
+2,S10,"On an exam, how do I quickly decide: CLT, normal distribution, or binomial — without overthinking it?",,https://statc1000unit2faq.netlify.app/
+2,S11,How do I know which tail to shade — and what does the unshaded part of the curve represent?,,https://statc1000unit2faq.netlify.app/
+2,S11,"When do I subtract my normal distribution probability from 1, and when do I use it directly?",,https://statc1000unit2faq.netlify.app/
+2,S11,When should I use the Empirical Rule versus Art of Stat — and how do I choose the right tool?,,https://statc1000unit2faq.netlify.app/
+2,S11,What is the full workflow from a normal distribution problem to a final probability in Art of Stat?,,https://statc1000unit2faq.netlify.app/
+2,S12,Why do we divide by √n to get the standard error — why not just n?,"It comes from the mathematics of variance. If you sum n independent values, the variance of the sum grows as n, not n². When you take the average, the variance becomes σ²/n, so the standard deviation of the average is σ/√n. Larger samples give more accurate estimates, which is why sampling distributions get skinnier as n grows. But the improvement follows the square root: doubling accuracy requires quadrupling n. Example with σ = 10: n = 4 gives SE = 5, n = 100 gives SE = 1, and n = 400 gives SE = 0.5.",https://statc1000unit2faq.netlify.app/
+2,S12,What's different between CLT for means vs. CLT for proportions — especially which formula to use?,,https://statc1000unit2faq.netlify.app/
+2,S12,Does the CLT always require n ≥ 30 — or are there exceptions?,,https://statc1000unit2faq.netlify.app/
+2,S12,"""The sample proportion is within 10% of the true proportion"" — how do I translate that into probability bounds?",,https://statc1000unit2faq.netlify.app/
+2,S12,How does standard error relate to the population standard deviation — and how do I stay organized through all the CLT steps?,,https://statc1000unit2faq.netlify.app/
+2,S12,"If the CLT makes the sampling distribution normal, does that mean I can ignore the original data's distribution entirely?",,https://statc1000unit2faq.netlify.app/
+2,S12,How do I navigate Art of Stat for CLT problems — what exactly do I enter?,,https://statc1000unit2faq.netlify.app/
+3,S13,When can I assume the distribution is normal — is it the n > 30 rule or the np ≥ 10 and nq ≥ 10 conditions?,,https://statc1000unit3faq.netlify.app/
+3,S14,"Why is it wrong to say ""there is a 95% chance the true mean is inside my interval""?",,https://statc1000unit3faq.netlify.app/
+3,S13,Why do we always round the final n value up when finding the sample size needed for a given margin of error?,,https://statc1000unit3faq.netlify.app/
+3,S13,What is the actual difference between a confidence interval and a hypothesis test? When do I use each?,,https://statc1000unit3faq.netlify.app/
+3,S13,How do I calculate the margin of error specifically for a one-sample t-interval?,,https://statc1000unit3faq.netlify.app/
+3,S15,How do I choose between a Z-test and a T-test when the problem doesn't say whether σ is known?,,https://statc1000unit3faq.netlify.app/
+3,S19,"Why are hotel prices in the same city considered ""paired"" rather than independent samples?",,https://statc1000unit3faq.netlify.app/
+3,S15,How do I identify from the wording whether a question needs a proportion (z-interval) or a mean (t-interval)?,,https://statc1000unit3faq.netlify.app/
+3,S16,How do I know if a hypothesis test should be one-tailed or two-tailed?,,https://statc1000unit3faq.netlify.app/
+3,S16,"How do I word the final conclusion? When do I say ""sufficient"" vs. ""insufficient"" evidence?",,https://statc1000unit3faq.netlify.app/
+3,S16,"In simple terms, what does the p-value actually represent?",,https://statc1000unit3faq.netlify.app/
+3,S16,"Why do we say ""Fail to Reject"" instead of just ""Accept"" the null? It feels like a double negative.",,https://statc1000unit3faq.netlify.app/
+3,S17,How do I keep Type I and Type II errors straight? What are the real-world consequences?,,https://statc1000unit3faq.netlify.app/
+3,S19,"If I have a paired design but some participants are missing one measurement, can I still use a paired t-test?",,https://statc1000unit3faq.netlify.app/
+3,S20,Does the order of samples matter in a two-sample test? Why don't we just use absolute values?,,https://statc1000unit3faq.netlify.app/
+3,S20,I keep forgetting the degrees of freedom formula for t-tests. Is there a trick?,,https://statc1000unit3faq.netlify.app/
+3,S14,"When calculating a confidence interval, should I use a z* or a t* critical value?",,https://statc1000unit3faq.netlify.app/
+3,S16,Why does ArtOfStat give me a slightly different p-value than my hand calculations?,,https://statc1000unit3faq.netlify.app/
+4,S21,What is the fastest way to tell which test a problem is calling for?,,https://statc1000unit4faq.netlify.app/
+4,S21,How do I tell whether to use Chi-Square Goodness-of-Fit or Chi-Square Test for Independence?,,https://statc1000unit4faq.netlify.app/
+4,S21,Chi-Square Independence and Homogeneity use the same formula and the same table — how are they different?,,https://statc1000unit4faq.netlify.app/
+4,S21,Why can't I just run multiple two-sample t-tests instead of ANOVA? What's the actual risk?,,https://statc1000unit4faq.netlify.app/
+4,S21,Can ANOVA ever be used when there are only two groups? What's the difference between ANOVA and a two-sample t-test?,,https://statc1000unit4faq.netlify.app/
+4,S21,Is there a template for writing a research question for each type of test?,,https://statc1000unit4faq.netlify.app/
+4,S22,What are H₀ and Hₐ for Chi-Square tests — and are they the same for GOF and Independence?,,https://statc1000unit4faq.netlify.app/
+4,S22,"What are H₀ and Hₐ for ANOVA — and why can't Hₐ just say ""all means are different""?",,https://statc1000unit4faq.netlify.app/
+4,S22,"For the Regression T-Test for slope, when do I use β ≠ 0 vs. a one-tailed alternative?",,https://statc1000unit4faq.netlify.app/
+4,S22,What does the F-statistic actually mean in ANOVA? Is it just a number I plug into Art of Stat?,,https://statc1000unit4faq.netlify.app/
+4,S22,I keep mixing up when to reject vs. fail to reject. How do I make this click?,,https://statc1000unit4faq.netlify.app/
+4,S22,"How do I explain what a Chi-Square p-value actually means — not just ""reject"" or ""fail to reject""?",,https://statc1000unit4faq.netlify.app/
+4,S22,How do I check the equal variance assumption for ANOVA when I don't know the population standard deviations?,,https://statc1000unit4faq.netlify.app/
+4,S22,"In Art of Stat, which ""Enter Data"" option do I use for the Chi-Square Test for Independence?",,https://statc1000unit4faq.netlify.app/
+4,S22,I keep mixing up observed and expected counts in Chi-Square. What exactly is each one?,,https://statc1000unit4faq.netlify.app/
+4,S22,How do I decide whether using a regression equation for a prediction is valid or considered extrapolation?,,https://statc1000unit4faq.netlify.app/
+4,S22,How do I use boxplots correctly to support an ANOVA conclusion — without just guessing from medians?,,https://statc1000unit4faq.netlify.app/
+4,S22,"If ANOVA says I should reject H₀, how do I figure out which specific groups are different without a post-hoc test?",,https://statc1000unit4faq.netlify.app/
+4,S23,"How do I classify a scatterplot as strong, moderate, or weak — is it just subjective?",,https://statc1000unit4faq.netlify.app/
+4,S23,Can a regression line have a large slope but a weak correlation? How are slope and r² different?,,https://statc1000unit4faq.netlify.app/
+4,S23,How do I translate the slope into a real-world sentence in words?,,https://statc1000unit4faq.netlify.app/
+4,S23,How do I interpret the y-intercept in context — and when does it make sense to do so?,,https://statc1000unit4faq.netlify.app/
+4,S23,"When a word problem doesn't label X and Y, how do I decide which variable is which?",,https://statc1000unit4faq.netlify.app/
+4,S23,"What exactly is a residual? Is it just the ""leftover space"" between a point and the line?",,https://statc1000unit4faq.netlify.app/
+4,S23,"If two variables are strongly correlated, does that mean one actually causes the other?",,https://statc1000unit4faq.netlify.app/
