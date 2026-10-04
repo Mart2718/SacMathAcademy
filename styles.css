@@ -105,4 +105,13 @@ fieldset.qz legend{font-weight:800;color:#000;padding:0 0 8px;font-family:'Mulis
 fieldset.qz textarea{width:100%;font:inherit;border:2px solid var(--muted);border-radius:8px;padding:10px;background:#fff;color:var(--ink)}
 .fb{margin-top:12px;padding:12px 16px;border-radius:8px;background:#fff;border:2px solid var(--muted)}
 .fb.good{border-color:var(--navy)}.fb.bad{border-color:var(--gold)}
+.qimg{display:block;max-width:100%;height:auto;margin:8px 0 12px;border:1px solid var(--line);background:#fff}
+.tblwrap{overflow-x:auto;margin:0 0 12px}
+.tbl{border-collapse:collapse}
+.tbl th,.tbl td{border:1px solid var(--line);padding:6px 12px;text-align:left}
+.tbl th{background:var(--bg);font-weight:700;color:#000}
+.pbn{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 14px;border:2px solid var(--muted);border-radius:8px;background:#fff;cursor:pointer}
+.pbn input{width:20px;height:20px;margin:0}
+.pbn:has(input:checked){background:var(--navy);color:#fff;border-color:var(--navy)}
+.pbn:has(input:focus-visible){outline:3px solid #000;outline-offset:2px}
 @media (max-width:640px){.mrow{grid-template-columns:1fr}.two{grid-template-columns:1fr}.hero-red h1{font-size:36px}.hero-white h1{font-size:34px}.sec{padding-left:20px;padding-right:20px}.wrap{padding-left:20px;padding-right:20px}.thinking,.band{padding:28px}}

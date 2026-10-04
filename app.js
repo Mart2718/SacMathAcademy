@@ -52,10 +52,10 @@
   }
   function loadCourse(slug) {
     return once("course:" + slug, function () {
-      var names = ["outcomes", "modules", "videos", "apps", "faq", "prompts", "problems", "solutions", "tools", "checks"];
-      return Promise.all(names.map(function (n) { var p = table(slug + "/" + n); return n === "checks" ? p.catch(function () { return []; }) : p; }).concat([json(slug + "/course")])).then(function (r) {
-        var d = { slug: slug, copy: r[10] };
-        d.checks = r[9];
+      var names = ["outcomes", "modules", "videos", "apps", "faq", "prompts", "problems", "solutions", "tools", "checks", "midterm", "midtermproblems"];
+      return Promise.all(names.map(function (n) { var p = table(slug + "/" + n); return (n === "checks" || n === "midterm" || n === "midtermproblems") ? p.catch(function () { return []; }) : p; }).concat([json(slug + "/course")])).then(function (r) {
+        var d = { slug: slug, copy: r[12] };
+        d.checks = r[9]; d.midterm = r[10]; d.mproblems = r[11];
         d.modules = {}; r[1].forEach(function (m) { m.n = +m.module; m.unit = +m.unit; m.hw = m.homework ? m.homework.split(" | ") : []; d.modules[m.n] = m; });
         d.outcomes = {}; d.list = [];
         r[0].forEach(function (o) {
@@ -102,6 +102,7 @@
     d.faq.forEach(function (f) { idx.push({ t: "FAQ", n: f.question, k: f.outcome + " " + f.answer, h: "#/" + slug + "/" + f.outcome.toLowerCase(), s: "Unit " + f.unit + " FAQ · " + f.outcome }); });
     d.tools.forEach(function (t) { idx.push({ t: "Tool", n: t.name, k: t.description, h: t.url, ext: true, s: "Course resource" }); });
     d.prompts.forEach(function (p) { idx.push({ t: "Prompt", n: p.title, k: p.note + " " + p.outcome, h: "#/" + slug + "/" + p.outcome.toLowerCase(), s: "AI study partner · " + p.outcome }); });
+    if (d.copy.midterm) idx.push({ t: "Tool", n: d.copy.midterm.title + " (" + d.copy.midterm.covers + ")", k: "midterm exam study checklist skills rate proficient basic needs help study list", h: "#/" + slug + "/midterm", s: "Rate your skills and get a study list" });
     idx.push({ t: "Tool", n: d.copy.thinking.title, k: "philosophy bias variation evidence critical quantitative literacy", h: "#/" + slug, scroll: "thinking", s: "Course page" });
     return idx;
   }
@@ -162,7 +163,7 @@
     var c = d.copy, hc = h.copy;
     var live = d.apps.filter(function (a) { return a.status === "live"; }).length;
     var lead = c.lead.replace("{outcomes}", d.list.length).replace("{modules}", Object.keys(d.modules).length).replace("{videos}", d.videos.filter(function (v) { return v.kind === "lecture"; }).length).replace("{apps}", live);
-    var ways = c.ways.map(function (w) { return '<div class="card stack"><h2 style="font-size:23px">' + esc(w.title) + '</h2><p style="flex:1">' + esc(w.text) + '</p><div><a class="btn" href="#/' + d.slug + '" data-scroll="' + w.scroll + '">' + esc(w.label) + "</a></div></div>"; }).join("");
+    var ways = c.ways.map(function (w) { return '<div class="card stack"><h2 style="font-size:23px">' + esc(w.title) + '</h2><p style="flex:1">' + esc(w.text) + '</p><div>' + (w.href ? '<a class="btn" href="' + esc(w.href) + '">' + esc(w.label) + "</a>" : '<a class="btn" href="#/' + d.slug + '" data-scroll="' + w.scroll + '">' + esc(w.label) + "</a>") + "</div></div>"; }).join("");
     var UC = { 1: ["var(--u1)", "#fff"], 2: ["var(--u2)", "#fff"], 3: ["var(--u3)", "#000"], 4: ["var(--u4)", "#fff"] };
     var units = [1, 2, 3, 4].map(function (u) {
       var rows = d.list.filter(function (o) { return o.unit === u; }).map(function (o) {
@@ -185,7 +186,7 @@
     }).join("");
     var planned = d.apps.filter(function (a) { return a.status === "planned"; }).length;
     var review = c.review.cards.map(function (r) {
-      return '<div class="card stack" style="gap:8px"><div class="bigstat">' + esc(r.big) + '</div><h3 style="font-size:20px">' + esc(r.title) + '</h3><p style="flex:1">' + esc(r.text) + "</p>" + (r.url ? ext(r.url, "Open ↗") : '<span class="small">In Canvas</span>') + "</div>";
+      return '<div class="card stack" style="gap:8px"><div class="bigstat">' + esc(r.big) + '</div><h3 style="font-size:20px">' + esc(r.title) + '</h3><p style="flex:1">' + esc(r.text) + "</p>" + (r.url ? (r.internal ? '<a class="linkrow" href="' + esc(r.url) + '">Open →</a>' : ext(r.url, "Open ↗")) : '<span class="small">In Canvas</span>') + "</div>";
     }).join("") + '<div class="card stack" style="gap:8px"><div class="bigstat">Soon</div><h3 style="font-size:20px">Retrieval practice apps</h3><p style="flex:1">Short, low-stakes question sets for each topic. An app that covers several outcomes appears on every outcome page it covers.</p><div>' + pill("Planned", "planned") + "</div></div>";
     return header(h.courses) +
       '<main id="main"><section class="hero-white"><div class="wrap"><p class="crumbs"><a href="#/">Academy</a> <span class="small">/</span> ' + esc(c.code) + '</p><h1>' + esc(c.title) + '</h1><p style="font-size:21px;margin:0 0 28px;max-width:780px" class="small">' + esc(lead) + '</p><div class="search"><label for="q">' + esc(c.searchLabel) + '</label><input id="q" type="search" autocomplete="off" placeholder="' + esc(c.searchPlaceholder) + '"><div id="results"></div></div></div></section>' +
@@ -196,6 +197,67 @@
       '<section class="sec" id="help">' + sectionHead(c.help.title, c.help.sub) + '<div class="grid tools">' + paths + "</div></section>" +
       '<section class="sec" id="ai">' + sectionHead(c.ai.title, c.ai.sub) + '<div class="grid tools" style="margin-bottom:20px">' + modes + '</div><p class="small" style="margin:0;max-width:820px">' + esc(c.ai.note) + "</p></section>" +
       '<section class="sec" id="review">' + sectionHead(c.review.title, c.review.sub) + '<div class="grid four">' + review + "</div></section></main>" + footer(hc.footer);
+  }
+
+  // ---------- midterm review: rate your skills, get a study list
+  var MKEY = function (d) { return "sacmath-midterm-" + d.slug; };
+  function loadRatings(d) { try { return JSON.parse(localStorage.getItem(MKEY(d)) || "{}"); } catch (e) { return {}; } }
+  function saveRatings(d, r) { try { localStorage.setItem(MKEY(d), JSON.stringify(r)); } catch (e) {} }
+  function pageMidterm(h, d) {
+    var c = d.copy, m = c.midterm, ratings = loadRatings(d);
+    var legend = m.legend.map(function (l) { return '<li style="margin-bottom:6px"><b style="color:#000">' + esc(l.key) + " · " + esc(l.label) + ":</b> " + esc(l.text) + "</li>"; }).join("");
+    var rows = d.midterm.map(function (it) {
+      var outs = codes(it.outcomes);
+      var chips = outs.map(function (o) { return '<a class="chip on" style="--c:var(--navy);min-width:48px;min-height:36px;text-decoration:none;margin:0 6px 6px 0" href="#/' + d.slug + "/" + o.toLowerCase() + '" title="' + esc(d.outcomes[o] ? d.outcomes[o].title : o) + '">' + o + "</a>"; }).join("");
+      var radios = m.legend.map(function (l) {
+        return '<label class="pbn"><input type="radio" name="m' + esc(it.order) + '" value="' + esc(l.key) + '" data-pbn="' + esc(it.order) + '"' + (ratings[it.order] === l.key ? " checked" : "") + '><span><b>' + esc(l.key) + "</b> " + esc(l.label) + "</span></label>";
+      }).join("");
+      return '<fieldset class="qz"><legend>' + esc(it.order) + ". " + esc(it.skill) + '</legend><div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">' + radios + '</div><div style="margin-top:8px"><span class="small">Review: </span>' + chips + "</div></fieldset>";
+    }).join("");
+    return header(h.courses) + '<main id="main"><section class="hero-white"><div class="wrap"><p class="crumbs"><a href="#/">Academy</a> <span class="small">/</span> <a href="#/' + d.slug + '">' + esc(c.code) + '</a> <span class="small">/</span> Midterm review</p><h1>' + esc(m.title) + ": " + esc(m.covers) + '</h1><p style="font-size:21px;margin:0 0 20px;max-width:780px">' + esc(m.lead) + '</p><ul class="small" style="margin:0 0 12px;padding-left:24px;max-width:780px">' + legend + '</ul><p class="small" style="margin:0">' + esc(m.privacy) + "</p></div></section>" +
+      '<section class="sec tight"><div class="grid two"><div><h2 style="font-size:28px;margin-bottom:14px">Rate your skills</h2><div class="card" style="padding:12px 28px">' + rows + '</div></div><div><div id="plan" class="card" style="position:sticky;top:12px" aria-live="polite"></div></div></div></section>' +
+      '<section class="sec" id="practice"><h2>' + esc(m.practiceTitle) + '</h2><p class="sub">' + esc(m.practiceText) + "</p>" + (d.mproblems.length ? midtermCards(d) : (m.practiceUrl ? ext(m.practiceUrl, m.practiceLabel + " ↗", "btn") : '<div class="empty">The review practice problems are coming here soon.</div>')) + '<p class="small" style="margin:20px 0 0;max-width:820px">' + esc(m.reviewNote) + "</p></section></main>" + footer(h.copy.footer);
+  }
+  function midtermCards(d) {
+    var byP = {}, order = [];
+    d.mproblems.forEach(function (r) { if (!byP[r.problem]) { byP[r.problem] = []; order.push(r.problem); } byP[r.problem].push(r); });
+    order.sort(function (a, b) { return parseInt(a, 10) - parseInt(b, 10); });
+    var outsSeen = {};
+    var cards = order.map(function (pid) {
+      var ps = byP[pid], outs = codes(ps[0].outcomes); outs.forEach(function (o) { outsSeen[o] = 1; });
+      var chips = outs.map(function (o) { return '<a class="chip on" style="--c:var(--navy);min-width:48px;min-height:36px;text-decoration:none;margin:0 6px 6px 0" href="#/' + d.slug + "/" + o.toLowerCase() + '" title="' + esc(d.outcomes[o] ? d.outcomes[o].title : o) + '">' + o + "</a>"; }).join("");
+      var parts = ps.map(function (p, i) {
+        var id = "mp-" + pid + "-" + i;
+        return '<div class="part"><div class="q">' + (p.part ? '<b style="color:#000;flex:none">' + esc(p.part) + ")</b>" : "") + "<span>" + esc(p.question) + '</span></div><div style="margin-top:12px"><button class="btn ghost" type="button" data-reveal="#' + id + '" aria-expanded="false" data-on="Hide the answer" data-off="Check my answer">Check my answer</button></div><div class="mid" id="' + id + '" hidden><b style="color:#000">Answer.</b> ' + esc(p.answer) + "</div></div>";
+      }).join("");
+      return '<div class="card mpcard" data-outs="' + outs.join(" ") + '"><div style="margin-bottom:10px"><span class="pill progress">Problem ' + esc(pid) + '</span></div><div style="margin:0 0 12px">' + rich(ps[0].intro, true) + "</div>" + (ps[0].image ? imgs(ps[0].image, ps[0].image_alt) : "") + '<p class="small" style="margin:0 0 4px">Review: ' + chips + "</p>" + parts + "</div>";
+    }).join("");
+    var keys = Object.keys(outsSeen).sort(function (a, b) { return num(a) - num(b); });
+    var filter = '<div role="group" aria-label="Show problems for an outcome" style="display:flex;gap:8px;flex-wrap:wrap;margin:0 0 20px"><button type="button" class="btn" data-mfilter="all" aria-pressed="true">All ' + order.length + "</button>" + keys.map(function (k) { return '<button type="button" class="btn ghost" data-mfilter="' + k + '" aria-pressed="false">' + k + "</button>"; }).join("") + "</div>";
+    return filter + '<p id="mpcount" class="small" role="status" style="margin:0 0 12px">Showing all ' + order.length + ' problems.</p><div class="grid two" id="mpgrid">' + cards + "</div>";
+  }
+  function renderPlan(d) {
+    var box = document.getElementById("plan"); if (!box) return;
+    var m = d.copy.midterm, ratings = loadRatings(d), tot = d.midterm.length, done = 0, byOut = {};
+    d.midterm.forEach(function (it) {
+      var r = ratings[it.order]; if (!r) return; done++;
+      if (r === "P") return;
+      codes(it.outcomes).forEach(function (o) { var e = byOut[o] = byOut[o] || { N: 0, B: 0 }; e[r]++; });
+    });
+    var list = Object.keys(byOut).sort(function (a, b) { return (byOut[b].N * 2 + byOut[b].B) - (byOut[a].N * 2 + byOut[a].B) || num(a) - num(b); });
+    var p = Object.keys(ratings).filter(function (k) { return ratings[k] === "P"; }).length;
+    var html = '<h2 style="font-size:24px;margin-bottom:6px">' + esc(m.planTitle) + '</h2><p class="small" style="margin:0 0 12px">' + done + " of " + tot + " skills rated. " + p + " marked Proficient.</p>";
+    if (!list.length) { html += '<p style="margin:0">' + (done ? "Nothing marked Basic or Needs help. Do a quick review with the self-check on each outcome page." : esc(m.planEmpty)) + "</p>"; }
+    else {
+      html += '<ol style="margin:0;padding-left:24px">' + list.map(function (o) {
+        var e = byOut[o], parts = [];
+        if (e.N) parts.push(e.N + (e.N === 1 ? " skill needs help" : " skills need help"));
+        if (e.B) parts.push(e.B + (e.B === 1 ? " skill is basic" : " skills are basic"));
+        return '<li style="margin-bottom:10px"><a href="#/' + d.slug + "/" + o.toLowerCase() + '" style="font-weight:700">' + o + " " + esc(d.outcomes[o] ? d.outcomes[o].title : "") + '</a><br><span class="small">' + parts.join(", ") + "</span></li>";
+      }).join("") + '</ol><p class="small" style="margin:12px 0 0">Start at the top. Watch the micro-lectures, then try the sample problems and the self-check on each page.</p>';
+    }
+    if (done) html += '<div style="margin-top:12px"><button class="btn ghost" type="button" data-clear="1">Clear my ratings</button></div>';
+    box.innerHTML = html;
   }
 
   function pageApps(h, d) {
@@ -211,23 +273,58 @@
   // ---------- self-check quiz (step 5 of an outcome page)
   function letter(i) { return String.fromCharCode(65 + i); }
   function split(s) { return s ? s.split(" | ") : []; }
+  function rich(s, plain) {
+    if (!s) return "";
+    var out = "", rows = [];
+    function flush() {
+      if (!rows.length) return;
+      out += '<div class="tblwrap"><table class="tbl">' + rows.map(function (r, i) {
+        var cells = r.replace(/^\|/, "").replace(/\|$/, "").split("|").map(function (c) { return c.trim(); });
+        return "<tr>" + cells.map(function (c) { return i === 0 ? '<th scope="col">' + esc(c) + "</th>" : "<td>" + esc(c) + "</td>"; }).join("") + "</tr>";
+      }).join("") + "</table></div>";
+      rows = [];
+    }
+    s.split("\n").forEach(function (line) {
+      if (/^\s*\|/.test(line)) { rows.push(line.trim()); } else { flush(); if (line.trim()) out += '<p' + (plain ? "" : ' class="small"') + ' style="margin:0 0 10px">' + esc(line) + "</p>"; }
+    });
+    flush();
+    return out;
+  }
+  function imgs(srcs, alts) {
+    return split(srcs).map(function (u, i) { return '<img class="qimg" src="' + esc(u) + '" alt="' + esc(split(alts)[i] || "") + '">'; }).join("");
+  }
+  function numOk(got, key, tol) {
+    var g = parseFloat(String(got).replace(/\u2212/g, "-").replace(/[$,%\s]/g, ""));
+    if (isNaN(g)) return false;
+    if (key.indexOf("..") !== -1) { var r = key.split(".."); return g >= parseFloat(r[0]) - 1e-9 && g <= parseFloat(r[1]) + 1e-9; }
+    return Math.abs(g - parseFloat(key)) <= (tol || 0) + 1e-9;
+  }
   function checkHtml(rows) {
-    var out = "", note = null, nq = 0, nums = {};
+    var out = "", note = null, nums = {};
     rows.forEach(function (r, qi) {
       if (r.type === "note") { note = r; return; }
       nums[r.qid.replace(/[a-z]+$/i, "")] = 1;
-      var items = split(r.items), opts = split(r.options), ans = r.answer, stem = r.stem ? '<p class="small" style="margin:0 0 10px">' + esc(r.stem) + "</p>" : "";
+      var items = split(r.items), opts = split(r.options), oimgs = split(r.option_images), ans = r.answer;
+      var stem = rich(r.stem) + (r.image ? imgs(r.image, r.image_alt) : "");
       var link = r.link_url ? '<p style="margin:0 0 10px"><a href="' + esc(r.link_url) + '" target="_blank" rel="noopener">' + esc(r.link_text || r.link_url) + " ↗</a></p>" : "";
       var body = "", show = "", id = "q" + qi;
-      if (r.type === "mc") {
-        body = opts.map(function (t, i) { return '<label class="opt"><input type="radio" name="' + id + '" value="' + letter(i) + '"><span>' + esc(t) + "</span></label>"; }).join("");
-        show = esc(opts[ans.toUpperCase().charCodeAt(0) - 65] || ans);
+      if (r.type === "mc" || r.type === "multi") {
+        var kind = r.type === "mc" ? "radio" : "checkbox";
+        body = opts.map(function (t, i) {
+          var inner = oimgs[i] ? "<span><b>" + letter(i) + ".</b> " + imgs(oimgs[i], t) + "</span>" : "<span>" + esc(t) + "</span>";
+          return '<label class="opt"><input type="' + kind + '" name="' + id + '" value="' + letter(i) + '">' + inner + "</label>";
+        }).join("");
+        show = ans.split(" ").map(function (a) { var k = a.toUpperCase().charCodeAt(0) - 65; return oimgs[k] ? "option " + letter(k) : esc(opts[k] || a); }).join("; ");
       } else if (r.type === "match") {
         var keys = ans.split(" ");
         body = items.map(function (it, i) {
           return '<div class="mrow"><label for="' + id + "-" + i + '">' + esc(it) + '</label><select id="' + id + "-" + i + '"><option value="">Choose…</option>' + opts.map(function (t, k) { return '<option value="' + letter(k).toLowerCase() + '">' + esc(t) + "</option>"; }).join("") + "</select></div>";
         }).join("");
         show = items.map(function (it, i) { return esc(it) + " → " + esc(opts[keys[i].toLowerCase().charCodeAt(0) - 97]); }).join("; ");
+      } else if (r.type === "num") {
+        var nk = ans.split(" | ");
+        body = items.map(function (it, i) { return '<div class="mrow"><label for="' + id + "-" + i + '">' + esc(it) + '</label><input type="text" inputmode="decimal" autocomplete="off" id="' + id + "-" + i + '" data-num></div>'; }).join("");
+        show = items.map(function (it, i) { return esc(it) + ": " + esc(nk[i].indexOf("..") !== -1 ? "between " + nk[i].replace("..", " and ") : nk[i]); }).join("; ");
       } else {
         var sa = split(ans);
         if (items.length) {
@@ -237,33 +334,47 @@
           body = '<textarea id="' + id + '-t" rows="3" aria-label="Your answer"></textarea><div style="margin-top:12px"><button class="btn ghost" type="button" data-reveal="#' + id + 's" aria-expanded="false" data-on="Hide the sample answer" data-off="Show a sample answer">Show a sample answer</button></div><div class="mid" id="' + id + 's" hidden><b style="color:#000">Sample answer.</b> ' + esc(ans) + "</div>";
         }
       }
-      if (r.type !== "free") nq += r.type === "match" ? items.length : 1;
-      out += '<fieldset class="qz" data-type="' + esc(r.type) + '" data-ans="' + esc(ans) + '" data-show="' + show + '" data-expl="' + esc(r.explanation) + '"><legend>Question ' + esc(r.qid) + "</legend>" + stem + link + (r.prompt ? '<p style="margin:0 0 8px">' + esc(r.prompt) + "</p>" : "") + body + (r.type === "free" ? "" : '<div class="fb" hidden></div>') + "</fieldset>";
+      out += '<fieldset class="qz" data-type="' + esc(r.type) + '" data-ans="' + esc(ans) + '" data-tol="' + esc(r.tol) + '" data-show="' + show + '" data-expl="' + esc(r.explanation) + '"><legend>Question ' + esc(r.qid) + "</legend>" + stem + link + (r.prompt ? '<p style="margin:0 0 8px">' + esc(r.prompt) + "</p>" : "") + body + (r.type === "free" ? "" : '<div class="fb" hidden></div>') + "</fieldset>";
     });
     var count = Object.keys(nums).length;
-    var src = note ? '<p class="small" style="margin:16px 0 0">' + esc(note.prompt) + ' <a href="' + esc(note.link_url) + '" target="_blank" rel="noopener">' + esc(note.link_text) + " ↗</a></p>" : "";
+    var src = note ? '<p class="small" style="margin:16px 0 0">' + esc(note.prompt) + (note.link_url ? ' <a href="' + esc(note.link_url) + '" target="_blank" rel="noopener">' + esc(note.link_text) + " ↗</a>" : "") + "</p>" : "";
     return '<button class="btn" type="button" data-reveal="#chk" aria-expanded="false" data-on="Hide the self-check" data-off="Start the self-check (' + count + ' questions)">Start the self-check (' + count + ' questions)</button><div id="chk" hidden style="margin-top:16px">' + out + '<div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:16px"><button class="btn" type="button" data-check="#chk">Check my answers</button><button class="btn ghost" type="button" data-retry="#chk">Try again</button><span id="score" role="status" style="font-weight:700;color:#000"></span></div>' + src + "</div>";
   }
   function gradeCheck(box) {
     var right = 0, total = 0;
     Array.prototype.forEach.call(box.querySelectorAll(".qz"), function (q) {
       var type = q.getAttribute("data-type"); if (type === "free") return;
-      var keys = q.getAttribute("data-ans").toLowerCase().split(" "), got = [], fb = q.querySelector(".fb");
-      if (type === "mc") { var sel = q.querySelector("input:checked"); got = [sel ? sel.value.toLowerCase() : ""]; }
-      else { Array.prototype.forEach.call(q.querySelectorAll("select"), function (s) { got.push(s.value); }); }
-      var c = 0; keys.forEach(function (k, i) { if (got[i] === k) c++; });
-      total += keys.length; right += c;
-      var ok = c === keys.length, expl = q.getAttribute("data-expl");
+      var ans = q.getAttribute("data-ans"), fb = q.querySelector(".fb"), c = 0, n = 1, tol = parseFloat(q.getAttribute("data-tol") || "0");
+      if (type === "mc") { var sel = q.querySelector("input:checked"); c = sel && sel.value.toLowerCase() === ans.toLowerCase() ? 1 : 0; }
+      else if (type === "multi") {
+        var want = ans.toUpperCase().split(" ").sort().join(""), got = Array.prototype.map.call(q.querySelectorAll("input:checked"), function (i) { return i.value; }).sort().join("");
+        c = want === got ? 1 : 0;
+      } else if (type === "match") {
+        var keys = ans.toLowerCase().split(" "); n = keys.length;
+        Array.prototype.forEach.call(q.querySelectorAll("select"), function (s, i) { if (s.value === keys[i]) c++; });
+      } else if (type === "num") {
+        var nk = ans.split(" | "); n = nk.length;
+        Array.prototype.forEach.call(q.querySelectorAll("input[data-num]"), function (inp, i) { if (numOk(inp.value, nk[i], tol)) c++; });
+      }
+      total += n; right += c;
+      var ok = c === n, expl = q.getAttribute("data-expl");
       fb.hidden = false; fb.className = "fb " + (ok ? "good" : "bad");
-      fb.innerHTML = (ok ? "<b>Correct.</b> " : "<b>Not quite.</b> ") + (type === "match" && !ok ? "You matched " + c + " of " + keys.length + ". " : "") + (ok ? "" : "The answer: " + q.getAttribute("data-show") + ". ") + (expl ? esc(expl) : "");
+      fb.innerHTML = (ok ? "<b>Correct.</b> " : "<b>Not quite.</b> ") + (n > 1 && !ok ? "You got " + c + " of " + n + ". " : "") + (ok ? "" : "The answer: " + q.getAttribute("data-show") + ". ") + (expl ? esc(expl) : "");
     });
     box.querySelector("#score").textContent = "You got " + right + " of " + total + ".";
   }
   function resetCheck(box) {
-    Array.prototype.forEach.call(box.querySelectorAll("input[type=radio]"), function (i) { i.checked = false; });
+    Array.prototype.forEach.call(box.querySelectorAll("input[type=radio],input[type=checkbox]"), function (i) { i.checked = false; });
+    Array.prototype.forEach.call(box.querySelectorAll("input[data-num]"), function (i) { i.value = ""; });
     Array.prototype.forEach.call(box.querySelectorAll("select"), function (s) { s.value = ""; });
     Array.prototype.forEach.call(box.querySelectorAll(".fb"), function (f) { f.hidden = true; f.innerHTML = ""; });
     box.querySelector("#score").textContent = "";
+  }
+
+  function alsoNote(outcomeCell, here, slug) {
+    var others = codes(outcomeCell).filter(function (c) { return c !== here; });
+    if (!others.length) return "";
+    return '<p class="small" style="margin:12px 0 0">This problem also covers ' + others.map(function (c) { return '<a href="#/' + slug + "/" + c.toLowerCase() + '">' + c + "</a>"; }).join(", ") + ".</p>";
   }
 
   function pageOutcome(h, d, o) {
@@ -275,7 +386,7 @@
     var planned = d.apps.filter(function (a) { return a.status === "planned" && a.outs.indexOf(o.code) !== -1; });
     var faqs = d.faq.filter(function (f) { return f.outcome === o.code; });
     var prompts = d.prompts.filter(function (p) { return p.outcome === o.code; });
-    var probs = d.problems.filter(function (p) { return p.outcome === o.code; });
+    var probs = d.problems.filter(function (p) { return codes(p.outcome).indexOf(o.code) !== -1; });
     var sols = d.solutions.filter(function (s) { return s.outs.indexOf(o.code) !== -1; });
     var hw = []; mods.forEach(function (m) { m.hw.forEach(function (x) { if (hw.indexOf(x) === -1) hw.push(x); }); });
     var UC = { 1: "u1", 2: "u2", 3: "u3", 4: "u4" };
@@ -313,7 +424,7 @@
           var id = "a-" + pi + "-" + i;
           return '<div class="part"><div class="q"><b style="color:#000;flex:none">' + esc(p.part) + ")</b><span>" + esc(p.question) + '</span></div><div style="margin-top:12px"><button class="btn ghost" type="button" data-reveal="#' + id + '" aria-expanded="false" data-on="Hide the answer" data-off="Check my answer">Check my answer</button></div><div class="mid" id="' + id + '" hidden><b style="color:#000">Answer.</b> ' + esc(p.answer) + "</div></div>";
         }).join("");
-        return '<div class="card"><div style="margin-bottom:12px">' + unitPill(o.unit, "Sample problem " + (pi + 1)) + '</div><p style="margin:0 0 16px">' + esc(ps[0].intro) + '</p><div><button class="btn ghost" type="button" data-reveal="#' + hid + '" aria-expanded="false" data-on="Hide the hint" data-off="Need a hint?">Need a hint?</button></div><div class="hintbox" id="' + hid + '" hidden><b style="color:#000">Hint.</b> ' + esc(ps[0].hint) + "</div>" + parts + "</div>";
+        return '<div class="card"><div style="margin-bottom:12px">' + unitPill(o.unit, "Sample problem " + (pi + 1)) + '</div>' + (ps[0].source ? '<p class="small" style="margin:0 0 10px">From the ' + esc(ps[0].source) + "</p>" : "") + '<div style="margin:0 0 16px">' + rich(ps[0].intro, true) + "</div>" + (ps[0].image ? imgs(ps[0].image, ps[0].image_alt) : "") + (ps[0].hint ? '<div><button class="btn ghost" type="button" data-reveal="#' + hid + '" aria-expanded="false" data-on="Hide the hint" data-off="Need a hint?">Need a hint?</button></div><div class="hintbox" id="' + hid + '" hidden><b style="color:#000">Hint.</b> ' + esc(ps[0].hint) + "</div>" : "") + alsoNote(ps[0].outcome, o.code, slug) + parts + "</div>";
       }).join("");
       var solLinks = sols.map(function (s) { return ext(s.url, s.title + " ↗"); }).join("");
       tryHtml = '<section class="sec">' + sectionHead("Try it first", "Work each problem on paper before you open anything. Then check your answer. Open the full solutions only if you need them.") + '<div class="grid two">' + cards + '</div><div class="card" style="margin-top:24px"><h3>If your answer does not match</h3><ul style="margin:8px 0 12px;padding-left:24px" class="small"><li style="margin-bottom:8px">Read the ' + o.code + " questions in the FAQ section below.</li><li style=\"margin-bottom:8px\">Paste the problem and your work into an AI study partner and ask it to find the first step where you went off track.</li><li>Open the full worked solutions.</li></ul>" + solLinks + "</div></section>";
@@ -359,6 +470,7 @@
       if (!co) { app.innerHTML = header(h.courses) + '<main id="main" class="sec"><h1>Page not found</h1><p><a href="#/">Back to the Academy</a></p></main>'; return; }
       return loadCourse(co.slug).then(function (d) {
         if (!parts[1]) { app.innerHTML = pageCourse(h, d); document.title = d.copy.code + " · SAC Math Academy"; wireSearch(function () { return allIndex(h); }); return; }
+        if (parts[1] === "midterm" && d.copy.midterm) { app.innerHTML = pageMidterm(h, d); document.title = "Midterm review · " + d.copy.code; renderPlan(d); return; }
         if (parts[1] === "apps") { app.innerHTML = pageApps(h, d); document.title = "Apps · " + d.copy.code; return; }
         var o = d.outcomes[parts[1].toUpperCase()];
         if (!o) { app.innerHTML = header(h.courses) + '<main id="main" class="sec"><h1>Outcome not found</h1><p><a href="#/' + d.slug + '">Back to ' + esc(d.copy.code) + "</a></p></main>"; return; }
@@ -375,9 +487,16 @@
 
   // ---------- events
   document.addEventListener("click", function (e) {
-    var t = e.target.closest("[data-toggle],[data-reveal],[data-copy],[data-scroll],[data-check],[data-retry]");
+    var t = e.target.closest("[data-toggle],[data-reveal],[data-copy],[data-scroll],[data-check],[data-retry],[data-clear],[data-mfilter]");
     if (!t) return;
-    if (t.hasAttribute("data-check")) { gradeCheck(app.querySelector(t.getAttribute("data-check"))); }
+    if (t.hasAttribute("data-mfilter")) {
+      var f = t.getAttribute("data-mfilter"), shown = 0;
+      Array.prototype.forEach.call(app.querySelectorAll("[data-mfilter]"), function (b) { var on = b === t; b.setAttribute("aria-pressed", on ? "true" : "false"); b.className = "btn" + (on ? "" : " ghost"); });
+      Array.prototype.forEach.call(app.querySelectorAll(".mpcard"), function (c) { var ok = f === "all" || (" " + c.getAttribute("data-outs") + " ").indexOf(" " + f + " ") !== -1; c.hidden = !ok; if (ok) shown++; });
+      var cnt = app.querySelector("#mpcount"); if (cnt) cnt.textContent = f === "all" ? "Showing all " + shown + " problems." : "Showing " + shown + " problems that cover " + f + ".";
+    }
+    else if (t.hasAttribute("data-clear")) { var slug2 = location.hash.replace(/^#\/?/, "").split("/")[0]; loadCourse(slug2).then(function (d) { saveRatings(d, {}); Array.prototype.forEach.call(app.querySelectorAll("input[data-pbn]"), function (i) { i.checked = false; }); renderPlan(d); }); }
+    else if (t.hasAttribute("data-check")) { gradeCheck(app.querySelector(t.getAttribute("data-check"))); }
     else if (t.hasAttribute("data-retry")) { resetCheck(app.querySelector(t.getAttribute("data-retry"))); }
     else if (t.hasAttribute("data-toggle")) {
       var box = app.querySelector(t.getAttribute("data-toggle")), open = box.hidden;
@@ -397,6 +516,11 @@
       var href = t.getAttribute("href") || "";
       if (href && href !== location.hash) { window.__keepScroll = true; location.hash = href; setTimeout(go, 400); } else { go(); }
     }
+  });
+  document.addEventListener("change", function (e) {
+    var t = e.target; if (!t || !t.getAttribute || !t.getAttribute("data-pbn")) return;
+    var slug = (location.hash.replace(/^#\/?/, "").split("/")[0]) || "stat-c1000";
+    loadCourse(slug).then(function (d) { var r = loadRatings(d); r[t.getAttribute("data-pbn")] = t.value; saveRatings(d, r); renderPlan(d); });
   });
   window.addEventListener("hashchange", route);
   route();
