@@ -1,0 +1,57 @@
+{
+  "eyebrow": "Santa Ana College Mathematics",
+  "headline": "You can do this. Start where you are.",
+  "lead": "Videos, guided notes, practice, and help for math at Santa Ana College, organized by what you are learning to do, so you can find the right thing at the right moment.",
+  "searchLabel": "Search the Academy",
+  "searchPlaceholder": "Try: standard error, p-value, S12",
+  "steps": [
+    {
+      "title": "Learn it",
+      "text": "Short lectures, guided notes, and interactive apps for each outcome."
+    },
+    {
+      "title": "Get unstuck",
+      "text": "FAQ guides by unit, and AI study partner prompts that ask you to try first."
+    },
+    {
+      "title": "Check yourself",
+      "text": "Ungraded skill checks and practice sets so you know where you stand."
+    }
+  ],
+  "coursesTitle": "Find your course",
+  "coursesSub": "Pick a course to see its learning outcomes and everything tied to them.",
+  "moreCourses": {
+    "title": "More courses",
+    "text": "Each course gets its own hub page, built from its learning outcomes. [Add a course]"
+  },
+  "principlesTitle": "Built around what you are learning to do",
+  "principles": [
+    {
+      "title": "Outcome first",
+      "text": "Every course page starts from its learning outcomes, like S12 or S7. Textbooks change. Outcomes do not, so your resources stay where you left them."
+    },
+    {
+      "title": "Many ways to learn",
+      "text": "Short videos, guided notes, interactive apps, and practice, grouped together so you can pick what works for you today."
+    },
+    {
+      "title": "Help that coaches",
+      "text": "FAQ guides by unit, and AI study partner prompts built from real student questions. They ask you to try first."
+    }
+  ],
+  "band": {
+    "badge": "Planned",
+    "title": "Online and in the Math Center",
+    "text": "The Academy is built to sit beside the Math Center. Tutors and the hub will use the same outcome codes, so \"I am stuck on S12\" means the same thing in both places.",
+    "placeholder": [
+      "[Math Center hours and location]",
+      "[Hope Academy mark and link]"
+    ]
+  },
+  "footer": {
+    "name": "Math Academy",
+    "left": "Department of Mathematics, Santa Ana College",
+    "right": "Resources contributed by SAC math faculty.",
+    "contact": "Curator contact: [curator email]"
+  }
+}
