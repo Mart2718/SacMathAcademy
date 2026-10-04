@@ -1,0 +1,41 @@
+order,skill,outcomes
+1,"Identify populations, samples, parameters of interest, and statistics.",S1
+2,Classify a piece of data as categorical or quantitative.,S2
+3,"Calculate and understand percentages, including pie charts.",S4
+4,Identify good sampling methods that use randomization.,S1
+5,"Know the difference between observational studies and experiments, and what they can tell us.",S3
+6,"Create and read frequency distribution tables, relative frequency distribution tables, and cumulative frequency distribution tables.",S4 S5
+7,Use binning when creating frequency distribution tables.,S5
+8,Create (by hand and using technology) and interpret histograms of quantitative data.,S5
+9,Create (by hand and using technology) and interpret dotplots and stem-and-leaf plots.,S5
+10,"Describe the shape, center, and spread of a distribution of quantitative data.",S5 S6
+11,Interpret the shape of a histogram and describe the behavior of a distribution in context.,S5 S6
+12,Calculate and interpret the percentile of a value.,S5
+13,Find the value at a given percentile.,S5
+14,"Calculate the 5-number summary (Min, Q1, Med, Q3, Max) of a dataset.",S5 S6
+15,Create and interpret boxplots.,S5
+16,Identify outliers using the 1.5×IQR rule.,S6
+17,"Calculate the following measures of center and location: mean, median, mode.",S6
+18,Calculate and interpret the standard deviation for a set of data.,S6
+19,Calculate and interpret z-scores.,S7
+20,Use z-scores to find unusual values or compare values.,S7
+21,Identify the best measures of center and spread based on shape.,S6
+22,Compare the mean and median given the shape of a distribution.,S6
+23,Use basic notation and terminology for probability.,S8
+24,Use the general multiplication rule for AND type of probabilities.,S8
+25,Use the general addition rule for OR type of probabilities.,S8
+26,"Use tree diagrams, Venn diagrams, and contingency tables to calculate probabilities.",S8
+27,Determine whether or not a given probability distribution is valid.,S9
+28,Calculate and interpret the expected value and standard deviation of a discrete probability distribution.,S9
+29,Determine and verify that a scenario follows a binomial distribution.,S10
+30,"Use StatCrunch, Art of Stat, or a calculator to calculate probabilities involving a binomial distribution.",S10
+31,Use formulas to calculate the mean (expected value) and standard deviation of a binomial random variable.,S10
+32,Interpret the area under a continuous distribution (probability density function) as the probability.,S11
+33,Calculate probabilities of a continuous uniform distribution by finding the area of a rectangle.,S11
+34,Calculate probabilities of a normal distribution using the empirical rule or a normal distribution calculator (like on StatCrunch or Art of Stat).,S11
+35,Solve problems involving the normal distribution.,S11
+36,Learn to use and interpret z-scores to standardize data.,S7 S11
+37,Understand what a sampling distribution is.,S12
+38,Know the requirements of the central limit theorem.,S12
+39,Know the consequences of the central limit theorem.,S12
+40,Use the sampling distribution of means and proportions to calculate probabilities of sample means and sample proportions.,S12

@@ -19,10 +19,10 @@
       "label": "Get unstuck"
     },
     {
-      "title": "Study for an exam",
-      "text": "Ungraded skill checks, the 71-problem final skills review, and a concept review.",
-      "scroll": "review",
-      "label": "Start reviewing"
+      "title": "Study for the midterm",
+      "text": "Rate your skills from S1 to S12, then get a study list that points to the right outcome pages.",
+      "href": "#/stat-c1000/midterm",
+      "label": "Start the midterm review"
     }
   ],
   "unitsTitle": "Browse by unit and outcome",
@@ -188,6 +188,13 @@
     "sub": "Ungraded, so you can find out what you know before it counts.",
     "cards": [
       {
+        "big": "S1–S12",
+        "title": "Midterm review",
+        "text": "Rate what you know and get a study list.",
+        "url": "#/stat-c1000/midterm",
+        "internal": true
+      },
+      {
         "big": "23",
         "title": "Skill knowledge checks",
         "text": "One per outcome, ungraded. Open them from Canvas."
@@ -218,5 +225,35 @@
       "text": "When the question is about a sample mean, divide σ by √n. \"What is the probability of a result higher than 55?\" is about one value. \"A sample of 5 scores is collected. What is the probability the mean is higher than 55?\" is about a sample mean, so it needs σ/√n."
     }
   },
-  "stuckHelp": "Still stuck? Try the Math Center, Learning Center tutors, NetTutor, or ask your class in Pronto."
+  "stuckHelp": "Still stuck? Try the Math Center, Learning Center tutors, NetTutor, or ask your class in Pronto.",
+  "midterm": {
+    "title": "Midterm review",
+    "covers": "S1 through S12",
+    "lead": "It is important to accurately assess what you do or do not know so far. This is especially important before an exam. Rate your level of understanding for each skill below, then use your study list to decide what to review.",
+    "legend": [
+      {
+        "key": "P",
+        "label": "Proficient",
+        "text": "I need a quick review."
+      },
+      {
+        "key": "B",
+        "label": "Basic",
+        "text": "I need to review and do problems."
+      },
+      {
+        "key": "N",
+        "label": "Needs help",
+        "text": "I need someone to explain it, or I need to re-watch the lecture videos."
+      }
+    ],
+    "privacy": "Your ratings are saved only in this browser, on this device. Nothing is sent anywhere.",
+    "planTitle": "Your study list",
+    "planEmpty": "Rate a skill and your study list will appear here.",
+    "reviewNote": "If you cannot complete a problem or do not understand how to answer it, find the topic and review it in the guided notes, micro-lectures, online homework, textbook, or challenge problems. Each outcome page puts them in one place.",
+    "practiceTitle": "Practice problems",
+    "practiceText": "Use these practice problems as a learn check (a practice test) for yourself. The problems on the exam will be related in content and skills, but do not expect them to be identical. Try each one on paper first, then check your answer. If you cannot complete a problem or do not understand how to answer it, use the Review links to find where to study it.",
+    "practiceUrl": "",
+    "practiceLabel": "Open the review practice problems"
+  }
 }
