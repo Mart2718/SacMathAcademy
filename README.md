@@ -1,5 +1,19 @@
 # SAC Math Academy: STAT C1000 hub
 
+## Deploy everything at once (start here)
+
+Errors usually happen when some files are new and others are old. The fix is to publish every file together.
+
+**Easiest: Netlify "Deploy manually" (no GitHub needed).**
+1. Unzip this folder. You should see `index.html`, `app.js`, `styles.css`, `config.js`, `SAC_Logo.png`, a `data` folder, and an `images` folder.
+2. In Netlify, open Projects (or Sites), choose Add new project (or Add new site), then Deploy manually.
+3. Drag the whole unzipped folder onto the drop area. Netlify publishes all the files and folders together and gives you a web address.
+4. A site connected to GitHub cannot take a drag-and-drop update, so make a new site this way. Netlify's drag-and-drop works for sites not connected to Git.
+
+**Or with GitHub:** every file must be in the same place as in this folder: the five main files and `SAC_Logo.png` in the main folder, the two files in `data`, the ten-plus files in `data/stat-c1000`, and every picture in `images`. Upload a changed file into the same folder to replace it.
+
+**A yellow bar** at the top of a page means some files are older than the code. Re-upload everything from the latest zip.
+
 This is the live-site version of the hub we designed. It has no build step and no database. The pages read plain tables, so you change content by editing a table, not code.
 
 ## What is in this folder
@@ -27,7 +41,8 @@ Outcome codes are written like `S12`. A cell that lists several outcomes separat
 | videos | one YouTube video | `video_id` is the part after `v=`. `outcomes` is which outcome pages show it. `kind` is `lecture` or `app`. |
 | apps | one app | `status` is `live` or `planned`. Planned apps show as placeholders until you add a `url` and change the status to `live`. |
 | faq | one question | `answer` is optional. If it is empty the page links to the unit FAQ site. |
-| prompts | one AI prompt for one outcome | `kind` is `Concept` or `Skill`. |
+| prompts | one AI prompt for one outcome | `kind` is `Concept` (for when the idea is unclear) or `Skill` (for when a problem is the trouble). `note` is the "what this helps with" line, and `text` is the prompt students copy. Put `[brackets]` around anything students should fill in and they show highlighted. These come from your Unit AI Study Partner pages. |
+| followups | one "keep the conversation going" prompt for a unit | `unit` is 1 to 4, `label` is the heading, and `text` is the prompt. Every outcome page in that unit shows them. |
 | problems | one part of one sample problem | Rows with the same `problem` id form one problem, so every problem needs its own unique id (for example `U1M1Q3`). `outcome` can list several outcomes, like `S4 S5`, and then the problem appears on every outcome page it covers, with a note saying where else it applies. `source` says which challenge problem it came from. `image` and `image_alt` add pictures (separate several with ` | `) and their descriptions. `hint` is optional. `answer` is what "Check my answer" reveals. Lines in `intro` that start with `|` become a table. |
 | midterm | one skill on the Midterm Review checklist | `skill` is the text students rate, and `outcomes` is which outcome pages the "Review" links go to. Add or reorder rows to change the checklist. |
 | midtermproblems | one part of one Midterm Review practice problem | Same idea as `problems`, but for the practice test on the Midterm Review page. `problem` is the problem number from your review, `outcomes` is which outcome pages its "Review" links go to, and `answer` is what "Check my answer" reveals. |
@@ -66,6 +81,7 @@ After that, edits in the Sheet appear on the site within a few minutes with no u
 - **App walkthrough videos:** seven videos from your playlist (type I and II errors, CI app, regression app, and others) are tagged to outcomes from their titles. I have not watched them.
 - **"Builds on" links** in `outcomes.csv` are my draft of how outcomes depend on each other.
 - **Sample problem answers** were computed by me, not copied from your key. Check them. In S12 problem 2 part b, "10% away" is read as 10 percentage points.
+- **AI study partner:** the how-to steps, the four ways to use AI, the reflection questions, and the people-help text come from your "AI to Support Learning Statistics" and "Getting Help When Stuck" pages. They live in the `ai` and `people` sections of `course.json`. Your "Master Prompting" examples are not included because they are not about statistics. Please check the six how-to steps, which are my wording.
 - **Self-checks:** S1 through S12 have a working self-check in step 5, from your MyOpenMath knowledge checks. The answers match your keys, and I recomputed every numeric one. Please check what I wrote myself: the sample answers for the written questions (S1 question 1, S2 4a, S3 3b, 7b and 7d, S5 4b, S6 3), the short explanations, and the text descriptions of each picture. Several questions were drawn or typed in MyOpenMath, so I changed them to fit: drawing questions became choose-the-picture or sample-answer questions, and answers that were blanks in a table became labeled boxes. S4 question 2c (pick the pie chart) is left out because its pictures were not in the Word file. The S8 question 3b text said "34", and I read it as 3/4. The New York Times graph in S2 is linked, not copied.
 - **Sample problems:** Unit 1 and Unit 2 problems come from your challenge problem Word files, with answers from your solutions Docs, and typos fixed. Module 3 problem 4 (Unit 1) is adapted: it gives the two quartiles instead of the class data set. Three answers are mine, so please check them: the sample comparison in Module 2 problem 1(b), the median and mean for Module 3 problem 3(c) (counted from the dot plot, 39 dots), and the text descriptions of each picture. The contingency tables from Unit 2 are typed as tables, not pictures.
 - **Midterm Review:** the 40 skills and the 35 practice problems are from your Math 219 Midterm Review (Spring 2021), and I matched each skill and problem to the outcomes S1 to S12. Check those matches. Answers are from your key with your two corrections to 24b and 24c, which I confirmed (0.0437 and 0.0882). I also changed a few key entries that looked like typos, so please check them: problem 6a (the IQR for Math 219 reads about 33 on the graph, not 25), 28b (the key shows (24/26)(22/45); I used 2 × (24/46)(22/45) ≈ 0.510), 33c (the lower fence is 125 − 1.5(31) = 78.5, not 109.5; the conclusion is the same), and 34b (nq = 200(0.53)). I added answers the key skipped: 17d, 28c, and the checks shown for problems 3, 4, 7, 25, and 26. Problem 15's pie chart is described in words (Math 40%, English 45%, History 15%), and its answer assumes Math is 40%. The review's page still says Math 219, Spring 2021, and sections 1 to 7.

@@ -105,6 +105,8 @@ fieldset.qz legend{font-weight:800;color:#000;padding:0 0 8px;font-family:'Mulis
 fieldset.qz textarea{width:100%;font:inherit;border:2px solid var(--muted);border-radius:8px;padding:10px;background:#fff;color:var(--ink)}
 .fb{margin-top:12px;padding:12px 16px;border-radius:8px;background:#fff;border:2px solid var(--muted)}
 .fb.good{border-color:var(--navy)}.fb.bad{border-color:var(--gold)}
+.ph{background:var(--gold);color:#000;border-radius:4px;padding:0 4px;font-weight:700}
+.warnbar{background:var(--gold);color:#000;padding:14px 24px;font-weight:700;text-align:center}
 .qimg{display:block;max-width:100%;height:auto;margin:8px 0 12px;border:1px solid var(--line);background:#fff}
 .tblwrap{overflow-x:auto;margin:0 0 12px}
 .tbl{border-collapse:collapse}

@@ -45,6 +45,20 @@
   function once(key, fn) { if (!cache[key]) cache[key] = fn(); return cache[key]; }
 
   // ---------- data
+  // If a data file is older than this code, these built-in copies keep the pages from breaking.
+  var APP_VERSION = "2026-10-04.1";
+  var COPY_DEFAULTS = {"ai": {"title": "AI study partner", "sub": "AI can support your learning when you use it thoughtfully. Try the problem yourself first, then use AI to get unstuck, check your thinking, and practice.", "stepsTitle": "How to use a prompt", "steps": ["Try the problem first. Write down what you tried and where you got stuck.", "Pick a prompt that matches your problem. A Concept prompt is for when you do not understand the idea. A Skill prompt is for when you cannot get started or finish a problem.", "Copy the prompt and paste it into Gemini, Claude, or ChatGPT. Replace every highlighted [bracket] with your problem, your work, or your numbers.", "Answer the questions it asks you. A good study partner asks questions and gives hints. If it just gives you the answer, type: \"Do not solve it for me. Ask me one question at a time.\"", "Check what you learned. Compare the explanation with your guided notes or micro-lecture, then use a follow-up prompt to test yourself.", "On an assignment, add one line saying how you used AI. Quizzes and exams are AI-free."], "followTitle": "Keep the conversation going", "followSub": "Do not stop after the AI's first response. Use these follow-ups to push your learning deeper.", "afterTitle": "After your session, ask yourself", "afterQuestions": ["What did I learn from this practice session? Did AI help me understand, or just give me an answer?", "How does this explanation compare to what we learned in class or in the textbook?", "What did I learn by questioning the AI's reasoning? How can I apply that thinking on an exam?"], "waysTitle": "Four ways to use AI to learn statistics", "waysSub": "These work for any topic. Copy a prompt, fill in the brackets, and paste it into Gemini, Claude, or ChatGPT.", "ways": [{"title": "AI as a brainstormer", "goal": "Generate ideas, simplify a concept, or plan how to study.", "prompts": ["I don't understand [concept]. Can you explain it simply?", "What are 3 ways to think about [topic]?", "How can I break down [topic] for my study guide?", "I'm studying [topic]. Motivate me."], "reflect": "What ideas did AI suggest that you had not thought of? Which ones will you try, and why?"}, {"title": "AI as a searcher", "goal": "Find explanations, definitions, or examples. Always verify what it tells you.", "prompts": ["Summarize the idea of [topic] using examples and analogies.", "What's the difference between a boxplot and a histogram?", "Explain [topic] to me at three levels, from elementary school to college.", "Can you give me 2 one-sample hypothesis test problems and walk me through them?"], "reflect": "How does this explanation compare to what we learned in class or in the textbook?"}, {"title": "AI as a tutor", "goal": "Practice solving problems and get guidance. Always try first before asking for help.", "prompts": ["Here's my solution to [problem]. Can you check my steps?", "Give me a [type of] problem and help me if I get stuck.", "I have an upcoming exam covering [topics]. Create a practice quiz for me and ask me each question one by one.", "Turn [topic] into flashcard-style questions and answers."], "reflect": "What did I learn from this practice session? Did AI help me understand, or just give me an answer?"}, {"title": "AI as a critical thinking partner", "goal": "Question the AI's answers, ask \"why\" at every step, and compare approaches.", "prompts": ["Why did you use a t-test instead of a z-test?", "Is there another way to solve this problem?", "Explain this visually instead of in words.", "Compare my solution to yours and explain any differences."], "reflect": "What did I learn by questioning the AI's reasoning? How can I apply that thinking during exams?"}], "reminders": ["Try first, then check with AI. You learn more by attempting problems yourself.", "Cross-reference AI responses with your notes, the textbook, or your instructor's materials.", "Use AI ethically. Do not submit AI-written work as your own. Use it to learn, not to shortcut.", "Quizzes and exams are AI-free."], "canvasNote": "In your Canvas course you also have a free AI chatbot called Nectir, which uses Claude.", "fallbackTitle": "No prompts are written for this outcome yet", "fallbackText": "Use the four ways to use AI on the course page, or try one of these starter prompts.", "fallbackPrompts": ["I am learning about [topic] in my introductory statistics class. I already tried the problem on my own. Explain the idea in plain language with one everyday analogy, then ask me one question to check that I understood.", "Act as a Socratic statistics tutor. Here is my problem: [paste problem]. Do not give me the answer or do the calculations. Ask me one question at a time, and give a small hint only when I am stuck.", "Here is a problem and my work: [paste problem and your steps]. Do not solve it for me. Find the first step where my reasoning goes wrong, explain why, and let me fix it myself."]}, "people": {"title": "Still stuck? Talk to a person", "items": [{"label": "Ask your class in Pronto", "text": "Post a picture of the problem. Explain what you do not understand or where you get stuck, and show what you already tried. Saying only \"I am stuck\" is not enough for us to help, so be as specific as you can. Pronto is for figuring out the thing you are missing, not for reteaching a whole concept."}, {"label": "Math Center", "text": "A free drop-in place to get help on individual problems you are stuck on, online by Zoom or in person.", "url": "https://www.sac.edu/studentservices/mathcenter/"}, {"label": "Learning Center", "text": "A good place to get help with the concepts of the class. You need to make an appointment.", "url": "https://www.sac.edu/studentservices/learningcenter/"}, {"label": "NetTutor", "text": "Free online tutoring if your class is online. Find the link in the left menu of your Canvas course."}]}, "midterm": {"title": "Midterm review", "covers": "S1 through S12", "lead": "It is important to accurately assess what you do or do not know so far. This is especially important before an exam. Rate your level of understanding for each skill below, then use your study list to decide what to review.", "legend": [{"key": "P", "label": "Proficient", "text": "I need a quick review."}, {"key": "B", "label": "Basic", "text": "I need to review and do problems."}, {"key": "N", "label": "Needs help", "text": "I need someone to explain it, or I need to re-watch the lecture videos."}], "privacy": "Your ratings are saved only in this browser, on this device. Nothing is sent anywhere.", "planTitle": "Your study list", "planEmpty": "Rate a skill and your study list will appear here.", "reviewNote": "If you cannot complete a problem or do not understand how to answer it, find the topic and review it in the guided notes, micro-lectures, online homework, textbook, or challenge problems. Each outcome page puts them in one place.", "practiceTitle": "Practice problems", "practiceText": "Use these practice problems as a learn check (a practice test) for yourself. The problems on the exam will be related in content and skills, but do not expect them to be identical. Try each one on paper first, then check your answer. If you cannot complete a problem or do not understand how to answer it, use the Review links to find where to study it.", "practiceUrl": "", "practiceLabel": "Open the review practice problems"}};
+  function withDefaults(c) {
+    c = c || {};
+    if (!c.ai || !c.ai.ways || !c.ai.steps) c.ai = COPY_DEFAULTS.ai;
+    if (!c.people || !c.people.items) c.people = COPY_DEFAULTS.people;
+    if (!c.midterm || !c.midterm.legend) c.midterm = COPY_DEFAULTS.midterm;
+    return c;
+  }
+  function paint(html, d) {
+    app.innerHTML = html;
+    if (d && d.copy && d.copy.siteVersion !== APP_VERSION) app.insertAdjacentHTML("afterbegin", '<div class="warnbar" role="alert">Some site files are out of date, so this page may look incomplete. Re-upload every file from the latest zip, keeping the same folder names. (Code version ' + esc(APP_VERSION) + "; course.json version " + esc((d.copy && d.copy.siteVersion) || "missing") + ".)</div>");
+  }
   function loadHome() {
     return once("home", function () {
       return Promise.all([table("courses"), json("home")]).then(function (r) { return { courses: r[0], copy: r[1] }; });
@@ -52,10 +66,10 @@
   }
   function loadCourse(slug) {
     return once("course:" + slug, function () {
-      var names = ["outcomes", "modules", "videos", "apps", "faq", "prompts", "problems", "solutions", "tools", "checks", "midterm", "midtermproblems"];
-      return Promise.all(names.map(function (n) { var p = table(slug + "/" + n); return (n === "checks" || n === "midterm" || n === "midtermproblems") ? p.catch(function () { return []; }) : p; }).concat([json(slug + "/course")])).then(function (r) {
-        var d = { slug: slug, copy: r[12] };
-        d.checks = r[9]; d.midterm = r[10]; d.mproblems = r[11];
+      var names = ["outcomes", "modules", "videos", "apps", "faq", "prompts", "problems", "solutions", "tools", "checks", "midterm", "midtermproblems", "followups"];
+      return Promise.all(names.map(function (n) { var p = table(slug + "/" + n); return (n === "checks" || n === "midterm" || n === "midtermproblems" || n === "followups") ? p.catch(function () { return []; }) : p; }).concat([json(slug + "/course")])).then(function (r) {
+        var d = { slug: slug, copy: r[13] };
+        d.checks = r[9]; d.midterm = r[10]; d.mproblems = r[11]; d.follow = r[12]; d.copy = withDefaults(d.copy);
         d.modules = {}; r[1].forEach(function (m) { m.n = +m.module; m.unit = +m.unit; m.hw = m.homework ? m.homework.split(" | ") : []; d.modules[m.n] = m; });
         d.outcomes = {}; d.list = [];
         r[0].forEach(function (o) {
@@ -181,9 +195,11 @@
       var links = p.links.map(function (l) { return l.scroll ? '<a class="linkrow" href="#/' + d.slug + '" data-scroll="' + l.scroll + '">' + esc(l.label) + "</a>" : ext(l.url, l.label); }).join("");
       return '<div class="card stack" style="gap:8px"><h3>' + esc(p.title) + '</h3><p style="margin:0 0 4px">' + esc(p.text) + "</p><div>" + links + "</div></div>";
     }).join("");
-    var modes = c.ai.modes.map(function (m, i) {
-      return '<div class="card stack"><h3>' + esc(m.title) + "</h3><p>" + esc(m.text) + '</p><div class="mid" style="flex:1;margin:0" id="m' + i + '">' + esc(m.prompt) + '</div><div><button class="btn ghost" type="button" data-copy="#m' + i + '">Copy prompt</button></div></div>';
+    copyN = 0;
+    var aiWays = c.ai.ways.map(function (w) {
+      return '<div class="card stack"><h3>' + esc(w.title) + '</h3><p class="small" style="margin:0">' + esc(w.goal) + '</p>' + w.prompts.map(function (t) { return promptBox(t, w.title); }).join('<div style="height:8px"></div>') + '<p class="small" style="margin:0"><b style="color:#000">Reflect:</b> ' + esc(w.reflect) + "</p></div>";
     }).join("");
+    var aiBlock = '<div class="card" style="margin-bottom:24px"><h3 style="font-size:22px;margin-bottom:12px">' + esc(c.ai.stepsTitle) + "</h3>" + stepsHtml(c.ai.steps) + '<p class="small" style="margin:0">' + esc(c.ai.canvasNote || "") + '</p></div><h3 style="font-size:24px;margin:0 0 6px">' + esc(c.ai.waysTitle) + '</h3><p class="sub" style="margin:0 0 20px">' + esc(c.ai.waysSub) + '</p><div class="grid tools" style="margin-bottom:24px">' + aiWays + '</div><div class="card"><h3 style="font-size:21px;margin-bottom:10px">Important reminders</h3><ul style="margin:0;padding-left:24px">' + c.ai.reminders.map(function (t) { return '<li style="margin-bottom:6px">' + esc(t) + "</li>"; }).join("") + "</ul></div>";
     var planned = d.apps.filter(function (a) { return a.status === "planned"; }).length;
     var review = c.review.cards.map(function (r) {
       return '<div class="card stack" style="gap:8px"><div class="bigstat">' + esc(r.big) + '</div><h3 style="font-size:20px">' + esc(r.title) + '</h3><p style="flex:1">' + esc(r.text) + "</p>" + (r.url ? (r.internal ? '<a class="linkrow" href="' + esc(r.url) + '">Open →</a>' : ext(r.url, "Open ↗")) : '<span class="small">In Canvas</span>') + "</div>";
@@ -195,7 +211,7 @@
       '<section class="sec" id="tools">' + sectionHead(c.toolsTitle, c.toolsSub) + '<div class="grid tools">' + tools + "</div></section>" +
       '<section class="sec">' + thinking + "</section>" +
       '<section class="sec" id="help">' + sectionHead(c.help.title, c.help.sub) + '<div class="grid tools">' + paths + "</div></section>" +
-      '<section class="sec" id="ai">' + sectionHead(c.ai.title, c.ai.sub) + '<div class="grid tools" style="margin-bottom:20px">' + modes + '</div><p class="small" style="margin:0;max-width:820px">' + esc(c.ai.note) + "</p></section>" +
+      '<section class="sec" id="ai">' + sectionHead(c.ai.title, c.ai.sub) + aiBlock + "</section>" +
       '<section class="sec" id="review">' + sectionHead(c.review.title, c.review.sub) + '<div class="grid four">' + review + "</div></section></main>" + footer(hc.footer);
   }
 
@@ -371,6 +387,18 @@
     box.querySelector("#score").textContent = "";
   }
 
+  function phText(t) { return esc(t).replace(/\[([^\]]+)\]/g, '<span class="ph">[$1]</span>'); }
+  var copyN = 0;
+  function promptBox(text, label) {
+    var id = "cp" + (copyN++);
+    return '<div class="mid" id="' + id + '" style="margin:0 0 12px">' + phText(text) + '</div><button class="btn ghost" type="button" data-copy="#' + id + '"' + (label ? ' aria-label="Copy the prompt: ' + esc(label) + '"' : "") + ">Copy prompt</button>";
+  }
+  function stepsHtml(steps) { return '<ol style="margin:0 0 20px;padding-left:24px">' + steps.map(function (t) { return '<li style="margin-bottom:8px">' + esc(t) + "</li>"; }).join("") + "</ol>"; }
+  function peopleHtml(p, headTag) {
+    return "<" + headTag + ' style="font-size:21px;margin:0 0 12px">' + esc(p.title) + "</" + headTag + ">" + p.items.map(function (it) {
+      return '<p style="margin:0 0 12px"><b style="color:#000">' + (it.url ? '<a href="' + esc(it.url) + '" target="_blank" rel="noopener">' + esc(it.label) + " ↗</a>" : esc(it.label)) + ".</b> " + esc(it.text) + "</p>";
+    }).join("");
+  }
   function alsoNote(outcomeCell, here, slug) {
     var others = codes(outcomeCell).filter(function (c) { return c !== here; });
     if (!others.length) return "";
@@ -441,15 +469,19 @@
       var body = f.answer ? "<p style=\"margin:0 0 14px\" class=\"small\">" + esc(f.answer) + "</p><a href=\"" + esc(f.url) + '" target="_blank" rel="noopener" style="font-weight:700">Read more in the Unit ' + f.unit + " FAQ ↗</a>" : '<a href="' + esc(f.url) + '" target="_blank" rel="noopener" style="font-weight:700">Read the answer in the Unit ' + f.unit + " FAQ ↗</a>";
       return '<div class="faq"><button class="q" type="button" data-toggle="#' + id + '" aria-expanded="false"><span>' + esc(f.question) + '</span><span class="plus" aria-hidden="true">+</span></button><div class="a" id="' + id + '" hidden>' + body + "</div></div>";
     }).join("") : '<div class="empty">No FAQ questions are tagged to this outcome yet.</div>';
-    var promptHtml = prompts.length ? prompts.map(function (p, i) {
-      return '<div style="border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px"><div style="margin-bottom:8px">' + unitPill(o.unit, p.kind + " · " + o.code) + '</div><div style="font-family:Mulish,sans-serif;font-weight:700;color:#000;margin-bottom:' + (p.note ? "6px" : "10px") + '">' + esc(p.title) + "</div>" + (p.note ? '<p class="small" style="margin:0 0 10px">' + esc(p.note) + "</p>" : "") + '<div class="mid" id="p' + i + '" style="margin:0 0 12px">' + esc(p.text) + '</div><button class="btn ghost" type="button" data-copy="#p' + i + '">Copy prompt</button></div>';
-    }).join("") : '<div class="empty" style="margin-bottom:14px">No prompts are written for this outcome yet. The study partner modes on the course page work for any outcome.</div><a class="btn ghost" href="#/' + slug + '" data-scroll="ai">Open the study partner modes</a>';
+    copyN = 100;
+    var ai = c.ai, fu = d.follow.filter(function (f) { return +f.unit === o.unit; });
+    var promptHtml = prompts.length ? prompts.map(function (p) {
+      return '<div style="border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px"><div style="margin-bottom:8px">' + unitPill(o.unit, p.kind + " · " + o.code) + '</div><div style="font-family:Mulish,sans-serif;font-weight:800;color:#000;margin-bottom:6px">' + esc(p.title) + "</div>" + (p.note ? '<p class="small" style="margin:0 0 10px"><b style="color:#000">What this helps with:</b> ' + esc(p.note) + "</p>" : "") + promptBox(p.text, p.title) + "</div>";
+    }).join("") : '<div class="empty" style="margin-bottom:14px"><b style="color:#000">' + esc(ai.fallbackTitle) + ".</b> " + esc(ai.fallbackText) + '</div>' + ai.fallbackPrompts.map(function (t) { return '<div style="border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px">' + promptBox(t, "starter prompt") + "</div>"; }).join("") + '<p style="margin:0 0 14px"><a class="btn ghost" href="#/' + slug + '" data-scroll="ai">See four ways to use AI</a></p>';
+    var followHtml = fu.length ? '<h4 style="font-family:Mulish,sans-serif;font-weight:800;font-size:19px;margin:22px 0 4px;color:#000">' + esc(ai.followTitle) + '</h4><p class="small" style="margin:0 0 12px">' + esc(ai.followSub) + "</p>" + fu.map(function (f) { return '<div style="border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px"><div style="font-weight:700;color:#000;margin-bottom:8px">' + esc(f.label) + "</div>" + promptBox(f.text, f.label) + "</div>"; }).join("") : "";
+    var afterHtml = '<h4 style="font-family:Mulish,sans-serif;font-weight:800;font-size:19px;margin:22px 0 8px;color:#000">' + esc(ai.afterTitle) + '</h4><ul style="margin:0 0 4px;padding-left:24px">' + ai.afterQuestions.map(function (q) { return '<li style="margin-bottom:6px">' + esc(q) + "</li>"; }).join("") + "</ul>";
     var idx = d.list.indexOf(o), prev = d.list[idx - 1], next = d.list[idx + 1];
     var pn = '<section class="sec tight"><div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap">' + (prev ? '<a class="btn ghost" href="#/' + slug + "/" + prev.code.toLowerCase() + '">← ' + prev.code + " " + esc(prev.title) + "</a>" : "<span></span>") + (next ? '<a class="btn ghost" href="#/' + slug + "/" + next.code.toLowerCase() + '">' + next.code + " " + esc(next.title) + " →</a>" : "") + "</div></section>";
 
     return header(h.courses) + '<main id="main"><section class="hero-white"><div class="wrap"><p class="crumbs"><a href="#/">Academy</a> <span class="small">/</span> <a href="#/' + slug + '">' + esc(c.code) + '</a> <span class="small">/</span> Unit ' + o.unit + ' <span class="small">/</span> ' + o.code + '</p><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:48px;align-items:start"><div><div style="margin-bottom:14px">' + unitPill(o.unit, "Unit " + o.unit + " · " + o.code) + "</div><h1>" + esc(o.title) + '</h1><p style="font-size:21px;margin:0 0 20px;color:var(--ink)">' + esc(o.statement) + '</p><ul class="small" style="margin:0 0 24px;padding-left:24px">' + o.subs.map(function (s) { return '<li style="margin-bottom:8px">' + esc(s) + "</li>"; }).join("") + '</ul><p class="small" style="margin:0">' + counts + "</p></div>" + fits + "</div></div></section>" +
       '<section class="sec">' + sectionHead("Your path through " + o.code, "Work top to bottom, or jump to the step you need.") + '<div class="stack" style="gap:16px">' + steps + "</div></section>" + tryHtml + retr + callHtml +
-      '<section class="sec">' + sectionHead("When you are stuck on " + o.code, "Read the answer first. If another format works better for you, it is one click away.") + '<div class="grid two"><div><h3 style="font-size:21px;margin-bottom:14px">From the Unit ' + o.unit + ' FAQ</h3><div class="stack">' + faqHtml + '</div></div><div><h3 style="font-size:21px;margin-bottom:14px">Ask an AI study partner</h3><div class="card"><ol class="small" style="margin:0 0 20px;padding-left:24px"><li style="margin-bottom:6px"><b style="color:#000">Try the problem first.</b></li><li style="margin-bottom:6px">Paste a prompt below into Gemini, Claude, or ChatGPT so it coaches you.</li><li>On any assignment, add one line saying how you used AI. Quizzes and exams are AI-free.</li></ol>' + promptHtml + '<p class="small" style="margin:0">' + esc(c.stuckHelp) + "</p></div></div></div></section>" + pn + "</main>" + footer(h.copy.footer);
+      '<section class="sec">' + sectionHead("When you are stuck on " + o.code, "Read the answer first. If another format works better for you, it is one click away.") + '<div class="grid two"><div><h3 style="font-size:21px;margin-bottom:14px">From the Unit ' + o.unit + ' FAQ</h3><div class="stack">' + faqHtml + '</div></div><div><h3 style="font-size:21px;margin-bottom:14px">Ask an AI study partner</h3><div class="card"><h4 style="font-family:Mulish,sans-serif;font-weight:800;font-size:19px;margin:0 0 10px;color:#000">' + esc(ai.stepsTitle) + '</h4>' + stepsHtml(ai.steps) + promptHtml + followHtml + afterHtml + '</div><div class="card" style="margin-top:24px">' + peopleHtml(c.people, "h3") + "</div></div></div></section>" + pn + "</main>" + footer(h.copy.footer);
   }
 
   // ---------- routing
@@ -469,19 +501,19 @@
       var co = h.courses.filter(function (c) { return c.slug === parts[0]; })[0];
       if (!co) { app.innerHTML = header(h.courses) + '<main id="main" class="sec"><h1>Page not found</h1><p><a href="#/">Back to the Academy</a></p></main>'; return; }
       return loadCourse(co.slug).then(function (d) {
-        if (!parts[1]) { app.innerHTML = pageCourse(h, d); document.title = d.copy.code + " · SAC Math Academy"; wireSearch(function () { return allIndex(h); }); return; }
-        if (parts[1] === "midterm" && d.copy.midterm) { app.innerHTML = pageMidterm(h, d); document.title = "Midterm review · " + d.copy.code; renderPlan(d); return; }
-        if (parts[1] === "apps") { app.innerHTML = pageApps(h, d); document.title = "Apps · " + d.copy.code; return; }
+        if (!parts[1]) { paint(pageCourse(h, d), d); document.title = d.copy.code + " · SAC Math Academy"; wireSearch(function () { return allIndex(h); }); return; }
+        if (parts[1] === "midterm" && d.copy.midterm) { paint(pageMidterm(h, d), d); document.title = "Midterm review · " + d.copy.code; renderPlan(d); return; }
+        if (parts[1] === "apps") { paint(pageApps(h, d), d); document.title = "Apps · " + d.copy.code; return; }
         var o = d.outcomes[parts[1].toUpperCase()];
         if (!o) { app.innerHTML = header(h.courses) + '<main id="main" class="sec"><h1>Outcome not found</h1><p><a href="#/' + d.slug + '">Back to ' + esc(d.copy.code) + "</a></p></main>"; return; }
-        app.innerHTML = pageOutcome(h, d, o); document.title = o.code + " " + o.title + " · " + d.copy.code;
+        paint(pageOutcome(h, d, o), d); document.title = o.code + " " + o.title + " · " + d.copy.code;
       });
     }).then(function () {
       var h1 = app.querySelector("h1"); if (h1) { h1.setAttribute("tabindex", "-1"); }
       if (!window.__keepScroll) window.scrollTo(0, 0);
       window.__keepScroll = false;
     }).catch(function (e) {
-      app.innerHTML = '<main id="main" class="sec"><h1>This page could not load</h1><p>' + esc(e.message) + '</p><p class="small">If you opened index.html straight from a folder, the data files cannot load. Open the site from Netlify or a local web server.</p></main>';
+      app.innerHTML = '<main id="main" class="sec"><h1>This page could not load</h1><p>' + esc(e.message) + '</p><p class="small">This usually means a site file is missing, or one file is older than the others. Re-upload every file from the latest zip, keeping the same folder names. If you opened index.html straight from a folder, the data files cannot load, so open the site from Netlify or a local web server. (Code version ' + esc(APP_VERSION) + ')</p></main>';
     });
   }
 
