@@ -27,6 +27,7 @@ Outcome codes are written like `S12`. A cell that lists several outcomes separat
 | faq | one question | `answer` is optional. If it is empty the page links to the unit FAQ site. |
 | prompts | one AI prompt for one outcome | `kind` is `Concept` or `Skill`. |
 | problems | one part of one sample problem | Rows with the same `outcome` and `problem` form one problem. `answer` is what "Check my answer" reveals. |
+| checks | one question of a skill self-check | `type` is `mc` (multiple choice), `match`, `free` (write your own answer), or `note` (source and license line). For `mc`, list answer choices in `options` separated by ` | ` and put the correct letter in `answer`. For `match`, list the left side in `items` and the choices in `options`, then give one letter per item in `answer`, for example `d a c e b`. For `free`, `answer` is the sample answer. |
 | solutions | one solutions document | `outcomes` lists which outcome pages link to it. |
 | tools | one course-level resource | Shown on the course page. |
 
@@ -61,6 +62,7 @@ After that, edits in the Sheet appear on the site within a few minutes with no u
 - **App walkthrough videos:** seven videos from your playlist (type I and II errors, CI app, regression app, and others) are tagged to outcomes from their titles. I have not watched them.
 - **"Builds on" links** in `outcomes.csv` are my draft of how outcomes depend on each other.
 - **Sample problem answers** were computed by me, not copied from your key. Check them. In S12 problem 2 part b, "10% away" is read as 10 percentage points.
+- **Self-checks:** S1 and S2 have a working self-check in step 5 (from your MyOpenMath knowledge checks). I wrote the sample answers for S1 question 1 and S2 question 4a, and the short explanations under several answers, because the Word files only had the answer key. I also fixed a few typos in the problem text. Check them. The New York Times graph is linked, not copied.
 - **Practice problems** exist so far for S8, S10, S11, and S12 (from the Unit 2 challenge problems). The other outcomes show a "coming" placeholder.
 - **Retrieval practice apps** are placeholders in `apps.csv` (one per group of outcomes). Edit or delete rows freely.
 - **Logo:** the header uses the color logo. The footer has no logo until you add the reverse version. See "The SAC logo" below.

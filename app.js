@@ -52,9 +52,10 @@
   }
   function loadCourse(slug) {
     return once("course:" + slug, function () {
-      var names = ["outcomes", "modules", "videos", "apps", "faq", "prompts", "problems", "solutions", "tools"];
-      return Promise.all(names.map(function (n) { return table(slug + "/" + n); }).concat([json(slug + "/course")])).then(function (r) {
-        var d = { slug: slug, copy: r[9] };
+      var names = ["outcomes", "modules", "videos", "apps", "faq", "prompts", "problems", "solutions", "tools", "checks"];
+      return Promise.all(names.map(function (n) { var p = table(slug + "/" + n); return n === "checks" ? p.catch(function () { return []; }) : p; }).concat([json(slug + "/course")])).then(function (r) {
+        var d = { slug: slug, copy: r[10] };
+        d.checks = r[9];
         d.modules = {}; r[1].forEach(function (m) { m.n = +m.module; m.unit = +m.unit; m.hw = m.homework ? m.homework.split(" | ") : []; d.modules[m.n] = m; });
         d.outcomes = {}; d.list = [];
         r[0].forEach(function (o) {
@@ -207,6 +208,64 @@
       '<section class="sec tight"><div class="grid tools">' + liveHtml + '</div></section><section class="sec">' + sectionHead("Planned retrieval practice apps", "Short question sets you answer from memory, with feedback after each one. Each covers a group of outcomes.") + '<div class="grid tools">' + plannedHtml + "</div></section></main>" + footer(h.copy.footer);
   }
 
+  // ---------- self-check quiz (step 5 of an outcome page)
+  function letter(i) { return String.fromCharCode(65 + i); }
+  function split(s) { return s ? s.split(" | ") : []; }
+  function checkHtml(rows) {
+    var out = "", note = null, nq = 0, nums = {};
+    rows.forEach(function (r, qi) {
+      if (r.type === "note") { note = r; return; }
+      nums[r.qid.replace(/[a-z]+$/i, "")] = 1;
+      var items = split(r.items), opts = split(r.options), ans = r.answer, stem = r.stem ? '<p class="small" style="margin:0 0 10px">' + esc(r.stem) + "</p>" : "";
+      var link = r.link_url ? '<p style="margin:0 0 10px"><a href="' + esc(r.link_url) + '" target="_blank" rel="noopener">' + esc(r.link_text || r.link_url) + " ↗</a></p>" : "";
+      var body = "", show = "", id = "q" + qi;
+      if (r.type === "mc") {
+        body = opts.map(function (t, i) { return '<label class="opt"><input type="radio" name="' + id + '" value="' + letter(i) + '"><span>' + esc(t) + "</span></label>"; }).join("");
+        show = esc(opts[ans.toUpperCase().charCodeAt(0) - 65] || ans);
+      } else if (r.type === "match") {
+        var keys = ans.split(" ");
+        body = items.map(function (it, i) {
+          return '<div class="mrow"><label for="' + id + "-" + i + '">' + esc(it) + '</label><select id="' + id + "-" + i + '"><option value="">Choose…</option>' + opts.map(function (t, k) { return '<option value="' + letter(k).toLowerCase() + '">' + esc(t) + "</option>"; }).join("") + "</select></div>";
+        }).join("");
+        show = items.map(function (it, i) { return esc(it) + " → " + esc(opts[keys[i].toLowerCase().charCodeAt(0) - 97]); }).join("; ");
+      } else {
+        var sa = split(ans);
+        if (items.length) {
+          body = items.map(function (it, i) { return '<div class="mrow"><label for="' + id + "-" + i + '">' + esc(it) + '</label><input type="text" id="' + id + "-" + i + '"></div>'; }).join("");
+          body += '<div style="margin-top:12px"><button class="btn ghost" type="button" data-reveal="#' + id + 's" aria-expanded="false" data-on="Hide the sample answers" data-off="Show sample answers">Show sample answers</button></div><div class="mid" id="' + id + 's" hidden><b style="color:#000">Sample answers.</b><ul style="margin:8px 0 0;padding-left:24px">' + items.map(function (it, i) { return "<li>" + esc(it) + ": " + esc(sa[i] || "") + "</li>"; }).join("") + "</ul></div>";
+        } else {
+          body = '<textarea id="' + id + '-t" rows="3" aria-label="Your answer"></textarea><div style="margin-top:12px"><button class="btn ghost" type="button" data-reveal="#' + id + 's" aria-expanded="false" data-on="Hide the sample answer" data-off="Show a sample answer">Show a sample answer</button></div><div class="mid" id="' + id + 's" hidden><b style="color:#000">Sample answer.</b> ' + esc(ans) + "</div>";
+        }
+      }
+      if (r.type !== "free") nq += r.type === "match" ? items.length : 1;
+      out += '<fieldset class="qz" data-type="' + esc(r.type) + '" data-ans="' + esc(ans) + '" data-show="' + show + '" data-expl="' + esc(r.explanation) + '"><legend>Question ' + esc(r.qid) + "</legend>" + stem + link + (r.prompt ? '<p style="margin:0 0 8px">' + esc(r.prompt) + "</p>" : "") + body + (r.type === "free" ? "" : '<div class="fb" hidden></div>') + "</fieldset>";
+    });
+    var count = Object.keys(nums).length;
+    var src = note ? '<p class="small" style="margin:16px 0 0">' + esc(note.prompt) + ' <a href="' + esc(note.link_url) + '" target="_blank" rel="noopener">' + esc(note.link_text) + " ↗</a></p>" : "";
+    return '<button class="btn" type="button" data-reveal="#chk" aria-expanded="false" data-on="Hide the self-check" data-off="Start the self-check (' + count + ' questions)">Start the self-check (' + count + ' questions)</button><div id="chk" hidden style="margin-top:16px">' + out + '<div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:16px"><button class="btn" type="button" data-check="#chk">Check my answers</button><button class="btn ghost" type="button" data-retry="#chk">Try again</button><span id="score" role="status" style="font-weight:700;color:#000"></span></div>' + src + "</div>";
+  }
+  function gradeCheck(box) {
+    var right = 0, total = 0;
+    Array.prototype.forEach.call(box.querySelectorAll(".qz"), function (q) {
+      var type = q.getAttribute("data-type"); if (type === "free") return;
+      var keys = q.getAttribute("data-ans").toLowerCase().split(" "), got = [], fb = q.querySelector(".fb");
+      if (type === "mc") { var sel = q.querySelector("input:checked"); got = [sel ? sel.value.toLowerCase() : ""]; }
+      else { Array.prototype.forEach.call(q.querySelectorAll("select"), function (s) { got.push(s.value); }); }
+      var c = 0; keys.forEach(function (k, i) { if (got[i] === k) c++; });
+      total += keys.length; right += c;
+      var ok = c === keys.length, expl = q.getAttribute("data-expl");
+      fb.hidden = false; fb.className = "fb " + (ok ? "good" : "bad");
+      fb.innerHTML = (ok ? "<b>Correct.</b> " : "<b>Not quite.</b> ") + (type === "match" && !ok ? "You matched " + c + " of " + keys.length + ". " : "") + (ok ? "" : "The answer: " + q.getAttribute("data-show") + ". ") + (expl ? esc(expl) : "");
+    });
+    box.querySelector("#score").textContent = "You got " + right + " of " + total + ".";
+  }
+  function resetCheck(box) {
+    Array.prototype.forEach.call(box.querySelectorAll("input[type=radio]"), function (i) { i.checked = false; });
+    Array.prototype.forEach.call(box.querySelectorAll("select"), function (s) { s.value = ""; });
+    Array.prototype.forEach.call(box.querySelectorAll(".fb"), function (f) { f.hidden = true; f.innerHTML = ""; });
+    box.querySelector("#score").textContent = "";
+  }
+
   function pageOutcome(h, d, o) {
     var c = d.copy, slug = d.slug, n = o.n;
     var mods = o.mods.map(function (m) { return d.modules[m]; }).filter(Boolean);
@@ -238,7 +297,8 @@
     var s4 = '<p class="small" style="margin:0">' + (probs.length ? "Try the sample problems below first. Then do " : "Do ") + (hw.length ? esc(hw.join("; ")) : "the homework for this module") + " from the module in Canvas.</p>";
     var note = o.art_of_stat_note;
     var aos = note ? (/not yet/i.test(note) ? '<div class="empty" style="margin-top:14px"><b style="color:#000">Open slot:</b> Art of Stat. ' + esc(note) + "</div>" : '<p class="small" style="margin:14px 0 0"><b style="color:#000">Art of Stat:</b> ' + esc(note) + ' <a href="https://docs.google.com/document/d/1GIj3xBRs4VYCK3FMfa2Y7JeqqXgsqIquA2IOi4FgaZU/edit" target="_blank" rel="noopener">Open the guide ↗</a></p>') : "";
-    var s5 = '<p class="small" style="margin:0">Skill ' + n + " knowledge check. Ungraded, and open from Canvas.</p>" + aos;
+    var chk = d.checks.filter(function (c) { return c.outcome === o.code; });
+    var s5 = '<p class="small" style="margin:0 0 12px">Skill ' + n + " knowledge check. Practice only: it does not count toward your grade. The Canvas version is in your course." + (chk.length ? "" : " Questions for " + o.code + " are coming here soon.") + "</p>" + (chk.length ? checkHtml(chk) : "") + aos;
     var steps = [["Read and fill in the guided notes", s1], ["Watch the micro-lectures", s2], ["Explore it in an app", s3], ["Practice", s4], ["Check yourself", s5]].map(function (s, i) {
       return '<div class="card pathstep"><span class="num">' + (i + 1) + '</span><div style="flex:1;min-width:0"><h3>' + esc(s[0]) + "</h3>" + s[1] + "</div></div>";
     }).join("");
@@ -315,9 +375,11 @@
 
   // ---------- events
   document.addEventListener("click", function (e) {
-    var t = e.target.closest("[data-toggle],[data-reveal],[data-copy],[data-scroll]");
+    var t = e.target.closest("[data-toggle],[data-reveal],[data-copy],[data-scroll],[data-check],[data-retry]");
     if (!t) return;
-    if (t.hasAttribute("data-toggle")) {
+    if (t.hasAttribute("data-check")) { gradeCheck(app.querySelector(t.getAttribute("data-check"))); }
+    else if (t.hasAttribute("data-retry")) { resetCheck(app.querySelector(t.getAttribute("data-retry"))); }
+    else if (t.hasAttribute("data-toggle")) {
       var box = app.querySelector(t.getAttribute("data-toggle")), open = box.hidden;
       box.hidden = !open; t.setAttribute("aria-expanded", open ? "true" : "false");
       var pl = t.querySelector(".plus"); if (pl) pl.textContent = open ? "−" : "+";

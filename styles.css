@@ -96,4 +96,13 @@ a.orow .tt{font-weight:700;color:var(--link)}
 .linkrow{display:flex;align-items:center;min-height:48px;font-weight:700}
 .empty{border:2px dashed var(--muted);border-radius:12px;padding:16px 20px;color:var(--muted)}
 .loading{padding:72px 32px;text-align:center}
-@media (max-width:640px){.two{grid-template-columns:1fr}.hero-red h1{font-size:36px}.hero-white h1{font-size:34px}.sec{padding-left:20px;padding-right:20px}.wrap{padding-left:20px;padding-right:20px}.thinking,.band{padding:28px}}
+fieldset.qz{border:0;border-top:1px solid var(--line);padding:18px 0;margin:0;min-width:0}
+fieldset.qz legend{font-weight:800;color:#000;padding:0 0 8px;font-family:'Mulish',sans-serif}
+.opt{display:flex;gap:12px;align-items:flex-start;min-height:48px;padding:8px 0;cursor:pointer}
+.opt input{margin-top:6px;width:22px;height:22px;flex:none}
+.mrow{display:grid;grid-template-columns:1fr minmax(200px,280px);gap:12px;align-items:center;padding:6px 0}
+.mrow select,.mrow input[type=text]{min-height:48px;font:inherit;max-width:100%;border:2px solid var(--muted);border-radius:8px;padding:0 10px;background:#fff;color:var(--ink)}
+fieldset.qz textarea{width:100%;font:inherit;border:2px solid var(--muted);border-radius:8px;padding:10px;background:#fff;color:var(--ink)}
+.fb{margin-top:12px;padding:12px 16px;border-radius:8px;background:#fff;border:2px solid var(--muted)}
+.fb.good{border-color:var(--navy)}.fb.bad{border-color:var(--gold)}
+@media (max-width:640px){.mrow{grid-template-columns:1fr}.two{grid-template-columns:1fr}.hero-red h1{font-size:36px}.hero-white h1{font-size:34px}.sec{padding-left:20px;padding-right:20px}.wrap{padding-left:20px;padding-right:20px}.thinking,.band{padding:28px}}
