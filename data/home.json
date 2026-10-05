@@ -53,5 +53,88 @@
     "left": "Department of Mathematics, Santa Ana College",
     "right": "Resources contributed by SAC math faculty.",
     "contact": "Curator contact: [curator email]"
+  },
+  "support": {
+    "title": "Get help online or in the Math Center",
+    "lead": "Free math tutoring is available online and in person. Tell the tutor which outcome you are working on, like S12, so you can both find the same resources here.",
+    "mathCenter": {
+      "name": "Math Center",
+      "where": "In person: Library Building, second floor, room L-204",
+      "online": "Online: Math Center Zoom, with the same hours",
+      "hoursTitle": "Hours",
+      "hours": [
+        [
+          "Monday to Thursday",
+          "9 am to 9 pm"
+        ],
+        [
+          "Friday",
+          "9 am to 1 pm"
+        ],
+        [
+          "Saturday",
+          "9 am to 4 pm"
+        ]
+      ],
+      "phone": "(714) 564-6678",
+      "note": "The Math Center is free. You may need to register in Self-Service first. Directions and current hours are on the Math Center page, and hours can change each semester.",
+      "links": [
+        {
+          "label": "Math Center page",
+          "url": "https://www.sac.edu/studentservices/mathcenter/"
+        },
+        {
+          "label": "Join the Math Center Zoom",
+          "url": "https://rsccd-edu.zoom.us/j/9430572303"
+        },
+        {
+          "label": "Register in Self-Service",
+          "url": "https://www.sac.edu/selfservice"
+        }
+      ]
+    },
+    "moreTitle": "More ways to get support",
+    "more": [
+      {
+        "name": "Learning Center",
+        "text": "Free tutoring in many subjects, including math and writing, online and in person. Room D-307.",
+        "url": "https://www.sac.edu/studentservices/learningcenter/"
+      },
+      {
+        "name": "Tutoring at SAC",
+        "text": "All the tutoring options in one place, including the Academic Computing Center.",
+        "url": "https://www.sac.edu/studentservices/tutoring"
+      },
+      {
+        "name": "Counseling",
+        "text": "Academic, personal, and career counseling.",
+        "url": "https://www.sac.edu/studentservices/counseling/"
+      },
+      {
+        "name": "Health & Wellness Center",
+        "text": "Health services and mental health support.",
+        "url": "https://www.sac.edu/studentservices/healthwellness/"
+      },
+      {
+        "name": "Thrive Center",
+        "text": "Support with basic needs, including a food pantry.",
+        "url": "https://www.sac.edu/studentservices/thrivecenter/"
+      },
+      {
+        "name": "Disabled Students Program & Services (DSPS)",
+        "text": "Support and accommodations for students with disabilities.",
+        "url": "https://www.sac.edu/studentservices/dsps/"
+      },
+      {
+        "name": "Mathematics Department",
+        "text": "Math courses, degrees, and department information.",
+        "url": "https://www.sac.edu/division/smhs/math/"
+      }
+    ],
+    "hope": {
+      "name": "SAC Math Hope Academy",
+      "text": "",
+      "url": ""
+    }
   }
 }
