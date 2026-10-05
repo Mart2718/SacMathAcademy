@@ -73,7 +73,7 @@ After that, edits in the Sheet appear on the site within a few minutes with no u
 
 ## Check these before students use it
 
-- **Sharing:** students must be able to open the Drive links (guided notes PDFs, solutions Docs, Art of Stat guide). Check each file's sharing setting.
+- **Sharing:** students must be able to open the Drive links (guided notes PDFs, solutions Docs). Check each file's sharing setting.
 - **Solutions link:** `solutions.csv` points to the Drive copy named "Copy of Solutions Unit 2 CP." Replace it with the Doc you want students to use.
 - **Video tags are a draft.** I tagged each video to outcomes by its section number (for example 8.1 goes to S12). Check them, especially S18 and the Module 12 sections.
 - **Module 14:** the first video slot on your module page repeated Module 1.1 Part 1. I used the 14.1 Part 1 video from your playlist instead. Fix the same slot on your MyOpenMath page.
@@ -108,6 +108,10 @@ SAC's brand guide says not to recreate, crop, stretch, or recolor the logo, and 
 To change the logo, upload the new file to the main folder of the repo (next to `index.html`) and set its exact file name in `config.js`. File names are case-sensitive.
 
 If you want the logo on a dark background, get the reverse logo (white text, transparent) from the SAC Assets folder (page 37 of the brand guide, SAC login required) or email publicinformation@sac.edu. Ask at the same time for the Mathematics department descriptive signature. Then set `LOGO_REVERSE` in `config.js` and the footer will show it.
+
+## Art of Stat Student Hub
+
+The course page, the "stuck" help, and each outcome's Art of Stat line link to https://artofstatguide.netlify.app/. To change the address, edit `tools.csv`, `course.json` (two places), and `app.js` (one place, near "Open the Art of Stat Student Hub"). The hub has no separate page for each tool, so the links go to the hub itself, to its tool chooser (`#finder`), or to its full library (`#library`). The Art of Stat line on each outcome page lists the hub entries for that outcome, from `art_of_stat_note` in `outcomes.csv`. Gaps stay as open slots: sampling distributions and the CLT (S12), margin of error and sample size (S13), and the one-mean t-test (S16).
 
 ## Keep working on it
 
