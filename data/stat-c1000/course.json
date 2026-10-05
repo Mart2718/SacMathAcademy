@@ -97,7 +97,7 @@
       },
       {
         "title": "I do not know how to start",
-        "text": "Use a procedure helper to choose the method. Then follow the steps in the Art of Stat guide.",
+        "text": "Use a procedure helper to choose the method. Then follow the steps in the Art of Stat Student Hub.",
         "links": [
           {
             "label": "Statistical Procedure Helper ↗",
@@ -108,18 +108,18 @@
             "url": "https://onetwopstatsproceduretrainer.netlify.app"
           },
           {
-            "label": "Art of Stat guide ↗",
-            "url": "https://docs.google.com/document/d/1GIj3xBRs4VYCK3FMfa2Y7JeqqXgsqIquA2IOi4FgaZU/edit"
+            "label": "Art of Stat Student Hub: help me choose a tool ↗",
+            "url": "https://artofstatguide.netlify.app/#finder"
           }
         ]
       },
       {
         "title": "My technology is not working",
-        "text": "The Art of Stat guide has menu paths and a video for each task. A scientific calculator covers the rest.",
+        "text": "The Art of Stat Student Hub has steps and a class video for each task. A scientific calculator covers the rest.",
         "links": [
           {
-            "label": "Art of Stat guide ↗",
-            "url": "https://docs.google.com/document/d/1GIj3xBRs4VYCK3FMfa2Y7JeqqXgsqIquA2IOi4FgaZU/edit"
+            "label": "Art of Stat Student Hub ↗",
+            "url": "https://artofstatguide.netlify.app/"
           },
           {
             "label": "Desmos scientific calculator ↗",
@@ -343,5 +343,5 @@
       }
     ]
   },
-  "siteVersion": "2026-10-04.1"
+  "siteVersion": "2026-10-04.2"
 }
