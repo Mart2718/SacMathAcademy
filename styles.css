@@ -22,6 +22,8 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #000;
 .btn:hover{background:var(--deep);border-color:var(--deep)}
 .btn.ghost{background:#fff;color:var(--red)}
 .btn.ghost:hover{background:var(--bg)}
+.btn.outline{background:transparent;color:#fff;border-color:#fff}
+.btn.outline:hover{background:rgba(255,255,255,.15);border-color:#fff}
 .btn.white{background:#fff;color:var(--red);border-color:#fff}
 .pill{display:inline-block;padding:2px 14px;border-radius:999px;font-weight:700}
 .pill.live{background:var(--navy);color:#fff}.pill.progress{background:var(--gold);color:#000}.pill.planned{background:#E4E4E5;color:var(--ink)}.pill.gold{background:var(--gold);color:#000}

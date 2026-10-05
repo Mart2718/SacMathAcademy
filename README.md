@@ -109,6 +109,12 @@ To change the logo, upload the new file to the main folder of the repo (next to 
 
 If you want the logo on a dark background, get the reverse logo (white text, transparent) from the SAC Assets folder (page 37 of the brand guide, SAC login required) or email publicinformation@sac.edu. Ask at the same time for the Mathematics department descriptive signature. Then set `LOGO_REVERSE` in `config.js` and the footer will show it.
 
+## Support section on the home page
+
+The "Get help online or in the Math Center" section and the "More ways to get support" cards come from the `support` part of `data/home.json`. The Math Center hours, room, phone, and Zoom link were copied from the Math Center page on sac.edu on October 5, 2026. Hours can change each semester, so check them at the start of each term. The Zoom link is the one posted on the Math Center page and may change. I left out the email address because that page lists a person's name in it.
+
+To show the SAC Math Hope Academy card, put its web address in the `url` of the `hope` entry in `home.json`. The card stays hidden while `url` is empty. The Hope Academy logo is not on the page, because I do not have the official file.
+
 ## Art of Stat Student Hub
 
 The course page, the "stuck" help, and each outcome's Art of Stat line link to https://artofstatguide.netlify.app/. To change the address, edit `tools.csv`, `course.json` (two places), and `app.js` (one place, near "Open the Art of Stat Student Hub"). The hub has no separate page for each tool, so the links go to the hub itself, to its tool chooser (`#finder`), or to its full library (`#library`). The Art of Stat line on each outcome page lists the hub entries for that outcome, from `art_of_stat_note` in `outcomes.csv`. Gaps stay as open slots: sampling distributions and the CLT (S12), margin of error and sample size (S13), and the one-mean t-test (S16).
