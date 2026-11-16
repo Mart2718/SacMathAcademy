@@ -4,7 +4,7 @@
   "layout": "chapters",
   "siteVersion": "2026-10-05.1",
   "title": "Precalculus, building toward calculus",
-  "lead": "{outcomes} learning outcomes in five chapters, plus {fluency} foundational fluency skills. Every outcome has its own page linking the textbook, FAQ and guided learning, CheckIt practice and support, and interactive labs.",
+  "lead": "{outcomes} learning outcomes in five chapters, plus {fluency} foundational fluency skills. Every outcome has its own page linking the textbook, FAQ and guided learning, videos, CheckIt practice and support, and interactive labs.",
   "searchLabel": "Search this course",
   "searchPlaceholder": "Try: inverse, unit circle, asymptote, FN4",
   "ways": [
@@ -64,11 +64,15 @@
     "paths": [
       {
         "title": "I do not understand the idea",
-        "text": "Open the outcome page. Read the textbook section, then work through the FAQ and guided learning for that outcome.",
+        "text": "Open the outcome page. Read the textbook section, watch a short video, then work through the FAQ and guided learning for that outcome.",
         "links": [
           {
             "label": "Browse outcomes ↓",
             "scroll": "chapters"
+          },
+          {
+            "label": "Video library →",
+            "route": "videos"
           }
         ]
       },
