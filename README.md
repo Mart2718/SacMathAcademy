@@ -1,36 +1,88 @@
-# SAC Math Academy: STAT C1000 hub
+# SAC Math Academy
 
-## Deploy everything at once (start here)
+One website for every SAC math course hub, in one GitHub repo (`Mart2718/SacMathAcademy`). The Academy home page lists the courses. Each course hub lives inside this repo as its own folder under `data/`.
 
-Errors usually happen when some files are new and others are old. The fix is to publish every file together.
+- **Live site:** https://sacmathacademy.netlify.app/ (connected to this repo)
+- **Course hubs:** STAT C1000 at `#/stat-c1000` and Math 172 at `#/math-172`
 
-**Easiest: Netlify "Deploy manually" (no GitHub needed).**
-1. Unzip this folder. You should see `index.html`, `app.js`, `styles.css`, `config.js`, `SAC_Logo.png`, a `data` folder, and an `images` folder.
-2. In Netlify, open Projects (or Sites), choose Add new project (or Add new site), then Deploy manually.
-3. Drag the whole unzipped folder onto the drop area. Netlify publishes all the files and folders together and gives you a web address.
-4. A site connected to GitHub cannot take a drag-and-drop update, so make a new site this way. Netlify's drag-and-drop works for sites not connected to Git.
+The site has no build step and no database. The pages read plain tables, so you change content by editing a table, not code.
 
-**Or with GitHub:** every file must be in the same place as in this folder: the five main files and `SAC_Logo.png` in the main folder, the two files in `data`, the ten-plus files in `data/stat-c1000`, and every picture in `images`. Upload a changed file into the same folder to replace it.
+## Courses
 
-**A yellow bar** at the top of a page means some files are older than the code. Re-upload everything from the latest zip.
+| Course | Folder | Status | Layout |
+|---|---|---|---|
+| STAT C1000 | `data/stat-c1000/` | live | outcome layout (units, modules, videos, practice problems, self-checks) |
+| Math 172 | `data/math-172/` | live | chapter layout (links each outcome to the textbook, FAQ, CheckIt, and labs) |
+| Math 204 | none yet | in progress | |
+| Math 180 | none yet | planned | |
 
-This is the live-site version of the hub we designed. It has no build step and no database. The pages read plain tables, so you change content by editing a table, not code.
+The home page's course cards come from `data/courses.csv`. A course's `status` is `live`, `progress`, or `planned`.
 
-## What is in this folder
+## Publishing
 
-- `index.html`, `app.js`, `styles.css`: the site itself. Leave these alone unless you want to change a page layout.
-- `config.js`: one small settings file (see "Read from Google Sheets" below).
-- `data/courses.csv`: the department page. One row per course card on the home page.
-- `data/stat-c1000/`: everything for the STAT C1000 hub.
-  - `outcomes.csv`, `modules.csv`, `videos.csv`, `apps.csv`, `faq.csv`, `prompts.csv`, `problems.csv`, `solutions.csv`, `tools.csv`: tables you edit often.
-  - `course.json`: the wording of the course page (headline, statistical thinking, help paths, AI study partner modes, review cards, callouts).
-- `data/home.json`: the wording of the Academy home page.
-- `images/`: the pictures used by self-check questions and sample problems (charts and graphs). Each one is named by its question, like `s5-q8.png`.
-- The Midterm Review page (`#/stat-c1000/midterm`) reads `midterm.csv` and the "midterm" section of `course.json`. To link your review practice problems, put a web address in `practiceUrl` in `course.json`.
+**The live site updates itself.** `sacmathacademy.netlify.app` is connected to this repo. Every change saved to the `main` branch, whether edited on GitHub or pushed by Claude, is published in about a minute. There is nothing to drag or upload.
 
-## How to edit
+**`sacmathacademyfall2026.netlify.app` is a separate, older copy.** It was published by drag-and-drop, so it is not connected to GitHub and does not update. Either retire it or link it to this repo in Netlify (Site configuration, Build & deploy, Link repository).
 
-Open any `.csv` in Excel or Google Sheets. Keep the top row (the column names) exactly as it is. Save as CSV, then re-upload the folder to Netlify (see "Put it online").
+**A yellow bar** at the top of a page means some files are older than the code. This happens when files are uploaded one at a time. Make sure every changed file is on `main`.
+
+To test the site on your own computer, run a small web server in the folder. Double-clicking `index.html` does not work, because the browser blocks reading the data files from a folder.
+
+## What is in this repo
+
+- `index.html`, `app.js`, `styles.css`: the site itself, shared by every course. Leave these alone unless you want to change a page layout.
+- `config.js`: one small settings file (logo file names and optional Google Sheets links).
+- `SAC_Logo.png`: the header logo.
+- `data/home.json`: the wording of the Academy home page, including the Math Center and support section.
+- `data/courses.csv`: one row per course card on the home page.
+- `data/stat-c1000/`: everything for the STAT C1000 hub (see "STAT C1000 hub" below).
+- `data/math-172/`: everything for the Math 172 hub (see "Math 172 hub" below).
+- `images/`: pictures for the STAT C1000 self-checks and sample problems.
+
+## Add a new course hub
+
+1. Add or update the course's row in `data/courses.csv`.
+2. Make a folder `data/<slug>`, where the slug matches the row (for example `math-204`).
+3. Pick a layout:
+   - **Chapter layout (like Math 172):** for a course whose resources already live on other sites. Copy `data/math-172`, then edit its four files. Each outcome page links out to the textbook, FAQ, practice, and labs.
+   - **Outcome layout (like STAT C1000):** for a course whose videos, practice problems, and self-checks live in the hub itself. Copy `data/stat-c1000` and edit its tables.
+4. Set the row's `status` to `live`.
+
+## Math 172 hub (chapter layout)
+
+Math 172 uses the chapter layout, switched on by `"layout": "chapters"` in `data/math-172/course.json`. The course page shows Chapters 1 to 5 of *Building Toward Calculus* with their outcomes, a Foundational Fluency section (Chapter 6), tools, "When you are stuck" help, and the Math 172 Practice Partner. Each outcome page is a numbered path: textbook, FAQ and guided learning (plus lecture notes for TE1 to TE6), labs, CheckIt practice, CheckIt support, and the Practice Partner.
+
+| File | One row is | Notes |
+|---|---|---|
+| `outcomes.csv` | one outcome | `chapter` 1 to 5 follows the textbook; chapter 6 is Foundational Fluency. The link columns are `book_url`, `exercises_url` (the book's online exercises), `faq_url` and `faq_label`, `support_url` (CheckIt support page), `checkit_url` (TBIL CheckIt bank), and `notes_url` (lecture notes). An empty cell hides that step or shows "coming." Titles and statements use TBIL's wording, except ST, EX, AF, and AM, which come from the textbook. |
+| `chapters.csv` | one chapter | Title, textbook link, and the "Toward calculus" line on each chapter card. |
+| `apps.csv` | one lab, fluency app, or tool | `kind` is `lab`, `fluency`, or `tool`. `outcomes` lists codes separated by spaces, and the app appears on each of those outcome pages. `status` is `live` or `planned`. |
+| `course.json` | | Page wording, help paths, tools, the Practice Partner link, and the people-help list. |
+
+### What Math 172 covers
+
+- **38 outcomes in Chapters 1 to 5:** FN1 to FN6, LF1 to LF3, LF5, PR1 to PR9, TR1, TR2, TR5, PF1 to PF3, EL1 to EL7, and TE1 to TE6. LF4 and LF7 are no longer in the course.
+- **12 Foundational Fluency skills (Chapter 6):** EQ1 to EQ5, LF6, TR3, TR4, ST, EX, AF, and AM. These come from the textbook and in-class work, not MyOpenMath.
+- **Where the links point:** FAQ sites are `172<code>faq.netlify.app` (FN2 and FN3, LF2/LF3/LF5, PR1 and PR2, PR4 and PR5, and EL5 and EL6 share one site each). CheckIt support pages are `172checkit.netlify.app/<code>/`, from the `172-checkit-support` repo. Lecture notes are `172te<n>notes.netlify.app`.
+- **Apps:** 12 labs, 5 fluency apps (EQ5, EX, AF, ST, AM), and 2 tools (Sentence Frames and the Standards Tracker). The EQ5 app is `172eq5quadraticfluency`. The duplicate `172quadfulencyeq5` is inactive and not linked.
+- **Practice Partner:** the Playlab link is in `course.json` in two places (`tools` and `ai.partner`).
+
+### Common Math 172 tasks
+
+- **Add an outcome:** add a row to `outcomes.csv` with its chapter and links.
+- **Link a new lab or app:** add a row to `apps.csv` with the outcome codes it supports.
+- **Change a link** (for example, a renamed FAQ site): edit that cell in `outcomes.csv`.
+
+### Planned for Math 172
+
+- Quiz and exam prep pages (one per SLO group, using the STAT C1000 midterm review page as the model).
+- Videos on outcome pages, if needed. They are already inside each FAQ site.
+
+## STAT C1000 hub (outcome layout)
+
+### How to edit
+
+Open any `.csv` in Excel or Google Sheets. Keep the top row (the column names) exactly as it is. Save as CSV, then upload it to the same folder in this repo on GitHub. The live site updates on its own.
 
 Outcome codes are written like `S12`. A cell that lists several outcomes separates them with spaces, for example `S13 S14`.
 
@@ -50,20 +102,18 @@ Outcome codes are written like `S12`. A cell that lists several outcomes separat
 | solutions | one solutions document | `outcomes` lists which outcome pages link to it. |
 | tools | one course-level resource | Shown on the course page. |
 
-### Common tasks
+### Common STAT C1000 tasks
 
 - **Add or replace a video:** add a row to `videos.csv` with its YouTube ID and the outcomes it belongs to.
 - **Link a finished app:** in `apps.csv`, fill in `url` and change `status` from `planned` to `live`.
 - **Add sample problems for an outcome:** add rows to `problems.csv`. Use the same outcome code and problem number for every part of one problem.
-- **Add a course to the department page:** add a row to `data/courses.csv`. When that course has its own hub, copy the `data/stat-c1000` folder to `data/<new-slug>`, edit its tables, and set the row's `status` to `live`.
+- **Add a course to the department page:** see "Add a new course hub" above.
 
-## Put it online (Netlify)
+### Put it online (Netlify)
 
-1. Unzip this folder.
-2. In Netlify, open the site, go to Deploys, and drag the unzipped folder onto the drop area. This is the same way you deployed your other apps.
-3. Open the site address. It will not work if you double-click `index.html`, because the browser blocks reading the data files from a folder. Netlify or any web server works.
+Save changes to the `main` branch of this repo. The live site updates on its own (see "Publishing" above).
 
-## Read from Google Sheets (optional, no re-upload)
+### Read from Google Sheets (optional, no re-upload)
 
 If you keep each table as a tab in a Google Sheet, publish each tab (File, Share, Publish to web, choose the tab and CSV). Then put the link in `config.js`, for example:
 
@@ -71,7 +121,7 @@ If you keep each table as a tab in a Google Sheet, publish each tab (File, Share
 
 After that, edits in the Sheet appear on the site within a few minutes with no upload.
 
-## Check these before students use it
+### Check these before students use it
 
 - **Sharing:** students must be able to open the Drive links (guided notes PDFs, solutions Docs). Check each file's sharing setting.
 - **Solutions link:** `solutions.csv` points to the Drive copy named "Copy of Solutions Unit 2 CP." Replace it with the Doc you want students to use.
@@ -90,9 +140,9 @@ After that, edits in the Sheet appear on the site within a few minutes with no u
 - **Logo:** the header uses the color logo. The footer has no logo until you add the reverse version. See "The SAC logo" below.
 - **Captions:** SAC's brand guide expects human-edited closed captions on video. Your lecture videos are on YouTube, so check their captions.
 
-## Design decisions to keep
+## Design decisions to keep (all courses)
 
-- The hub is organized by **learning outcome**, not by chapter or module. Modules are a way to find outcomes, not the other way around.
+- Hubs are organized by **learning outcome**. Modules (STAT C1000) and chapters (Math 172) are ways to find outcomes, not the other way around.
 - Apps and videos are **tagged to outcomes**. One app can cover several outcomes and appears on each outcome page it covers.
 - The hub is school-wide, so term-specific items like a syllabus stay out. The course page opens with a grounding in the discipline (statistical thinking).
 - Practice follows "try it first, check your answer, then open the solutions."
@@ -121,15 +171,4 @@ The course page, the "stuck" help, and each outcome's Art of Stat line link to h
 
 ## Keep working on it
 
-Continue in the Claude project "SAC Math Resource Hub." Share this folder or the changed tables and say what you want changed. The department page is the next page to design.
-
-## Math 172 hub (chapter layout)
-
-Math 172 uses a second page layout, switched on by `"layout": "chapters"` in `data/math-172/course.json`. STAT C1000 is unchanged.
-
-- `data/math-172/outcomes.csv`: one row per outcome. `chapter` 1–5 follows *Building Toward Calculus*; chapter 6 is Foundational Fluency. Each row holds the links its page shows: `book_url`, `exercises_url` (the book's online exercises), `faq_url` and `faq_label`, `support_url` (CheckIt support), `checkit_url` (the TBIL CheckIt bank), and `notes_url` (TE lecture notes). An empty cell hides that step or shows "coming." Titles and statements are TBIL's wording, except ST, EX, AF, and AM.
-- `data/math-172/chapters.csv`: chapter titles, textbook links, and the "Toward calculus" line on each chapter card.
-- `data/math-172/apps.csv`: labs, fluency apps, and tools. `kind` is `lab`, `fluency`, or `tool`. `outcomes` lists codes separated by spaces, and the app appears on each of those outcome pages.
-- `data/math-172/course.json`: page wording, help paths, the Practice Partner, and the people-help list.
-
-To add an outcome later (for example LF4 or LF7), add a row to `outcomes.csv`. To link a new lab, add a row to `apps.csv`.
+Work on the Academy from a Claude project with access to this repo. STAT C1000 work has been in "SAC Math Resource Hub," and Math 172 work in "Math 172 Class Mode." Say which course and which table you want changed. Claude can push changes to `main`, and the live site updates on its own.
