@@ -66,6 +66,25 @@
   }
   function loadCourse(slug) {
     return once("course:" + slug, function () {
+      return json(slug + "/course").then(function (copy) {
+        return copy && copy.layout === "chapters" ? loadChapterCourse(slug, copy) : loadOutcomeCourse(slug);
+      });
+    });
+  }
+  // Chapter-layout courses (Math 172): outcomes grouped by textbook chapter, each page links out to existing resources.
+  function loadChapterCourse(slug, copy) {
+    return Promise.all([table(slug + "/outcomes"), table(slug + "/chapters"), table(slug + "/apps")]).then(function (r) {
+      var d = { slug: slug, layout: "chapters", copy: copy, outcomes: {}, list: [], chapters: {}, chList: [] };
+      r[1].forEach(function (c) { c.n = +c.chapter; d.chapters[c.n] = c; d.chList.push(c); });
+      r[0].forEach(function (o) { o.ch = +o.chapter; d.outcomes[o.code] = o; d.list.push(o); });
+      var known = function (s) { return String(s || "").toUpperCase().split(/[\s,]+/).filter(function (x) { return d.outcomes[x]; }); };
+      d.apps = r[2].map(function (a) { a.outs = known(a.outcomes); return a; });
+      d.codes = known;
+      return d;
+    });
+  }
+  function loadOutcomeCourse(slug) {
+    return (function () {
       var names = ["outcomes", "modules", "videos", "apps", "faq", "prompts", "problems", "solutions", "tools", "checks", "midterm", "midtermproblems", "followups"];
       return Promise.all(names.map(function (n) { var p = table(slug + "/" + n); return (n === "checks" || n === "midterm" || n === "midtermproblems" || n === "followups") ? p.catch(function () { return []; }) : p; }).concat([json(slug + "/course")])).then(function (r) {
         var d = { slug: slug, copy: r[13] };
@@ -86,7 +105,7 @@
         d.tools = r[8];
         return d;
       });
-    });
+    })();
   }
 
   // ---------- shared layout
@@ -499,13 +518,102 @@
       '<section class="sec">' + sectionHead("When you are stuck on " + o.code, "Read the answer first. If another format works better for you, it is one click away.") + '<div class="grid two"><div><h3 style="font-size:21px;margin-bottom:14px">From the Unit ' + o.unit + ' FAQ</h3><div class="stack">' + faqHtml + '</div></div><div><h3 style="font-size:21px;margin-bottom:14px">Ask an AI study partner</h3><div class="card"><h4 style="font-family:Mulish,sans-serif;font-weight:800;font-size:19px;margin:0 0 10px;color:#000">' + esc(ai.stepsTitle) + '</h4>' + stepsHtml(ai.steps) + promptHtml + followHtml + afterHtml + '</div><div class="card" style="margin-top:24px">' + peopleHtml(c.people, "h3") + "</div></div></div></section>" + pn + "</main>" + footer(h.copy.footer);
   }
 
+  // ---------- chapter-layout courses (Math 172)
+  var CH_PILL = { 1: "u1", 2: "u2", 3: "u3", 4: "u4", 5: "u5", 6: "u6" };
+  var CH_CHIP = { 1: ["var(--u1)", "#fff"], 2: ["var(--u2)", "#fff"], 3: ["var(--u3)", "#000"], 4: ["var(--u4)", "#fff"], 5: ["var(--u5)", "#fff"], 6: ["var(--u6)", "#000"] };
+  function chLabel(n) { return n === 6 ? "Foundational Fluency" : "Chapter " + n; }
+  function chOrow(d, o) {
+    var cc = CH_CHIP[o.ch] || CH_CHIP[1];
+    return '<a class="orow" href="#/' + d.slug + "/" + o.code.toLowerCase() + '" title="' + esc(o.statement) + '"><span class="chip" style="--c:' + cc[0] + ";--cf:" + cc[1] + '">' + esc(o.code) + '</span><span class="tt">' + esc(o.title) + '</span><span aria-hidden="true" style="color:var(--link);font-weight:700">→</span></a>';
+  }
+  function chChips(d, outs) {
+    return outs.map(function (c) { var o = d.outcomes[c], cc = CH_CHIP[o ? o.ch : 1]; return '<a class="chip on" style="--c:' + cc[0] + ";--cf:" + cc[1] + ';min-width:48px;min-height:36px;text-decoration:none;margin:0 6px 6px 0" href="#/' + d.slug + "/" + c.toLowerCase() + '" title="' + esc(o ? o.title : c) + '">' + esc(c) + "</a>"; }).join("");
+  }
+  function linkBtns(list) { return '<div style="display:flex;gap:12px;flex-wrap:wrap">' + list.map(function (l, i) { return '<a class="btn' + (i ? " ghost" : "") + '" href="' + esc(l[1]) + '" target="_blank" rel="noopener">' + esc(l[0]) + " ↗</a>"; }).join("") + "</div>"; }
+  function buildIndexC(d) {
+    var idx = [], slug = d.slug;
+    d.list.forEach(function (o) { idx.push({ t: o.ch === 6 ? "Fluency" : "Outcome", n: o.code + " · " + o.title, k: o.statement + " " + o.section, h: "#/" + slug + "/" + o.code.toLowerCase(), s: d.copy.code + " · " + chLabel(o.ch) + (o.ch === 6 ? "" : " · Section " + o.section) }); });
+    d.chList.forEach(function (c) { idx.push({ t: "Chapter", n: chLabel(c.n) + ": " + c.title, k: c.lookahead, h: "#/" + slug, scroll: c.n === 6 ? "fluency" : "chapters", s: d.copy.code }); });
+    d.apps.forEach(function (a) { idx.push({ t: a.kind === "fluency" ? "Fluency app" : a.kind === "tool" ? "Tool" : "Lab", n: a.name, k: a.description + " " + a.outs.join(" "), h: a.url, ext: true, s: a.outs.length ? d.copy.code + " · " + a.outs.join(", ") : d.copy.code }); });
+    (d.copy.tools || []).forEach(function (t) { idx.push({ t: "Tool", n: t.name, k: t.description, h: t.url, ext: true, s: d.copy.code }); });
+    return idx;
+  }
+  function aiPartnerHtml(ai) {
+    var p = ai.partner;
+    return '<div class="card stack"><h3 style="font-size:22px">' + esc(p.name) + '</h3><p style="margin:0">' + esc(p.text) + "</p><div>" + extLink(p.url, "Open the " + p.name) + "</div></div>";
+  }
+  function pageCourseC(h, d) {
+    var c = d.copy, main = d.list.filter(function (o) { return o.ch <= 5; }), ff = d.list.filter(function (o) { return o.ch === 6; });
+    var lead = c.lead.replace("{outcomes}", main.length).replace("{fluency}", ff.length);
+    var ways = c.ways.map(function (w) { return '<div class="card stack"><h2 style="font-size:23px">' + esc(w.title) + '</h2><p style="flex:1">' + esc(w.text) + '</p><div><a class="btn" href="#/' + d.slug + '" data-scroll="' + esc(w.scroll) + '">' + esc(w.label) + "</a></div></div>"; }).join("");
+    var chapters = d.chList.filter(function (ch) { return ch.n <= 5; }).map(function (ch) {
+      var rows = main.filter(function (o) { return o.ch === ch.n; }).map(function (o) { return chOrow(d, o); }).join("");
+      return '<div class="card unitcard"><div style="margin-bottom:12px">' + pill(chLabel(ch.n), CH_PILL[ch.n]) + "</div><h3>" + esc(ch.title) + '</h3><p class="small" style="margin:0 0 14px"><b style="color:#000">Toward calculus:</b> ' + esc(ch.lookahead) + '</p><div style="display:flex;flex-direction:column;margin-bottom:16px">' + rows + '</div><a href="' + esc(ch.url) + '" target="_blank" rel="noopener" style="font-weight:700">Read ' + chLabel(ch.n) + " in the textbook ↗</a></div>";
+    }).join("");
+    var f = c.fluency, fch = d.chapters[6] || {};
+    var fApps = d.apps.filter(function (a) { return a.kind === "fluency" && a.status === "live"; });
+    var fluency = '<div class="card" style="border-top:8px solid var(--u6)"><div class="grid two" style="gap:32px;align-items:start"><div><div style="margin-bottom:12px">' + pill(chLabel(6), "u6") + '</div><h2 style="font-size:30px;margin-bottom:12px">' + esc(f.title) + '</h2><p style="margin:0 0 16px">' + esc(f.lead) + "</p>" + (fch.url ? ext(fch.url, "Read Foundational Fluency in the textbook ↗") : "") + '</div><div style="display:flex;flex-direction:column">' + ff.map(function (o) { return chOrow(d, o); }).join("") + "</div></div>" +
+      (fApps.length ? '<h3 style="font-size:21px;margin:28px 0 12px">' + esc(f.appsTitle) + '</h3><div class="grid tools">' + fApps.map(function (a) { return '<div class="dashed stack" style="gap:8px;border-style:solid"><h4 style="font-family:Mulish,sans-serif;font-weight:800;font-size:19px;margin:0;color:#000">' + esc(a.name) + '</h4><p class="small" style="margin:0;flex:1">' + esc(a.description) + "</p><div>" + chChips(d, a.outs) + "</div>" + ext(a.url, "Open ↗") + "</div>"; }).join("") + "</div>" : "") + "</div>";
+    var labs = d.apps.filter(function (a) { return a.kind === "lab" && a.status === "live"; }).length;
+    var tools = '<div class="card stack"><h3>Interactive labs</h3><p style="flex:1">' + labs + ' labs for exploring ideas, each tagged with the outcomes it supports.</p><div><a class="btn ghost" href="#/' + d.slug + '/apps">Open the labs library</a></div></div>' +
+      (c.tools || []).map(function (t) { return '<div class="card stack"><h3>' + esc(t.name) + '</h3><p style="flex:1">' + esc(t.description) + "</p>" + ext(t.url, "Open ↗") + "</div>"; }).join("");
+    var paths = c.help.paths.map(function (p) {
+      var links = p.links.map(function (l) { return l.scroll ? '<a class="linkrow" href="#/' + d.slug + '" data-scroll="' + esc(l.scroll) + '">' + esc(l.label) + "</a>" : ext(l.url, l.label); }).join("");
+      return '<div class="card stack" style="gap:8px"><h3>' + esc(p.title) + '</h3><p style="margin:0 0 4px">' + esc(p.text) + "</p><div>" + links + "</div></div>";
+    }).join("");
+    var ai = c.ai;
+    var aiBlock = '<div class="grid two">' + aiPartnerHtml(ai) + '<div class="card"><h3 style="font-size:22px;margin-bottom:12px">' + esc(ai.stepsTitle) + "</h3>" + stepsHtml(ai.steps) + '<p class="small" style="margin:0">' + esc(ai.faqNote || "") + "</p></div></div>";
+    return header(h.courses) +
+      '<main id="main"><section class="hero-white"><div class="wrap"><p class="crumbs"><a href="#/">Academy</a> <span class="small">/</span> ' + esc(c.code) + '</p><h1>' + esc(c.title) + '</h1><p style="font-size:21px;margin:0 0 28px;max-width:780px" class="small">' + esc(lead) + '</p><div class="search"><label for="q">' + esc(c.searchLabel) + '</label><input id="q" type="search" autocomplete="off" placeholder="' + esc(c.searchPlaceholder) + '"><div id="results"></div></div></div></section>' +
+      '<section class="sec tight"><div class="grid three">' + ways + "</div></section>" +
+      '<section class="sec" id="chapters">' + sectionHead(c.chaptersTitle, c.chaptersSub) + '<div class="grid two">' + chapters + "</div></section>" +
+      '<section class="sec" id="fluency">' + fluency + "</section>" +
+      '<section class="sec" id="tools">' + sectionHead(c.toolsTitle, c.toolsSub) + '<div class="grid tools">' + tools + "</div></section>" +
+      '<section class="sec" id="help">' + sectionHead(c.help.title, c.help.sub) + '<div class="grid tools">' + paths + "</div></section>" +
+      '<section class="sec" id="ai">' + sectionHead(ai.title, ai.sub) + aiBlock + "</section></main>" + footer(h.copy.footer);
+  }
+  function pageAppsC(h, d) {
+    var c = d.copy;
+    function cards(kind) {
+      return d.apps.filter(function (a) { return a.kind === kind && a.status === "live"; }).map(function (a) { return '<div class="card stack" style="gap:8px"><h3>' + esc(a.name) + "</h3><p>" + esc(a.description) + '</p><div>' + (a.outs.length ? '<span class="small">Covers: </span>' + chChips(d, a.outs) : '<span class="small">Use it in any chapter</span>') + "</div>" + ext(a.url, "Launch ↗") + "</div>"; }).join("");
+    }
+    return header(h.courses) + '<main id="main"><section class="hero-white"><div class="wrap"><p class="crumbs"><a href="#/">Academy</a> <span class="small">/</span> <a href="#/' + d.slug + '">' + esc(c.code) + '</a> <span class="small">/</span> Labs</p><h1>Interactive labs and apps</h1><p style="font-size:21px;margin:0;max-width:780px" class="small">Every lab lists the outcomes it covers, and appears on each of those outcome pages.</p></div></section>' +
+      '<section class="sec tight">' + sectionHead("Labs") + '<div class="grid tools">' + cards("lab") + '</div></section><section class="sec">' + sectionHead("Foundational fluency apps") + '<div class="grid tools">' + cards("fluency") + '</div></section><section class="sec">' + sectionHead("Course tools") + '<div class="grid tools">' + cards("tool") + "</div></section></main>" + footer(h.copy.footer);
+  }
+  function pageOutcomeC(h, d, o) {
+    var c = d.copy, slug = d.slug, ch = d.chapters[o.ch] || { title: "", lookahead: "" };
+    var labs = d.apps.filter(function (a) { return a.status === "live" && a.kind !== "tool" && a.outs.indexOf(o.code) !== -1; });
+    var same = d.list.filter(function (x) { return x.ch === o.ch; }), i = same.indexOf(o), prev = same[i - 1], next = same[i + 1];
+    var isFF = o.ch === 6;
+    function empty(t) { return '<div class="empty">' + esc(t) + "</div>"; }
+    var steps = [];
+    steps.push(["Read it in the textbook", '<p class="small" style="margin:0 0 12px">' + (isFF ? "Read the Foundational Fluency page for " + o.code + " in Building Toward Calculus." : "Section " + esc(o.section) + " of Building Toward Calculus. Work the activities before you open the answers.") + "</p>" + linkBtns([[isFF ? "Read " + o.code + " in the textbook" : "Read section " + o.section, o.book_url]])]);
+    if (!isFF) {
+      var u = [["FAQ and guided learning: " + o.faq_label, o.faq_url]]; if (o.notes_url) u.push([o.code + " lecture notes", o.notes_url]);
+      steps.push(["Understand it", '<p class="small" style="margin:0 0 12px">Common questions answered, a guided learning activity, videos, and AI prompts written for ' + o.code + "." + (o.notes_url ? " The lecture notes walk through the examples from class." : "") + "</p>" + (o.faq_url ? linkBtns(u) : empty("The FAQ page for " + o.code + " is coming."))]);
+    }
+    steps.push([isFF ? "Practice with an app" : "Explore it in a lab", labs.length ? '<p class="small" style="margin:0 0 12px">' + (isFF ? "Work through the examples, then practice." : "Change the inputs and watch what responds.") + '</p><div style="display:flex;gap:12px;flex-wrap:wrap">' + labs.map(function (a) { return '<a class="btn ghost" href="' + esc(a.url) + '" target="_blank" rel="noopener" title="' + esc(a.description) + '">' + esc(a.name) + " ↗</a>"; }).join("") + "</div>" : empty("No " + (isFF ? "app" : "lab") + " is tagged to " + o.code + " yet.")]);
+    var pr = []; if (o.checkit_url) pr.push(["Practice in CheckIt", o.checkit_url]); if (o.exercises_url) pr.push(["Online exercises in the textbook", o.exercises_url]);
+    steps.push(["Practice", pr.length ? '<p class="small" style="margin:0 0 12px">CheckIt gives you new randomized problems each time, with answers to check. Work on paper first.</p>' + linkBtns(pr) : empty("Use the practice problems on the textbook page for " + o.code + ".")]);
+    if (o.support_url) steps.push(["Stuck on a CheckIt problem?", '<p class="small" style="margin:0 0 12px">The ' + o.code + " CheckIt support page has a quick summary, worked examples that match CheckIt's questions, and Spot the Slip: find the error in someone else's work.</p>" + linkBtns([[o.code + " CheckIt support", o.support_url]])]);
+    steps.push(["Practice with an AI study partner", '<p class="small" style="margin:0 0 12px">Try a problem first. Then paste it into the Practice Partner and ask for a similar problem at your level, or for a critique problem with an error to find.</p>' + linkBtns([["Open the " + c.ai.partner.name, c.ai.partner.url]])]);
+    var stepsHtml2 = steps.map(function (s, k) { return '<div class="card pathstep"><span class="num">' + (k + 1) + '</span><div style="flex:1;min-width:0"><h3>' + esc(s[0]) + "</h3>" + s[1] + "</div></div>"; }).join("");
+    function olink(x) { return '<a href="#/' + slug + "/" + x.code.toLowerCase() + '">' + esc(x.code) + " " + esc(x.title) + "</a>"; }
+    var fits = '<div class="card" style="background:var(--bg)"><h2 style="font-size:20px;margin-bottom:14px">Where this fits</h2><p style="margin:0 0 4px"><b style="color:#000">' + esc(chLabel(o.ch)) + (isFF ? "" : ": " + esc(ch.title)) + '</b></p><p class="small" style="margin:0 0 14px">' + esc(ch.lookahead) + "</p>" + (prev ? '<p style="margin:0 0 4px"><b style="color:#000">Before this</b></p><p class="small" style="margin:0 0 14px">' + olink(prev) + "</p>" : "") + (next ? '<p style="margin:0 0 4px"><b style="color:#000">Next</b></p><p class="small" style="margin:0">' + olink(next) + "</p>" : "") + "</div>";
+    var pn = '<section class="sec tight"><div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap">' + (prev ? '<a class="btn ghost" href="#/' + slug + "/" + prev.code.toLowerCase() + '">← ' + esc(prev.code) + " " + esc(prev.title) + "</a>" : "<span></span>") + (next ? '<a class="btn ghost" href="#/' + slug + "/" + next.code.toLowerCase() + '">' + esc(next.code) + " " + esc(next.title) + " →</a>" : "") + "</div></section>";
+    var ai = c.ai;
+    return header(h.courses) + '<main id="main"><section class="hero-white"><div class="wrap"><p class="crumbs"><a href="#/">Academy</a> <span class="small">/</span> <a href="#/' + slug + '">' + esc(c.code) + '</a> <span class="small">/</span> ' + esc(chLabel(o.ch)) + ' <span class="small">/</span> ' + esc(o.code) + '</p><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:48px;align-items:start"><div><div style="margin-bottom:14px">' + pill(chLabel(o.ch) + " · " + o.code, CH_PILL[o.ch]) + "</div><h1>" + esc(o.title) + '</h1><p style="font-size:21px;margin:0 0 12px;color:var(--ink)">' + esc(o.statement) + "</p>" + (isFF ? "" : '<p class="small" style="margin:0">Textbook section ' + esc(o.section) + "</p>") + "</div>" + fits + "</div></div></section>" +
+      '<section class="sec">' + sectionHead("Your path through " + o.code, "Work top to bottom, or jump to the step you need.") + '<div class="stack" style="gap:16px">' + stepsHtml2 + "</div></section>" +
+      '<section class="sec">' + sectionHead("When you are stuck on " + o.code, "Try first, then reach for help. Every kind of help is one click away.") + '<div class="grid two"><div class="card"><h3 style="font-size:21px;margin-bottom:12px">' + esc(ai.stepsTitle) + "</h3>" + stepsHtml(ai.steps) + '</div><div class="card">' + peopleHtml(c.people, "h3") + "</div></div></section>" + pn + "</main>" + footer(h.copy.footer);
+  }
+
   // ---------- routing
   var searchIdx = null;
   function allIndex(h) {
     if (searchIdx) return Promise.resolve(searchIdx);
     var live = h.courses.filter(function (c) { return c.status === "live"; });
     return Promise.all(live.map(function (c) { return loadCourse(c.slug); })).then(function (ds) {
-      searchIdx = [].concat.apply([], ds.map(buildIndex));
+      searchIdx = [].concat.apply([], ds.map(function (d) { return d.layout === "chapters" ? buildIndexC(d) : buildIndex(d); }));
       var sp = h.copy.support;
       if (sp) {
         searchIdx.push({ t: "Support", n: sp.mathCenter.name + ": hours and location", k: "tutoring zoom online in person L-204 " + sp.mathCenter.where, h: sp.mathCenter.links[0].url, ext: true, s: "Free math tutoring" });
@@ -522,6 +630,13 @@
       var co = h.courses.filter(function (c) { return c.slug === parts[0]; })[0];
       if (!co) { app.innerHTML = header(h.courses) + '<main id="main" class="sec"><h1>Page not found</h1><p><a href="#/">Back to the Academy</a></p></main>'; return; }
       return loadCourse(co.slug).then(function (d) {
+        if (d.layout === "chapters") {
+          if (!parts[1]) { paint(pageCourseC(h, d), d); document.title = d.copy.code + " · SAC Math Academy"; wireSearch(function () { return allIndex(h); }); return; }
+          if (parts[1] === "apps") { paint(pageAppsC(h, d), d); document.title = "Labs · " + d.copy.code; return; }
+          var oc = d.outcomes[parts[1].toUpperCase()];
+          if (!oc) { app.innerHTML = header(h.courses) + '<main id="main" class="sec"><h1>Outcome not found</h1><p><a href="#/' + d.slug + '">Back to ' + esc(d.copy.code) + "</a></p></main>"; return; }
+          paint(pageOutcomeC(h, d, oc), d); document.title = oc.code + " " + oc.title + " · " + d.copy.code; return;
+        }
         if (!parts[1]) { paint(pageCourse(h, d), d); document.title = d.copy.code + " · SAC Math Academy"; wireSearch(function () { return allIndex(h); }); return; }
         if (parts[1] === "midterm" && d.copy.midterm) { paint(pageMidterm(h, d), d); document.title = "Midterm review · " + d.copy.code; renderPlan(d); return; }
         if (parts[1] === "apps") { paint(pageApps(h, d), d); document.title = "Apps · " + d.copy.code; return; }

@@ -1,0 +1,174 @@
+{
+  "slug": "math-172",
+  "code": "Math 172",
+  "layout": "chapters",
+  "siteVersion": "2026-10-05.1",
+  "title": "Precalculus, building toward calculus",
+  "lead": "{outcomes} learning outcomes in five chapters, plus {fluency} foundational fluency skills. Every outcome has its own page linking the textbook, FAQ and guided learning, CheckIt practice and support, and interactive labs.",
+  "searchLabel": "Search this course",
+  "searchPlaceholder": "Try: inverse, unit circle, asymptote, FN4",
+  "ways": [
+    {
+      "title": "Start a chapter",
+      "text": "Pick a chapter, then an outcome. Each outcome page walks you from the textbook to practice.",
+      "scroll": "chapters",
+      "label": "Pick a chapter"
+    },
+    {
+      "title": "I am stuck",
+      "text": "Name the kind of stuck you are in, and go to the help that fits it.",
+      "scroll": "help",
+      "label": "Get unstuck"
+    },
+    {
+      "title": "Build your foundations",
+      "text": "Algebra and geometry skills you will use all semester and in calculus. Work on them any week.",
+      "scroll": "fluency",
+      "label": "Go to Foundational Fluency"
+    }
+  ],
+  "chaptersTitle": "Browse by chapter and outcome",
+  "chaptersSub": "Chapters follow the textbook, Building Toward Calculus. Hover over an outcome to see its full statement, and select one to open its page.",
+  "fluency": {
+    "title": "Foundational Fluency",
+    "lead": "These are the skills every chapter leans on: solving equations, exponents, fractions, and right triangles. They come from Chapter 6 of the textbook and the practice we do in class. If your algebra is getting in the way, start here, any week.",
+    "appsTitle": "Fluency practice apps"
+  },
+  "toolsTitle": "Tools and references",
+  "toolsSub": "The things you will reach for in every chapter.",
+  "tools": [
+    {
+      "name": "Textbook: Building Toward Calculus",
+      "description": "The free course textbook on LibreTexts, with readings, activities, and online exercises for every outcome.",
+      "url": "https://math.libretexts.org/Courses/Santa_Ana_College/Building_Toward_Calculus"
+    },
+    {
+      "name": "CheckIt support hub",
+      "description": "Worked examples, a quick summary, and Spot the Slip error analysis for each outcome's CheckIt problems.",
+      "url": "https://172checkit.netlify.app/"
+    },
+    {
+      "name": "Math 172 Practice Partner",
+      "description": "An AI study partner that gives you practice problems like the one you are working on, at the level you choose.",
+      "url": "https://www.playlab.ai/project/cmtmzc3ja0g8miv0w6vwvc459"
+    },
+    {
+      "name": "Desmos graphing calculator",
+      "description": "Graph any function to check your work.",
+      "url": "https://www.desmos.com/calculator"
+    }
+  ],
+  "help": {
+    "title": "When you are stuck",
+    "sub": "Name the kind of stuck you are in. Each one starts somewhere different.",
+    "paths": [
+      {
+        "title": "I do not understand the idea",
+        "text": "Open the outcome page. Read the textbook section, then work through the FAQ and guided learning for that outcome.",
+        "links": [
+          {
+            "label": "Browse outcomes ↓",
+            "scroll": "chapters"
+          }
+        ]
+      },
+      {
+        "title": "I cannot start a CheckIt problem",
+        "text": "Open the CheckIt support page for the outcome. Read the quick summary, then follow a worked example that matches your problem.",
+        "links": [
+          {
+            "label": "CheckIt support hub ↗",
+            "url": "https://172checkit.netlify.app/"
+          }
+        ]
+      },
+      {
+        "title": "I keep making the same mistake",
+        "text": "Try Spot the Slip on the CheckIt support page: find the error in someone else's work. Then ask the Practice Partner for a similar problem.",
+        "links": [
+          {
+            "label": "CheckIt support hub ↗",
+            "url": "https://172checkit.netlify.app/"
+          },
+          {
+            "label": "Math 172 Practice Partner ↗",
+            "url": "https://www.playlab.ai/project/cmtmzc3ja0g8miv0w6vwvc459"
+          }
+        ]
+      },
+      {
+        "title": "My algebra is getting in the way",
+        "text": "That is common, and fixable. Go to Foundational Fluency and pick the skill that tripped you up.",
+        "links": [
+          {
+            "label": "Foundational Fluency ↓",
+            "scroll": "fluency"
+          }
+        ]
+      },
+      {
+        "title": "I am behind or overwhelmed",
+        "text": "You do not have to sort it out alone. Talk to a person, or ask for help with basic needs.",
+        "links": [
+          {
+            "label": "Math Center ↗",
+            "url": "https://www.sac.edu/studentservices/mathcenter/"
+          },
+          {
+            "label": "Learning Center tutoring ↗",
+            "url": "https://www.sac.edu/studentservices/learningcenter/"
+          },
+          {
+            "label": "Counseling ↗",
+            "url": "https://www.sac.edu/studentservices/counseling/"
+          },
+          {
+            "label": "Health & Wellness Center ↗",
+            "url": "https://www.sac.edu/studentservices/healthwellness/"
+          },
+          {
+            "label": "Thrive Center: basic needs ↗",
+            "url": "https://www.sac.edu/studentservices/thrivecenter/"
+          }
+        ]
+      }
+    ]
+  },
+  "ai": {
+    "title": "AI study partner",
+    "sub": "AI can support your learning when you use it thoughtfully. Try the problem yourself first, then use AI to get unstuck, check your thinking, and practice.",
+    "partner": {
+      "name": "Math 172 Practice Partner",
+      "url": "https://www.playlab.ai/project/cmtmzc3ja0g8miv0w6vwvc459",
+      "text": "Paste a problem you are working on and the Practice Partner gives you similar problems at the level you pick, from a warm-up to a challenge. Ask it for a critique problem and it shows a worked solution with an error for you to find. It runs on Playlab, so it is free to use."
+    },
+    "stepsTitle": "How to use AI to learn",
+    "steps": [
+      "Try the problem first. Write down what you tried and where you got stuck.",
+      "Tell the AI what you tried, not just the problem. Ask for a hint or a question, not the answer.",
+      "If it gives you the whole answer, type: \"Do not solve it for me. Ask me one question at a time.\"",
+      "Check what it says against the textbook or the CheckIt support page. AI can be wrong.",
+      "Finish with a new problem you solve on your own, so you know you can do it without help."
+    ],
+    "faqNote": "Each outcome's FAQ and guided learning page also has AI prompts written for that outcome."
+  },
+  "people": {
+    "title": "Still stuck? Talk to a person",
+    "items": [
+      {
+        "label": "Math Center",
+        "text": "Free drop-in help on problems you are stuck on, online by Zoom or in person. Tell the tutor your outcome code, like FN4.",
+        "url": "https://www.sac.edu/studentservices/mathcenter/"
+      },
+      {
+        "label": "Learning Center",
+        "text": "Help with the concepts of the class. You need to make an appointment.",
+        "url": "https://www.sac.edu/studentservices/learningcenter/"
+      },
+      {
+        "label": "Your instructor",
+        "text": "Come to office hours, or send a message that says which outcome you are on and what you tried."
+      }
+    ]
+  }
+}

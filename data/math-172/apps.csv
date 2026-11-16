@@ -1,0 +1,20 @@
+id,name,url,description,outcomes,status,kind
+transformation-lab,Transformation Lab,https://172transformationlab.netlify.app/,"See how function transformations change inputs, outputs, graphs, and points.",FN4,live,lab
+build-the-equation,Build the Equation,https://172buildtheequation.netlify.app/,"Practice single transformations, then choose complete equations for combined transformation scenarios.",FN4,live,lab
+inverse-lab,Inverse Functions Lab,https://172inverselab.netlify.app/,"Predict on paper or with a partner, then use the lab to check your thinking about inverse functions.",FN6,live,lab
+domain-detective,Domain Detective,https://domaindetective.netlify.app/,Find the acceptable inputs for a function.,FN3,live,lab
+function-gallery,Common Function Gallery,https://172functiongallery.netlify.app/,Browse the parent-function graphs you should recognize.,FN3 FN4,live,lab
+line-studio,Line Studio,https://linestudio172.netlify.app/,"Build lines from slopes and points, and graph them.",LF2 LF3,live,lab
+quadratic-lab,Quadratic Graph Lab,https://172quadraticlab.netlify.app/,"Graph quadratic functions and identify the vertex, axis of symmetry, and maximum or minimum point.",PR1,live,lab
+degree-explorer,Degree Explorer,https://172degreeexplorer.netlify.app/,Explore angle measure in degrees and radians.,TR1 TR2,live,lab
+trig-graph-lab,Trig Graph Lab,https://172triggraphlab.netlify.app/,"Explore amplitude, period, phase shift, and periodic models.",PF1,live,lab
+inverse-trig-lab,Inverse Trig Lab,https://172inversetriglab.netlify.app/,Explore why trig functions need restricted domains before inverse functions can be defined.,PF3,live,lab
+e-origins,Where Does e Come From?,https://172eorigins.netlify.app/,A compound-interest story that leads to the number e.,EL1,live,lab
+el-app-lab,EL Application Lab,https://172elapplab.netlify.app/,"Build an exponential or logarithmic model, then solve it.",EL6 EL7,live,lab
+ff-eq5,Quadratic Equations Fluency,https://172eq5quadraticfluency.netlify.app/,"Practice solving quadratic equations by factoring, square roots, completing the square, and the quadratic formula.",EQ5,live,fluency
+ff-exponents,Laws of Exponents,https://172ffexponents.netlify.app/,Interactive foundational fluency lesson on the laws of exponents.,EX,live,fluency
+ff-fractions,Algebraic Fractions,https://172ffalgebrafractions.netlify.app/,"Simplify by factoring and canceling, clear denominators to solve, and simplify fractions inside fractions.",AF,live,fluency
+ff-similar,Similar Triangles,https://172ffsimilartriangles.netlify.app/,Interactive foundational fluency lesson on similar triangles.,ST,live,fluency
+ff-advanced,Algebra for Advanced Math,https://172ffadvancedalgebra.netlify.app/,"Rationalizing, factoring, and clearing fractional exponents: the algebra moves calculus uses most.",AM,live,fluency
+sentence-frames,Sentence Frames,https://172sentenceframes.netlify.app/,Sentence starters for explaining your math reasoning in words.,,live,tool
+tracker,Standards Tracker,https://172slotracker.netlify.app/,Keep track of which outcomes you have certified.,,live,tool

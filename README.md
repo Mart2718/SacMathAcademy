@@ -122,3 +122,14 @@ The course page, the "stuck" help, and each outcome's Art of Stat line link to h
 ## Keep working on it
 
 Continue in the Claude project "SAC Math Resource Hub." Share this folder or the changed tables and say what you want changed. The department page is the next page to design.
+
+## Math 172 hub (chapter layout)
+
+Math 172 uses a second page layout, switched on by `"layout": "chapters"` in `data/math-172/course.json`. STAT C1000 is unchanged.
+
+- `data/math-172/outcomes.csv`: one row per outcome. `chapter` 1–5 follows *Building Toward Calculus*; chapter 6 is Foundational Fluency. Each row holds the links its page shows: `book_url`, `exercises_url` (the book's online exercises), `faq_url` and `faq_label`, `support_url` (CheckIt support), `checkit_url` (the TBIL CheckIt bank), and `notes_url` (TE lecture notes). An empty cell hides that step or shows "coming." Titles and statements are TBIL's wording, except ST, EX, AF, and AM.
+- `data/math-172/chapters.csv`: chapter titles, textbook links, and the "Toward calculus" line on each chapter card.
+- `data/math-172/apps.csv`: labs, fluency apps, and tools. `kind` is `lab`, `fluency`, or `tool`. `outcomes` lists codes separated by spaces, and the app appears on each of those outcome pages.
+- `data/math-172/course.json`: page wording, help paths, the Practice Partner, and the people-help list.
+
+To add an outcome later (for example LF4 or LF7), add a row to `outcomes.csv`. To link a new lab, add a row to `apps.csv`.
