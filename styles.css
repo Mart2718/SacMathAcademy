@@ -119,3 +119,6 @@ fieldset.qz textarea{width:100%;font:inherit;border:2px solid var(--muted);borde
 .pbn:has(input:checked){background:var(--navy);color:#fff;border-color:var(--navy)}
 .pbn:has(input:focus-visible){outline:3px solid #000;outline-offset:2px}
 @media (max-width:640px){.mrow{grid-template-columns:1fr}.two{grid-template-columns:1fr}.hero-red h1{font-size:36px}.hero-white h1{font-size:34px}.sec{padding-left:20px;padding-right:20px}.wrap{padding-left:20px;padding-right:20px}.thinking,.band{padding:28px}}
+
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.vgroup summary::-webkit-details-marker{margin-right:4px}

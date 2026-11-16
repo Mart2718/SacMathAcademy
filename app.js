@@ -73,12 +73,13 @@
   }
   // Chapter-layout courses (Math 172): outcomes grouped by textbook chapter, each page links out to existing resources.
   function loadChapterCourse(slug, copy) {
-    return Promise.all([table(slug + "/outcomes"), table(slug + "/chapters"), table(slug + "/apps")]).then(function (r) {
+    return Promise.all([table(slug + "/outcomes"), table(slug + "/chapters"), table(slug + "/apps"), table(slug + "/videos").catch(function () { return []; })]).then(function (r) {
       var d = { slug: slug, layout: "chapters", copy: copy, outcomes: {}, list: [], chapters: {}, chList: [] };
       r[1].forEach(function (c) { c.n = +c.chapter; d.chapters[c.n] = c; d.chList.push(c); });
       r[0].forEach(function (o) { o.ch = +o.chapter; d.outcomes[o.code] = o; d.list.push(o); });
       var known = function (s) { return String(s || "").toUpperCase().split(/[\s,]+/).filter(function (x) { return d.outcomes[x]; }); };
       d.apps = r[2].map(function (a) { a.outs = known(a.outcomes); return a; });
+      d.videos = r[3].map(function (v) { v.outs = known(v.outcomes); return v; });
       d.codes = known;
       return d;
     });
@@ -534,6 +535,7 @@
     var idx = [], slug = d.slug;
     d.list.forEach(function (o) { idx.push({ t: o.ch === 6 ? "Fluency" : "Outcome", n: o.code + " · " + o.title, k: o.statement + " " + o.section, h: "#/" + slug + "/" + o.code.toLowerCase(), s: d.copy.code + " · " + chLabel(o.ch) + (o.ch === 6 ? "" : " · Section " + o.section) }); });
     d.chList.forEach(function (c) { idx.push({ t: "Chapter", n: chLabel(c.n) + ": " + c.title, k: c.lookahead, h: "#/" + slug, scroll: c.n === 6 ? "fluency" : "chapters", s: d.copy.code }); });
+    d.videos.forEach(function (v) { idx.push({ t: "Video", n: v.title, k: v.topic + " " + v.description, h: "https://www.youtube.com/watch?v=" + v.video_id, ext: true, s: d.copy.code + " · " + v.outs.join(", ") }); });
     d.apps.forEach(function (a) { idx.push({ t: a.kind === "fluency" ? "Fluency app" : a.kind === "tool" ? "Tool" : "Lab", n: a.name, k: a.description + " " + a.outs.join(" "), h: a.url, ext: true, s: a.outs.length ? d.copy.code + " · " + a.outs.join(", ") : d.copy.code }); });
     (d.copy.tools || []).forEach(function (t) { idx.push({ t: "Tool", n: t.name, k: t.description, h: t.url, ext: true, s: d.copy.code }); });
     return idx;
@@ -555,7 +557,7 @@
     var fluency = '<div class="card" style="border-top:8px solid var(--u6)"><div class="grid two" style="gap:32px;align-items:start"><div><div style="margin-bottom:12px">' + pill(chLabel(6), "u6") + '</div><h2 style="font-size:30px;margin-bottom:12px">' + esc(f.title) + '</h2><p style="margin:0 0 16px">' + esc(f.lead) + "</p>" + (fch.url ? ext(fch.url, "Read Foundational Fluency in the textbook ↗") : "") + '</div><div style="display:flex;flex-direction:column">' + ff.map(function (o) { return chOrow(d, o); }).join("") + "</div></div>" +
       (fApps.length ? '<h3 style="font-size:21px;margin:28px 0 12px">' + esc(f.appsTitle) + '</h3><div class="grid tools">' + fApps.map(function (a) { return '<div class="dashed stack" style="gap:8px;border-style:solid"><h4 style="font-family:Mulish,sans-serif;font-weight:800;font-size:19px;margin:0;color:#000">' + esc(a.name) + '</h4><p class="small" style="margin:0;flex:1">' + esc(a.description) + "</p><div>" + chChips(d, a.outs) + "</div>" + ext(a.url, "Open ↗") + "</div>"; }).join("") + "</div>" : "") + "</div>";
     var labs = d.apps.filter(function (a) { return a.kind === "lab" && a.status === "live"; }).length;
-    var tools = '<div class="card stack"><h3>Interactive labs</h3><p style="flex:1">' + labs + ' labs for exploring ideas, each tagged with the outcomes it supports.</p><div><a class="btn ghost" href="#/' + d.slug + '/apps">Open the labs library</a></div></div>' +
+    var tools = '<div class="card stack"><h3>Video library</h3><p style="flex:1">' + d.videos.length + ' short videos organized by chapter and outcome, the same ones as on each FAQ page.</p><div><a class="btn ghost" href="#/' + d.slug + '/videos">Open the video library</a></div></div>' + '<div class="card stack"><h3>Interactive labs</h3><p style="flex:1">' + labs + ' labs for exploring ideas, each tagged with the outcomes it supports.</p><div><a class="btn ghost" href="#/' + d.slug + '/apps">Open the labs library</a></div></div>' +
       (c.tools || []).map(function (t) { return '<div class="card stack"><h3>' + esc(t.name) + '</h3><p style="flex:1">' + esc(t.description) + "</p>" + ext(t.url, "Open ↗") + "</div>"; }).join("");
     var paths = c.help.paths.map(function (p) {
       var links = p.links.map(function (l) { return l.scroll ? '<a class="linkrow" href="#/' + d.slug + '" data-scroll="' + esc(l.scroll) + '">' + esc(l.label) + "</a>" : ext(l.url, l.label); }).join("");
@@ -580,6 +582,37 @@
     return header(h.courses) + '<main id="main"><section class="hero-white"><div class="wrap"><p class="crumbs"><a href="#/">Academy</a> <span class="small">/</span> <a href="#/' + d.slug + '">' + esc(c.code) + '</a> <span class="small">/</span> Labs</p><h1>Interactive labs and apps</h1><p style="font-size:21px;margin:0;max-width:780px" class="small">Every lab lists the outcomes it covers, and appears on each of those outcome pages.</p></div></section>' +
       '<section class="sec tight">' + sectionHead("Labs") + '<div class="grid tools">' + cards("lab") + '</div></section><section class="sec">' + sectionHead("Foundational fluency apps") + '<div class="grid tools">' + cards("fluency") + '</div></section><section class="sec">' + sectionHead("Course tools") + '<div class="grid tools">' + cards("tool") + "</div></section></main>" + footer(h.copy.footer);
   }
+  function ytRow(v, showTopic) {
+    return '<li><a class="vid" href="https://www.youtube.com/watch?v=' + esc(v.video_id) + '" target="_blank" rel="noopener" data-vtext="' + esc((v.title + " " + v.topic + " " + v.outs.join(" ")).toLowerCase()) + '"><span class="play"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9-5.5z" fill="#1D3969"/></svg></span><span><b>' + esc(v.title) + '</b>' + (showTopic && v.topic ? '<br><span class="small">' + esc(v.topic) + "</span>" : "") + '<span class="sr-only"> (opens YouTube in a new tab)</span></span></a></li>';
+  }
+  function vidsFor(d, code) { return d.videos.filter(function (v) { return v.outs.indexOf(code) !== -1; }); }
+  function pageVideosC(h, d) {
+    var c = d.copy, slug = d.slug;
+    var jump = d.chList.filter(function (ch) { return ch.n <= 5; }).map(function (ch) { return '<a class="btn ghost" href="#/' + slug + '/videos" data-scroll="vch' + ch.n + '">' + esc(chLabel(ch.n)) + "</a>"; }).join("");
+    var secs = d.chList.filter(function (ch) { return ch.n <= 5; }).map(function (ch) {
+      var blocks = d.list.filter(function (o) { return o.ch === ch.n; }).map(function (o) {
+        var vs = vidsFor(d, o.code); if (!vs.length) return "";
+        var cc = CH_CHIP[o.ch];
+        return '<details class="card vgroup" style="padding:0" data-code="' + esc(o.code) + '"><summary style="padding:18px 24px;cursor:pointer;display:flex;align-items:center;gap:12px;min-height:56px"><span class="chip" style="--c:' + cc[0] + ";--cf:" + cc[1] + '">' + esc(o.code) + '</span><b style="color:#000;flex:1">' + esc(o.title) + '</b><span class="small vcount">' + vs.length + (vs.length === 1 ? " video" : " videos") + '</span></summary><div style="padding:0 24px 18px"><ul class="vlist" style="list-style:none;margin:0;padding:0">' + vs.map(function (v) { return ytRow(v, true); }).join("") + '</ul><p class="small" style="margin:12px 0 0"><a href="#/' + slug + "/" + o.code.toLowerCase() + '">Go to the ' + esc(o.code) + " outcome page →</a></p></div></details>";
+      }).join("");
+      return '<section class="sec tight vsec" id="vch' + ch.n + '"><div style="margin-bottom:10px">' + pill(chLabel(ch.n), CH_PILL[ch.n]) + '</div><h2 style="font-size:28px;margin:0 0 16px">' + esc(ch.title) + '</h2><div class="stack" style="gap:12px">' + blocks + "</div></section>";
+    }).join("");
+    return header(h.courses) + '<main id="main"><section class="hero-white"><div class="wrap"><p class="crumbs"><a href="#/">Academy</a> <span class="small">/</span> <a href="#/' + slug + '">' + esc(c.code) + '</a> <span class="small">/</span> Videos</p><h1>Video library</h1><p style="font-size:21px;margin:0 0 24px;max-width:780px" class="small">' + d.videos.length + ' short videos, organized by chapter and outcome. They are the same videos as on each FAQ page. Open an outcome to see its videos, or search all of them.</p><div class="search"><label for="vq">Search the videos</label><input id="vq" type="search" autocomplete="off" placeholder="Try: unit circle, vertex, FN4"><p id="vstatus" class="small" role="status" aria-live="polite" style="margin:8px 0 0"></p></div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">' + jump + "</div></div></section>" + secs + "</main>" + footer(h.copy.footer);
+  }
+  function wireVideoFilter() {
+    var q = document.getElementById("vq"); if (!q) return;
+    var st = document.getElementById("vstatus");
+    q.addEventListener("input", function () {
+      var t = q.value.trim().toLowerCase(), total = 0;
+      document.querySelectorAll(".vgroup").forEach(function (g) {
+        var n = 0, codeHit = t && g.getAttribute("data-code").toLowerCase() === t;
+        g.querySelectorAll(".vlist li").forEach(function (li) { var hit = !t || codeHit || li.firstChild.getAttribute("data-vtext").indexOf(t) !== -1; li.hidden = !hit; if (hit) n++; });
+        g.hidden = !!t && n === 0; if (t) g.open = n > 0; else g.open = false; total += n;
+      });
+      document.querySelectorAll(".vsec").forEach(function (s) { s.hidden = !s.querySelector(".vgroup:not([hidden])"); });
+      st.textContent = t ? total + (total === 1 ? " video matches." : " videos match.") : "";
+    });
+  }
   function pageOutcomeC(h, d, o) {
     var c = d.copy, slug = d.slug, ch = d.chapters[o.ch] || { title: "", lookahead: "" };
     var labs = d.apps.filter(function (a) { return a.status === "live" && a.kind !== "tool" && a.outs.indexOf(o.code) !== -1; });
@@ -591,6 +624,10 @@
     if (!isFF) {
       var u = [["FAQ and guided learning: " + o.faq_label, o.faq_url]]; if (o.notes_url) u.push([o.code + " lecture notes", o.notes_url]);
       steps.push(["Understand it", '<p class="small" style="margin:0 0 12px">Common questions answered, a guided learning activity, videos, and AI prompts written for ' + o.code + "." + (o.notes_url ? " The lecture notes walk through the examples from class." : "") + "</p>" + (o.faq_url ? linkBtns(u) : empty("The FAQ page for " + o.code + " is coming."))]);
+    }
+    if (!isFF) {
+      var vs = vidsFor(d, o.code), first = vs.slice(0, 3), rest = vs.slice(3);
+      steps.push(["Watch it", vs.length ? '<p class="small" style="margin:0 0 8px">Short videos on ' + o.code + ', the same ones as on the FAQ page. Each opens on YouTube.</p><ul class="vlist" style="list-style:none;margin:0;padding:0">' + first.map(function (v) { return ytRow(v, false); }).join("") + "</ul>" + (rest.length ? '<details style="margin-top:4px"><summary style="cursor:pointer;font-weight:700;color:var(--link);min-height:44px;display:flex;align-items:center">Show ' + rest.length + " more " + (rest.length === 1 ? "video" : "videos") + '</summary><ul class="vlist" style="list-style:none;margin:0;padding:0">' + rest.map(function (v) { return ytRow(v, false); }).join("") + "</ul></details>" : "") + '<p class="small" style="margin:10px 0 0"><a href="#/' + slug + '/videos">Browse the whole video library →</a></p>' : empty("Videos for " + o.code + " are on its FAQ page.")]);
     }
     steps.push([isFF ? "Practice with an app" : "Explore it in a lab", labs.length ? '<p class="small" style="margin:0 0 12px">' + (isFF ? "Work through the examples, then practice." : "Change the inputs and watch what responds.") + '</p><div style="display:flex;gap:12px;flex-wrap:wrap">' + labs.map(function (a) { return '<a class="btn ghost" href="' + esc(a.url) + '" target="_blank" rel="noopener" title="' + esc(a.description) + '">' + esc(a.name) + " ↗</a>"; }).join("") + "</div>" : empty("No " + (isFF ? "app" : "lab") + " is tagged to " + o.code + " yet.")]);
     var pr = []; if (o.checkit_url) pr.push(["Practice in CheckIt", o.checkit_url]); if (o.exercises_url) pr.push(["Online exercises in the textbook", o.exercises_url]);
@@ -633,6 +670,7 @@
         if (d.layout === "chapters") {
           if (!parts[1]) { paint(pageCourseC(h, d), d); document.title = d.copy.code + " · SAC Math Academy"; wireSearch(function () { return allIndex(h); }); return; }
           if (parts[1] === "apps") { paint(pageAppsC(h, d), d); document.title = "Labs · " + d.copy.code; return; }
+          if (parts[1] === "videos") { paint(pageVideosC(h, d), d); document.title = "Videos · " + d.copy.code; wireVideoFilter(); return; }
           var oc = d.outcomes[parts[1].toUpperCase()];
           if (!oc) { app.innerHTML = header(h.courses) + '<main id="main" class="sec"><h1>Outcome not found</h1><p><a href="#/' + d.slug + '">Back to ' + esc(d.copy.code) + "</a></p></main>"; return; }
           paint(pageOutcomeC(h, d, oc), d); document.title = oc.code + " " + oc.title + " · " + d.copy.code; return;

@@ -50,13 +50,14 @@ To test the site on your own computer, run a small web server in the folder. Dou
 
 ## Math 172 hub (chapter layout)
 
-Math 172 uses the chapter layout, switched on by `"layout": "chapters"` in `data/math-172/course.json`. The course page shows Chapters 1 to 5 of *Building Toward Calculus* with their outcomes, a Foundational Fluency section (Chapter 6), tools, "When you are stuck" help, and the Math 172 Practice Partner. Each outcome page is a numbered path: textbook, FAQ and guided learning (plus lecture notes for TE1 to TE6), labs, CheckIt practice, CheckIt support, and the Practice Partner.
+Math 172 uses the chapter layout, switched on by `"layout": "chapters"` in `data/math-172/course.json`. The course page shows Chapters 1 to 5 of *Building Toward Calculus* with their outcomes, a Foundational Fluency section (Chapter 6), tools, "When you are stuck" help, and the Math 172 Practice Partner. Each outcome page is a numbered path: textbook, FAQ and guided learning (plus lecture notes for TE1 to TE6), videos, labs, CheckIt practice, CheckIt support, and the Practice Partner. The Video library page (`#/math-172/videos`) lists every video by chapter and outcome, with a search box.
 
 | File | One row is | Notes |
 |---|---|---|
 | `outcomes.csv` | one outcome | `chapter` 1 to 5 follows the textbook; chapter 6 is Foundational Fluency. The link columns are `book_url`, `exercises_url` (the book's online exercises), `faq_url` and `faq_label`, `support_url` (CheckIt support page), `checkit_url` (TBIL CheckIt bank), and `notes_url` (lecture notes). An empty cell hides that step or shows "coming." Titles and statements use TBIL's wording, except ST, EX, AF, and AM, which come from the textbook. |
 | `chapters.csv` | one chapter | Title, textbook link, and the "Toward calculus" line on each chapter card. |
 | `apps.csv` | one lab, fluency app, or tool | `kind` is `lab`, `fluency`, or `tool`. `outcomes` lists codes separated by spaces, and the app appears on each of those outcome pages. `status` is `live` or `planned`. |
+| `videos.csv` | one video for one outcome | `video_id` is the part of the YouTube address after `v=`. `outcomes` is the outcome code. `topic` and `description` come from the FAQ site. The outcome page shows the first three videos and hides the rest behind "Show more." |
 | `course.json` | | Page wording, help paths, tools, the Practice Partner link, and the people-help list. |
 
 ### What Math 172 covers
@@ -65,6 +66,7 @@ Math 172 uses the chapter layout, switched on by `"layout": "chapters"` in `data
 - **12 Foundational Fluency skills (Chapter 6):** EQ1 to EQ5, LF6, TR3, TR4, ST, EX, AF, and AM. These come from the textbook and in-class work, not MyOpenMath.
 - **Where the links point:** FAQ sites are `172<code>faq.netlify.app` (FN2 and FN3, LF2/LF3/LF5, PR1 and PR2, PR4 and PR5, and EL5 and EL6 share one site each). CheckIt support pages are `172checkit.netlify.app/<code>/`, from the `172-checkit-support` repo. Lecture notes are `172te<n>notes.netlify.app`.
 - **Apps:** 12 labs, 5 fluency apps (EQ5, EX, AF, ST, AM), and 2 tools (Sentence Frames and the Standards Tracker). The EQ5 app is `172eq5quadraticfluency`. The duplicate `172quadfulencyeq5` is inactive and not linked.
+- **Videos:** 179 videos copied from the 32 FAQ sites' data files (`<code>-data.json`). On the shared FAQ sites, videos were split by the FAQ's topic labels: FN2 (notation, evaluating, piecewise) and FN3 (graph features, increasing and decreasing); LF2 (equations), LF3 (graphing), LF5 (applications); PR1 (vertex form, graphing) and PR2 (projectile application); PR4 (division) and PR5 (zeros and theorems); EL5 (expanding logs) and EL6 (solving equations). The hub does not read the FAQ sites live, so if you change videos on an FAQ site, ask Claude to re-copy them into `videos.csv`.
 - **Practice Partner:** the Playlab link is in `course.json` in two places (`tools` and `ai.partner`).
 
 ### Common Math 172 tasks
@@ -72,11 +74,11 @@ Math 172 uses the chapter layout, switched on by `"layout": "chapters"` in `data
 - **Add an outcome:** add a row to `outcomes.csv` with its chapter and links.
 - **Link a new lab or app:** add a row to `apps.csv` with the outcome codes it supports.
 - **Change a link** (for example, a renamed FAQ site): edit that cell in `outcomes.csv`.
+- **Add or remove a video:** add or delete a row in `videos.csv`.
 
 ### Planned for Math 172
 
 - Quiz and exam prep pages (one per SLO group, using the STAT C1000 midterm review page as the model).
-- Videos on outcome pages, if needed. They are already inside each FAQ site.
 
 ## STAT C1000 hub (outcome layout)
 
