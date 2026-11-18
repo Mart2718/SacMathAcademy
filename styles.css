@@ -120,5 +120,18 @@ fieldset.qz textarea{width:100%;font:inherit;border:2px solid var(--muted);borde
 .pbn:has(input:focus-visible){outline:3px solid #000;outline-offset:2px}
 @media (max-width:640px){.mrow{grid-template-columns:1fr}.two{grid-template-columns:1fr}.hero-red h1{font-size:36px}.hero-white h1{font-size:34px}.sec{padding-left:20px;padding-right:20px}.wrap{padding-left:20px;padding-right:20px}.thinking,.band{padding:28px}}
 
+/* Revised course navigation */
+.course-nav{background:#fff;border-bottom:1px solid var(--line)}
+.course-nav .wrap,.outcome-nav{display:flex;flex-wrap:wrap;gap:8px;padding-top:12px;padding-bottom:12px}
+.course-nav a,.outcome-nav a{display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;font-weight:700;border-radius:8px;text-transform:capitalize}
+.course-nav a:hover,.outcome-nav a:hover{background:var(--bg)}
+.module-label{display:block;font-size:15px;font-weight:400;color:var(--muted)}
+.course-tagline{font-size:22px;margin:12px 0;color:var(--muted)}
+.purpose{font-weight:700;color:var(--navy);margin:12px 0 20px}
+.pathstep .sec{padding:28px 0 0}.pathstep .grid.two{grid-template-columns:1fr}
+section[id],.pathstep[id]{scroll-margin-top:24px}
+summary{cursor:pointer;min-height:44px;font-weight:700}details{margin-bottom:18px}summary:focus-visible{outline:3px solid #000}
+@media(max-width:640px){.hero-red .wrap,.band,.tools,.three,.four{grid-template-columns:1fr!important}.hero-white .grid{grid-template-columns:1fr!important}.brand b{font-size:19px}.pathstep{gap:12px}.card{padding:20px}.hero-white h1{font-size:30px;overflow-wrap:anywhere}.outcome-nav{gap:0}.thinking .grid{grid-template-columns:1fr!important}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .vgroup summary::-webkit-details-marker{margin-right:4px}

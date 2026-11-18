@@ -1,32 +1,32 @@
 {
   "slug": "stat-c1000",
   "code": "STAT C1000",
-  "title": "Statistics, one outcome at a time",
-  "lead": "{outcomes} learning outcomes, {modules} modules, {videos} micro-lectures, and {apps} interactive apps. Pick the way in that fits where you are today.",
+  "title": "STAT C1000 · Introduction to Statistics",
+  "lead": "Find explanations, practice, and support for the statistics topic you are learning today.",
   "searchLabel": "Search this course",
   "searchPlaceholder": "Try: p-value, standard error, S12",
   "ways": [
     {
-      "title": "Start here",
-      "text": "Starting a unit? Follow the path: guided notes, micro-lectures, an app, then practice.",
+      "title": "Learn a topic",
+      "text": "Choose your unit and outcome to find notes, videos, apps, and practice.",
       "scroll": "units",
-      "label": "Pick a unit"
+      "label": "Explore outcomes"
     },
     {
-      "title": "I am stuck",
-      "text": "Name the kind of stuck you are in, and go to the help that fits it.",
+      "title": "Practice and review",
+      "text": "Check a skill, prepare for the midterm, or review for the final.",
+      "href": "#/stat-c1000/review",
+      "label": "Choose your review"
+    },
+    {
+      "title": "Get help",
+      "text": "Find support for a confusing idea, a difficult problem, or feeling overwhelmed.",
       "scroll": "help",
-      "label": "Get unstuck"
-    },
-    {
-      "title": "Study for the midterm",
-      "text": "Rate your skills from S1 to S12, then get a study list that points to the right outcome pages.",
-      "href": "#/stat-c1000/midterm",
-      "label": "Start the midterm review"
+      "label": "Find support"
     }
   ],
   "unitsTitle": "Browse by unit and outcome",
-  "unitsSub": "Hover over an outcome to see its full statement. Select one to open its page.",
+  "unitsSub": "Choose a topic below. Module labels connect these outcomes to your course materials.",
   "unitTitles": {
     "1": "Understanding data and descriptive statistics",
     "2": "Probability and probability distributions",

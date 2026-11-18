@@ -56,6 +56,7 @@
     return c;
   }
   function paint(html, d) {
+    if (d && html.indexOf('aria-label="Statistics course"') === -1) html = html.replace("</header>", "</header>" + courseNav(d));
     app.innerHTML = html;
     if (d && d.copy && d.copy.siteVersion !== APP_VERSION) app.insertAdjacentHTML("afterbegin", '<div class="warnbar" role="alert">Some site files are out of date, so this page may look incomplete. Re-upload every file from the latest zip, keeping the same folder names. (Code version ' + esc(APP_VERSION) + "; course.json version " + esc((d.copy && d.copy.siteVersion) || "missing") + ".)</div>");
   }
@@ -116,8 +117,11 @@
     var logo = CFG.LOGO_COLOR ? '<img class="logo-img" src="' + esc(CFG.LOGO_COLOR) + '" alt="Santa Ana College">' : '<span class="logo">[Official SAC logo]</span>';
     return '<header class="top"><div class="wrap"><a class="brand" href="#/">' + logo + '<b>Math Academy</b></a><nav class="main" aria-label="Main">' + nav + "</nav></div></header>";
   }
+  function courseNav(d) {
+    return '<nav class="course-nav" aria-label="Statistics course"><div class="wrap">' + [["Outcomes","units"],["Tools","tools"],["Get help","help"]].map(function(x){return '<a href="#/' + d.slug + '" data-scroll="' + x[1] + '">' + x[0] + '</a>';}).join('') + '<a href="#/' + d.slug + '/review">Practice &amp; review</a><a href="#/' + d.slug + '/ai">AI study partner</a></div></nav>';
+  }
   function footer(f) {
-    return '<footer class="foot"><div class="wrap"><div class="stack" style="align-items:flex-start">' + (CFG.LOGO_REVERSE ? '<img class="logo-img" src="' + esc(CFG.LOGO_REVERSE) + '" alt="Santa Ana College">' : (CFG.LOGO_COLOR ? "" : '<span class="logo">[Official SAC logo]</span>')) + '<b style="font-family:Mulish,sans-serif;font-size:20px">' + esc(f.name) + "</b><div>" + esc(f.left) + "</div></div><div>" + esc(f.right) + "<br>" + esc(f.contact) + "</div></div></footer>";
+    return '<footer class="foot"><div class="wrap"><div class="stack" style="align-items:flex-start">' + (CFG.LOGO_REVERSE ? '<img class="logo-img" src="' + esc(CFG.LOGO_REVERSE) + '" alt="Santa Ana College">' : (CFG.LOGO_COLOR ? "" : '<span class="logo">[Official SAC logo]</span>')) + '<b style="font-family:Mulish,sans-serif;font-size:20px">' + esc(f.name) + "</b><div>" + esc(f.left) + "</div></div><div>" + esc(f.right) + "<br>" + (f.contact && f.contact.indexOf("[") === -1 ? esc(f.contact) : "") + "</div></div></footer>";
   }
   function pill(text, cls) { return '<span class="pill ' + cls + '">' + esc(text) + "</span>"; }
   function unitPill(n, text) { return '<span class="pill u' + n + '">' + esc(text) + "</span>"; }
@@ -208,7 +212,7 @@
     var vids = d.videos.filter(function (v) { return v.kind === "lecture" && mods.indexOf(+v.module) !== -1; }).length;
     return "Modules " + mods[0] + " to " + mods[mods.length - 1] + " · " + vids + " micro-lectures";
   }
-  function pageCourse(h, d) {
+  function pageCourse(h, d, view) {
     var c = d.copy, hc = h.copy;
     var live = d.apps.filter(function (a) { return a.status === "live"; }).length;
     var lead = c.lead.replace("{outcomes}", d.list.length).replace("{modules}", Object.keys(d.modules).length).replace("{videos}", d.videos.filter(function (v) { return v.kind === "lecture"; }).length).replace("{apps}", live);
@@ -217,7 +221,7 @@
     var units = [1, 2, 3, 4].map(function (u) {
       var rows = d.list.filter(function (o) { return o.unit === u; }).map(function (o) {
         var chip = '<span class="chip on" style="--c:' + UC[u][0] + ";--cf:" + UC[u][1] + '">' + o.code + "</span>";
-        return '<a class="orow" href="#/' + d.slug + "/" + o.code.toLowerCase() + '" title="' + esc(o.statement) + '">' + chip.replace(" on", "") + '<span class="tt">' + esc(o.title) + '</span><span aria-hidden="true" style="color:var(--link);font-weight:700">→</span></a>';
+        return '<a class="orow" href="#/' + d.slug + "/" + o.code.toLowerCase() + '" title="' + esc(o.statement) + '">' + chip.replace(" on", "") + '<span class="tt">' + esc(o.title) + '<small class="module-label">Module ' + o.mods.join(', ') + '</small></span><span aria-hidden="true" style="color:var(--link);font-weight:700">→</span></a>';
       }).join("");
       return '<div class="card unitcard"><div style="margin-bottom:12px">' + unitPill(u, "Unit " + u) + "</div><h3>" + esc(c.unitTitles[u]) + '</h3><p style="margin:0 0 14px">' + esc(unitMeta(d, u)) + '</p><div style="display:flex;flex-direction:column;margin-bottom:16px">' + rows + '</div><a href="' + esc(c.faqUrls[u]) + '" target="_blank" rel="noopener" style="font-weight:700">Unit ' + u + " FAQ guide ↗</a></div>";
     }).join("");
@@ -239,15 +243,19 @@
     var review = c.review.cards.map(function (r) {
       return '<div class="card stack" style="gap:8px"><div class="bigstat">' + esc(r.big) + '</div><h3 style="font-size:20px">' + esc(r.title) + '</h3><p style="flex:1">' + esc(r.text) + "</p>" + (r.url ? (r.internal ? '<a class="linkrow" href="' + esc(r.url) + '">Open →</a>' : ext(r.url, "Open ↗")) : '<span class="small">In Canvas</span>') + "</div>";
     }).join("") + '<div class="card stack" style="gap:8px"><div class="bigstat">Soon</div><h3 style="font-size:20px">Retrieval practice apps</h3><p style="flex:1">Short, low-stakes question sets for each topic. An app that covers several outcomes appears on every outcome page it covers.</p><div>' + pill("Planned", "planned") + "</div></div>";
-    return header(h.courses) +
-      '<main id="main"><section class="hero-white"><div class="wrap"><p class="crumbs"><a href="#/">Academy</a> <span class="small">/</span> ' + esc(c.code) + '</p><h1>' + esc(c.title) + '</h1><p style="font-size:21px;margin:0 0 28px;max-width:780px" class="small">' + esc(lead) + '</p><div class="search"><label for="q">' + esc(c.searchLabel) + '</label><input id="q" type="search" autocomplete="off" placeholder="' + esc(c.searchPlaceholder) + '"><div id="results"></div></div></div></section>' +
+    if (view) {
+      var content = view === "ai" ? sectionHead(c.ai.title, c.ai.sub) + aiBlock : sectionHead("Practice and review", c.review.sub) + '<div class="grid three">' + review.slice(0, review.indexOf('<div class="card stack" style="gap:8px"><div class="bigstat">Soon')) + '</div><div class="card" style="margin-top:24px"><h3>Practice a specific outcome</h3><p>Choose an outcome and use its sample problems and ungraded self-check.</p><a class="btn ghost" href="#/' + d.slug + '" data-scroll="units">Browse outcomes</a></div>';
+      return header(h.courses) + courseNav(d) + '<main id="main"><section class="sec tight"><p class="crumbs"><a href="#/' + d.slug + '">STAT C1000</a> / ' + (view === "ai" ? "AI study partner" : "Practice and review") + '</p><h1>' + (view === "ai" ? "AI study partner" : "Practice and review") + '</h1><div style="margin-top:24px">' + content + '</div></section></main>' + footer(hc.footer);
+    }
+    return header(h.courses) + courseNav(d) +
+      '<main id="main"><section class="hero-white"><div class="wrap"><p class="crumbs"><a href="#/">Academy</a> <span class="small">/</span> ' + esc(c.code) + '</p><h1>' + esc(c.title) + '</h1><p class="course-tagline">Statistics, one outcome at a time</p><p class="purpose">Question claims. Understand variation. Decide with evidence.</p><p style="font-size:21px;margin:0 0 28px;max-width:780px" class="small">' + esc(lead) + '</p><div class="search"><label for="q">' + esc(c.searchLabel) + '</label><input id="q" type="search" autocomplete="off" placeholder="' + esc(c.searchPlaceholder) + '"><div id="results"></div></div></div></section>' +
       '<section class="sec tight"><div class="grid three">' + ways + "</div></section>" +
       '<section class="sec" id="units">' + sectionHead(c.unitsTitle, c.unitsSub) + '<div class="grid two">' + units + "</div></section>" +
       '<section class="sec" id="tools">' + sectionHead(c.toolsTitle, c.toolsSub) + '<div class="grid tools">' + tools + "</div></section>" +
       '<section class="sec">' + thinking + "</section>" +
       '<section class="sec" id="help">' + sectionHead(c.help.title, c.help.sub) + '<div class="grid tools">' + paths + "</div></section>" +
-      '<section class="sec" id="ai">' + sectionHead(c.ai.title, c.ai.sub) + aiBlock + "</section>" +
-      '<section class="sec" id="review">' + sectionHead(c.review.title, c.review.sub) + '<div class="grid four">' + review + "</div></section></main>" + footer(hc.footer);
+      '<section class="sec" id="ai">' + sectionHead(c.ai.title, c.ai.sub) + '<div class="card"><p>' + esc(c.ai.sub) + '</p><a class="btn ghost" href="#/' + d.slug + '/ai">Explore the AI study partner guide</a></div>' + "</section>" +
+      '<section class="sec" id="review"><div class="callout"><h2>Practice and review</h2><p>Find outcome practice, midterm preparation, and final review resources.</p><a class="btn ghost" href="#/' + d.slug + '/review">Choose your review</a></div></section></main>' + footer(hc.footer);
   }
 
   // ---------- midterm review: rate your skills, get a study list
@@ -318,7 +326,7 @@
     var liveHtml = live.map(function (a) { return '<div class="card stack" style="gap:8px"><h3>' + esc(a.name) + "</h3><p>" + esc(a.description) + '</p><div>' + (a.outs.length ? '<span class="small">Covers: </span>' + chips(a) : '<span class="small">Course-level app</span>') + "</div>" + ext(a.url, "Launch ↗") + "</div>"; }).join("");
     var plannedHtml = planned.map(function (a) { return '<div class="dashed stack" style="gap:8px"><div>' + pill("Planned", "planned") + "</div><h3 style=\"font-size:20px\">" + esc(a.name) + '</h3><p class="small" style="margin:0">' + esc(a.description) + '</p><div><span class="small">Covers: </span>' + chips(a) + "</div></div>"; }).join("");
     return header(h.courses) + '<main id="main"><section class="hero-white"><div class="wrap"><p class="crumbs"><a href="#/">Academy</a> <span class="small">/</span> <a href="#/' + d.slug + '">' + esc(c.code) + '</a> <span class="small">/</span> Apps</p><h1>Interactive apps</h1><p style="font-size:21px;margin:0;max-width:780px" class="small">Every app lists the outcomes it covers. An app appears on each outcome page it covers.</p></div></section>' +
-      '<section class="sec tight"><div class="grid tools">' + liveHtml + '</div></section><section class="sec">' + sectionHead("Planned retrieval practice apps", "Short question sets you answer from memory, with feedback after each one. Each covers a group of outcomes.") + '<div class="grid tools">' + plannedHtml + "</div></section></main>" + footer(h.copy.footer);
+      '<section class="sec tight"><div class="grid tools">' + liveHtml + '</div></section></main>' + footer(h.copy.footer);
   }
 
   // ---------- self-check quiz (step 5 of an outcome page)
@@ -473,9 +481,7 @@
     var aos = note ? (/not yet/i.test(note) ? '<div class="empty" style="margin-top:14px"><b style="color:#000">Open slot:</b> Art of Stat. ' + esc(note) + "</div>" : '<p class="small" style="margin:14px 0 0"><b style="color:#000">Art of Stat:</b> ' + esc(note) + ' <a href="https://artofstatguide.netlify.app/#library" target="_blank" rel="noopener">Open the Art of Stat Student Hub ↗</a></p>') : "";
     var chk = d.checks.filter(function (c) { return c.outcome === o.code; });
     var s5 = '<p class="small" style="margin:0 0 12px">Skill ' + n + " knowledge check. Practice only: it does not count toward your grade. The Canvas version is in your course." + (chk.length ? "" : " Questions for " + o.code + " are coming here soon.") + "</p>" + (chk.length ? checkHtml(chk) : "") + aos;
-    var steps = [["Read and fill in the guided notes", s1], ["Watch the micro-lectures", s2], ["Explore it in an app", s3], ["Practice", s4], ["Check yourself", s5]].map(function (s, i) {
-      return '<div class="card pathstep"><span class="num">' + (i + 1) + '</span><div style="flex:1;min-width:0"><h3>' + esc(s[0]) + "</h3>" + s[1] + "</div></div>";
-    }).join("");
+
 
     // try it first
     var tryHtml = "";
@@ -492,8 +498,11 @@
       var solLinks = sols.map(function (s) { return ext(s.url, s.title + " ↗"); }).join("");
       tryHtml = '<section class="sec">' + sectionHead("Try it first", "Work each problem on paper before you open anything. Then check your answer. Open the full solutions only if you need them.") + '<div class="grid two">' + cards + '</div><div class="card" style="margin-top:24px"><h3>If your answer does not match</h3><ul style="margin:8px 0 12px;padding-left:24px" class="small"><li style="margin-bottom:8px">Read the ' + o.code + " questions in the FAQ section below.</li><li style=\"margin-bottom:8px\">Paste the problem and your work into an AI study partner and ask it to find the first step where you went off track.</li><li>Open the full worked solutions.</li></ul>" + solLinks + "</div></section>";
     } else {
-      tryHtml = '<section class="sec"><div class="dashed"><div style="margin-bottom:12px">' + pill("Planned", "planned") + '</div><h3 style="font-size:21px;margin-bottom:8px">Try it first</h3><p class="small" style="margin:0">Sample problems for ' + o.code + " are coming. They will come from the unit challenge problems, with a check for each answer.</p></div></section>";
+      tryHtml = "";
     }
+    var steps = [["Read and fill in the guided notes", s1], ["Watch the micro-lectures", s2], ["Explore it in an app", s3], ["Practice", s4 + tryHtml], ["Check yourself", s5]].map(function (s, i) {
+      return '<div class="card pathstep" id="' + ['notes','videos','apps','practice','self-check'][i] + '"><span class="num">' + (i + 1) + '</span><div style="flex:1;min-width:0"><h3>' + esc(s[0]) + "</h3>" + s[1] + "</div></div>";
+    }).join("");
     var retr = planned.length ? '<section class="sec tight"><div class="dashed"><div style="margin-bottom:12px">' + pill("Planned", "planned") + '</div><h3 style="font-size:21px;margin-bottom:8px">Quick retrieval practice</h3><p class="small" style="margin:0 0 12px">' + esc(planned[0].description) + " [App to be built]</p><p class=\"small\" style=\"margin:0\"><b style=\"color:#000\">Covers:</b> " + planned[0].outs.join(", ") + "</p></div></section>" : "";
     var call = c.callouts && c.callouts[o.code];
     var callHtml = call ? '<section class="sec tight"><div class="callout"><h2>' + esc(call.title) + "</h2><p>" + esc(call.text) + "</p></div></section>" : "";
@@ -514,9 +523,9 @@
     var idx = d.list.indexOf(o), prev = d.list[idx - 1], next = d.list[idx + 1];
     var pn = '<section class="sec tight"><div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap">' + (prev ? '<a class="btn ghost" href="#/' + slug + "/" + prev.code.toLowerCase() + '">← ' + prev.code + " " + esc(prev.title) + "</a>" : "<span></span>") + (next ? '<a class="btn ghost" href="#/' + slug + "/" + next.code.toLowerCase() + '">' + next.code + " " + esc(next.title) + " →</a>" : "") + "</div></section>";
 
-    return header(h.courses) + '<main id="main"><section class="hero-white"><div class="wrap"><p class="crumbs"><a href="#/">Academy</a> <span class="small">/</span> <a href="#/' + slug + '">' + esc(c.code) + '</a> <span class="small">/</span> Unit ' + o.unit + ' <span class="small">/</span> ' + o.code + '</p><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:48px;align-items:start"><div><div style="margin-bottom:14px">' + unitPill(o.unit, "Unit " + o.unit + " · " + o.code) + "</div><h1>" + esc(o.title) + '</h1><p style="font-size:21px;margin:0 0 20px;color:var(--ink)">' + esc(o.statement) + '</p><ul class="small" style="margin:0 0 24px;padding-left:24px">' + o.subs.map(function (s) { return '<li style="margin-bottom:8px">' + esc(s) + "</li>"; }).join("") + '</ul><p class="small" style="margin:0">' + counts + "</p></div>" + fits + "</div></div></section>" +
-      '<section class="sec">' + sectionHead("Your path through " + o.code, "Work top to bottom, or jump to the step you need.") + '<div class="stack" style="gap:16px">' + steps + "</div></section>" + tryHtml + retr + callHtml +
-      '<section class="sec">' + sectionHead("When you are stuck on " + o.code, "Read the answer first. If another format works better for you, it is one click away.") + '<div class="grid two"><div><h3 style="font-size:21px;margin-bottom:14px">From the Unit ' + o.unit + ' FAQ</h3><div class="stack">' + faqHtml + '</div></div><div><h3 style="font-size:21px;margin-bottom:14px">Ask an AI study partner</h3><div class="card"><h4 style="font-family:Mulish,sans-serif;font-weight:800;font-size:19px;margin:0 0 10px;color:#000">' + esc(ai.stepsTitle) + '</h4>' + stepsHtml(ai.steps) + promptHtml + followHtml + afterHtml + '</div><div class="card" style="margin-top:24px">' + peopleHtml(c.people, "h3") + "</div></div></div></section>" + pn + "</main>" + footer(h.copy.footer);
+    return header(h.courses) + courseNav(d) + '<main id="main"><section class="hero-white"><div class="wrap"><p class="crumbs"><a href="#/">Academy</a> <span class="small">/</span> <a href="#/' + slug + '">' + esc(c.code) + '</a> <span class="small">/</span> Unit ' + o.unit + ' <span class="small">/</span> ' + o.code + '</p><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:48px;align-items:start"><div><div style="margin-bottom:14px">' + unitPill(o.unit, "Unit " + o.unit + " · " + o.code) + "</div><h1>" + esc(o.title) + '</h1><p style="font-size:21px;margin:0 0 20px;color:var(--ink)">' + esc(o.statement) + '</p><ul class="small" style="margin:0 0 24px;padding-left:24px">' + o.subs.map(function (s) { return '<li style="margin-bottom:8px">' + esc(s) + "</li>"; }).join("") + '</ul><p class="small" style="margin:0">' + counts + "</p></div>" + fits + "</div></div></section>" +
+      '<nav class="outcome-nav wrap" aria-label="Outcome sections">' + ['notes','videos','apps','practice','self-check','help'].map(function(id){return '<a href="#/' + slug + '/' + o.code.toLowerCase() + '" data-scroll="' + id + '">' + id.replace('-', ' ') + '</a>';}).join('') + '</nav><section class="sec">' + sectionHead("Your path through " + o.code, "Work top to bottom, or jump to the step you need.") + '<div class="stack" style="gap:16px">' + steps + "</div></section>" + callHtml +
+      '<section class="sec" id="help">' + sectionHead("When you are stuck on " + o.code, "Read the answer first. If another format works better for you, it is one click away.") + '<div class="grid two"><div><h3 style="font-size:21px;margin-bottom:14px">From the Unit ' + o.unit + ' FAQ</h3><div class="stack">' + faqHtml + '</div></div><div><h3 style="font-size:21px;margin-bottom:14px">Ask an AI study partner</h3><div class="card"><h4 style="font-family:Mulish,sans-serif;font-weight:800;font-size:19px;margin:0 0 10px;color:#000">' + esc(ai.stepsTitle) + '</h4>' + '<details><summary>How to use an AI prompt</summary>' + stepsHtml(ai.steps) + "</details>" + promptHtml + followHtml + afterHtml + '</div><div class="card" style="margin-top:24px">' + peopleHtml(c.people, "h3") + "</div></div></div></section>" + pn + "</main>" + footer(h.copy.footer);
   }
 
   // ---------- chapter-layout courses (Math 172)
@@ -677,15 +686,16 @@
         }
         if (!parts[1]) { paint(pageCourse(h, d), d); document.title = d.copy.code + " · SAC Math Academy"; wireSearch(function () { return allIndex(h); }); return; }
         if (parts[1] === "midterm" && d.copy.midterm) { paint(pageMidterm(h, d), d); document.title = "Midterm review · " + d.copy.code; renderPlan(d); return; }
+        if (parts[1] === "ai" || parts[1] === "review") { paint(pageCourse(h, d, parts[1]), d); document.title = (parts[1] === "ai" ? "AI study partner" : "Practice and review") + " · " + d.copy.code; return; }
         if (parts[1] === "apps") { paint(pageApps(h, d), d); document.title = "Apps · " + d.copy.code; return; }
         var o = d.outcomes[parts[1].toUpperCase()];
         if (!o) { app.innerHTML = header(h.courses) + '<main id="main" class="sec"><h1>Outcome not found</h1><p><a href="#/' + d.slug + '">Back to ' + esc(d.copy.code) + "</a></p></main>"; return; }
         paint(pageOutcome(h, d, o), d); document.title = o.code + " " + o.title + " · " + d.copy.code;
       });
     }).then(function () {
-      var h1 = app.querySelector("h1"); if (h1) { h1.setAttribute("tabindex", "-1"); }
+      var h1 = app.querySelector("h1"); if (h1) { h1.setAttribute("tabindex", "-1"); h1.focus({preventScroll:true}); }
       if (!window.__keepScroll) window.scrollTo(0, 0);
-      window.__keepScroll = false;
+      window.__keepScroll = false; if (window.__pendingJump) { var target = document.getElementById(window.__pendingJump); if (target) target.scrollIntoView({block:"start"}); window.__pendingJump = null; }
     }).catch(function (e) {
       app.innerHTML = '<main id="main" class="sec"><h1>This page could not load</h1><p>' + esc(e.message) + '</p><p class="small">This usually means a site file is missing, or one file is older than the others. Re-upload every file from the latest zip, keeping the same folder names. If you opened index.html straight from a folder, the data files cannot load, so open the site from Netlify or a local web server. (Code version ' + esc(APP_VERSION) + ')</p></main>';
     });
@@ -694,7 +704,7 @@
   // ---------- events
   document.addEventListener("click", function (e) {
     var t = e.target.closest("[data-toggle],[data-reveal],[data-copy],[data-scroll],[data-check],[data-retry],[data-clear],[data-mfilter]");
-    if (!t) return;
+    if (!t) { if (e.target.closest(".skip")) { e.preventDefault(); var main = document.getElementById("main"); main.setAttribute("tabindex","-1"); main.focus(); } return; }
     if (t.hasAttribute("data-mfilter")) {
       var f = t.getAttribute("data-mfilter"), shown = 0;
       Array.prototype.forEach.call(app.querySelectorAll("[data-mfilter]"), function (b) { var on = b === t; b.setAttribute("aria-pressed", on ? "true" : "false"); b.className = "btn" + (on ? "" : " ghost"); });
@@ -720,7 +730,7 @@
       e.preventDefault();
       var id = t.getAttribute("data-scroll"), go = function () { var el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); };
       var href = t.getAttribute("href") || "";
-      if (href && href !== location.hash) { window.__keepScroll = true; location.hash = href; setTimeout(go, 400); } else { go(); }
+      if (href && href !== location.hash) { window.__keepScroll = true; location.hash = href; var pendingJump = id; window.__pendingJump = pendingJump; } else { go(); }
     }
   });
   document.addEventListener("change", function (e) {

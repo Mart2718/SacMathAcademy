@@ -22,7 +22,7 @@ The home page's course cards come from `data/courses.csv`. A course's `status` i
 
 **The live site updates itself.** `sacmathacademy.netlify.app` is connected to this repo. Every change saved to the `main` branch, whether edited on GitHub or pushed by Claude, is published in about a minute. There is nothing to drag or upload.
 
-**`sacmathacademyfall2026.netlify.app` is a separate, older copy.** It was published by drag-and-drop, so it is not connected to GitHub and does not update. Either retire it or link it to this repo in Netlify (Site configuration, Build & deploy, Link repository).
+**`sacmathacademyfall2026.netlify.app` is retired.** It was published from a separate repo, `Mart2718/SAC-Math-Academy-Fall-2026`, which held the Fall 2026 redesign of the STAT C1000 hub (course navigation, review and AI pages, module labels, and the 33 self-check and practice images). On Nov 18, 2026 that redesign was merged into this repo, so this repo has everything. Do not edit the Fall 2026 repo.
 
 **A yellow bar** at the top of a page means some files are older than the code. This happens when files are uploaded one at a time. Make sure every changed file is on `main`.
 

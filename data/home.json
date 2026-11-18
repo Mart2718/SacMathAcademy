@@ -22,7 +22,7 @@
   "coursesSub": "Pick a course to see its learning outcomes and everything tied to them.",
   "moreCourses": {
     "title": "More courses",
-    "text": "Each course gets its own hub page, built from its learning outcomes. [Add a course]"
+    "text": ""
   },
   "principlesTitle": "Built around what you are learning to do",
   "principles": [
@@ -43,16 +43,13 @@
     "badge": "Planned",
     "title": "Online and in the Math Center",
     "text": "The Academy is built to sit beside the Math Center. Tutors and the hub will use the same outcome codes, so \"I am stuck on S12\" means the same thing in both places.",
-    "placeholder": [
-      "[Math Center hours and location]",
-      "[Hope Academy mark and link]"
-    ]
+    "placeholder": []
   },
   "footer": {
     "name": "Math Academy",
     "left": "Department of Mathematics, Santa Ana College",
     "right": "Resources contributed by SAC math faculty.",
-    "contact": "Curator contact: [curator email]"
+    "contact": ""
   },
   "support": {
     "title": "Get help online or in the Math Center",
