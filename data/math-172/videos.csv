@@ -43,15 +43,22 @@ ZW7rQa8SJSU,Determine the Slope of a Line Given Two Points (Ex 1),LF1,Slope,Usin
 dmla9Lj4rqg,Slope Given the Graph of a Line (Negative Slope),LF1,Slope,Identifying a negative slope from a graph and understanding what the negative sign means about direction.
 dJuFWXn7zJM,Slope of a Horizontal and Vertical Line,LF1,Slope,Why horizontal lines have a slope of zero and vertical lines have an undefined slope. (CheckIt's LF1 lines are never vertical; the slope-0 case can come up.)
 zoLM3rxzndo,Slope Given Two Points on a Horizontal and Vertical Line,LF1,Slope,Applying the slope formula to horizontal and vertical lines to see why the special cases arise algebraically. (CheckIt's LF1 lines are never vertical; the slope-0 case can come up.)
+izsiAR4p4jk,Rate and Slope,LF1,Slope,"Connects slope and rate of change: why a line's rate of change is the same between any two points, and what that rate means."
 vut5b2fRQQ0,Find the Equation of a Line Given Slope and a Point,LF2,Equations,Writing an equation in point-slope and slope-intercept form when given the slope and one point.
 ndRpJxdmZJI,Find the Equation of a Line Given Two Points,LF2,Equations,Writing an equation in point-slope and slope-intercept form when given two points on the line.
 URYnKqEctgc,Determine a Linear Equation Given Slope and a Point (Slope-Intercept Form),LF2,Equations,A second worked example writing an equation directly in slope-intercept form.
+Ex9lxdoiwOk,"Ex 1: Given Linear Equation in Standard Form, Write in Slope-Intercept Form to Graph",LF2,Equations,"Rewrites a line in standard form Ax + By = C as y = mx + b to read off the slope and y-intercept, then graphs it."
+6TAkuXMGNq0,Ex: Write a Linear Equation From Point Slope Form to Slope Intercept Form,LF2,Equations,Distributes and simplifies to turn a point-slope equation into slope-intercept form.
 N6lEPh11gk8,Graph a Line and Identify Slope and Intercepts (Fraction Slope),LF3,Graphing,"Graphing a line from its equation and identifying the slope and intercepts, including with a fractional slope."
 mmWf_oLTNSQ,Find the Equation of a Line in Slope-Intercept Form Given the Graph,LF3,Graphing,Working backward from a graph to write the line's equation in slope-intercept form.
 vmaMT188ChA,Determine the x- and y-Intercepts of a Linear Equation,LF3,Graphing,Finding the x- and y-intercepts algebraically from an equation in slope-intercept form.
 JqeOivUbYGk,Find the Slope of a Line From a Graph (Positive Slope),LF3,Graphing,Review (LF1): Reading slope directly from a graph using rise and run.
+iSgftOjXIfw,Graphing horizontal and vertical lines,LF3,Graphing,"Graphs x = c as a vertical line and y = c as a horizontal line, and explains why each looks the way it does."
+-YYPjQwv1Aw,Ex: Graph a Linear Equation in Point-Slope Form,LF3,Graphing,Graphs a line from point-slope form by plotting the point and using the slope as rise over run.
+MK58EPQaVlk,Graph Linear Equations Given the Intercepts,LF3,Graphing,"Graphs a line by finding and plotting its x- and y-intercepts, then connecting them."
 JMQSdRFJ1S4,Savings Linear Function Application (Slope & Intercept Meaning),LF5,Modeling,A real-world savings example showing how to interpret slope and y-intercept in context.
 H8KR3w2nXqs,Linear Equation Application: Cost of a Rental Car,LF5,Modeling,Building a linear model from a word problem and using it to answer real-world questions.
+5F4Mj0ffVbA,Ex: Model the Balance of a Gift Card Using a Linear Function (m and b given),LF5,Modeling,Writes a decreasing linear model for a gift card balance and explains the slope and starting value in context.
 -ZhdzLEwUKY,Write a Quadratic Function in Vertex Form,PR1,Equations,Using formulas to write a given quadratic function in vertex form without completing the square.
 BYlWhtgUwJI,Find the Vertex Form Given the Vertex and a Point,PR1,Equations,"Extension (writing an equation from a vertex and a point goes beyond the PR1 CheckIt exercise, which gives you the function): Finding the equation of a quadratic function in vertex form given the vertex and one other point on the parabola."
 xqi9Zs4LxMM,Find a Quadratic Function Given the Vertex and Leading Coefficient,PR1,Equations,Extension (writing an equation from the vertex and a goes beyond the PR1 CheckIt exercise): Finding the equation of a quadratic function given the vertex and the value of a.
