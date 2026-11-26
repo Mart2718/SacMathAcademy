@@ -111,6 +111,9 @@ I-36SsQ9KgQ,Convert Angles in Radian Measure to Degree Measure,TR1,Radians conve
 m7jTGVVzb0s,Determine Positive and Negative Coterminal Angles,TR2,Coterminal angles,"Worked examples finding coterminal angles in degrees, both larger and smaller than the original angle."
 tpr8FkiowHk,Determining Coterminal Angles in Radian Measure,TR2,Coterminal angles,Finding coterminal angles when the original angle is given in radians.
 zD4CsKIYEHo,Arc Length and Area of a Sector,TR2,Arc length sector area,"An overview of the arc length and sector area formulas, in both degrees and radians, with worked examples."
+_SLdPn76zY8,Find a Coterminal Angle from 0 to 2pi Radians to a Given Angle in Radians (Negative),TR2,Coterminal angles,Finds the principal angle between 0 and 2π for a negative angle in radians by adding full turns of 2π.
+qp0cATM2yys,Examples: Arc Length and Application of Arc Length,TR2,Arc length sector area,"Uses s = rθ, with θ in radians, to find arc lengths, including an application."
+Q5nESumhcpo,Area of Sector: Find the Area Swept by a Windshield Wipter Blade,TR2,Arc length sector area,"Finds the area of a sector, A = (1/2)r²θ, in a real context: the area swept by a windshield wiper blade."
 YJNSRvhd3uA,Determine the Reference Angle for a Given Angle,TR5,Reference angles,"Worked examples finding the reference angle for angles sketched in standard position, across all four quadrants."
 iyZa9p8v0BU,"Find Sine, Cosine, and Tangent Values for 120 Degrees",TR5,Exact values,"Using a reference triangle and the unit circle to find sine, cosine, and tangent for an angle in Quadrant II."
 lCPt6bVcEBg,Find 6 Trig Function Values of 210 Degrees,TR5,Exact values,"Finding all six trig function values — sine, cosine, tangent, cosecant, secant, and cotangent — for one angle in Quadrant III."
@@ -122,6 +125,9 @@ o__sU6aMAXU,Determine Reference Angles of Angles Given in Radians,TR5,Reference 
 Dl05CJGjO2g,Find Trigonometric Function Values for 0 Degrees or 0 Radians,TR5,Exact values,Finding exact trig values for a quadrantal angle (on an axis rather than inside a quadrant) — a useful edge case.
 i56P6xzsB5Y,Determine Trigonometric Function Values Using the Unit Circle,TR5,Exact values,Reading trig function values directly from coordinates on the unit circle.
 DTsx_k198t4,"Find Sine, Cosine, and Tangent Values for 225 Degrees",TR5,Exact values,"A worked example in Quadrant III, pairing with the existing 120° (QII) and 210° (QIII) examples for broader quadrant coverage."
+BQuz1zJSTD8,"Find the Sine, Cosine and Tangent Function Values Given a Point on the Unit Circle: Fractions",TR5,Exact values,"Reads sine, cosine, and tangent from a point (x, y) on the unit circle: cos θ = x, sin θ = y, tan θ = y/x."
+egtrsPZ7THQ,Ex: Find a Point on the Unit Circle Given One Coordinate,TR5,Quadrant signs,"Given one coordinate of a point on the unit circle and its quadrant, uses x² + y² = 1 to find the other coordinate and its sign."
+p3jDoMuqJHk,Ex: Find Trig Function Values Given the Cosine Value and Quadrant,TR5,Quadrant signs,"Given the cosine value and the quadrant, finds the other coordinate and then all six trig function values."
 QNQAkUUHNxo,Animation: Graphing the Sine Function Using the Unit Circle,PF1,Unit circle graphing,An animation showing exactly how the sine wave is traced out as a point moves around the unit circle.
 tcjZOGaeoeo,Animation: Graphing the Cosine Function Using the Unit Circle,PF1,Unit circle graphing,"The same animation approach applied to cosine, showing how it traces out from the unit circle's x-coordinate."
 qJ-oUV7xL3w,Amplitude and Period of Sine and Cosine,PF1,Amplitude period phase,"How to determine the amplitude and period of sine and cosine functions, and how the graph changes as each one changes."
